@@ -13,6 +13,8 @@ npm install netsuite-fasttrack-toolkit-ss2
 npm install class-validator --save
 ```
 
+
+
 Please check these repos for more details about these packages
 - [SuiteScript 2.0 Typings](https://github.com/headintheclouddev/typings-suitescript-2.0)
 - [NetSuite Fasttrack Toolkit](https://github.com/ExploreConsulting/netsuite-fasttrack-toolkit-ss2)
