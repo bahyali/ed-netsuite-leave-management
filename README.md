@@ -8,9 +8,7 @@ Using TypeScript for SuiteScript 2.0
 ### Install these packages as dependencies
 
 ```
-npm install @hitc/netsuite-types --save-dev 
-npm install netsuite-fasttrack-toolkit-ss2 
-npm install class-validator --save
+npm install
 ```
 
 
