@@ -1,0 +1,5 @@
+#node_modules
+node_modules/
+
+#NFS-SS2-4.3.0 (Node Package)
+/NFS-SS2-4.3.0
