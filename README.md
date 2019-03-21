@@ -1,1 +1,2 @@
-# ed-netsuite-leave-management
+# NetSuite Leave Management
+Leave Management Module customized for NetSuite System
