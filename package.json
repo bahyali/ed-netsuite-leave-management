@@ -1,0 +1,26 @@
+{
+  "name": "leave",
+  "version": "1.0.0",
+  "description": "Leave Management Module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mohamed Elshowel",
+  "license": "ISC",
+  "devDependencies": {
+    "@hitc/netsuite-tools": "^2.1.6",
+    "@hitc/netsuite-types": "^2019.1.1",
+    "@hitc/netsuite-upload": "2.0.5",
+    "gulp": "^4.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-imagemin": "^5.0.3",
+    "gulp-typescript": "^5.0.0",
+    "gulp-uglify": "^3.0.2",
+    "typescript": "^3.3.3333"
+  },
+  "dependencies": {
+    "class-validator": "^0.9.1",
+    "netsuite-fasttrack-toolkit-ss2": "^4.3.0"
+  }
+}
