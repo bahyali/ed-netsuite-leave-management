@@ -24,7 +24,5 @@
     "webpack-stream": "^5.2.1"
   },
   "dependencies": {
-    "class-validator": "^0.9.1",
-    "netsuite-fasttrack-toolkit-ss2": "^4.3.0"
   }
 }
