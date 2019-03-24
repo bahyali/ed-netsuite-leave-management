@@ -1,6 +1,10 @@
 /*
  * ExceptionHandler Class 
  */
+/**
+ * @NAPIVersion 2.0
+ * @NScriptType ClientScript
+ */
 
 import * as log from 'N/log';
 import * as email from 'N/email';
@@ -14,6 +18,7 @@ interface ExceptionHandlerInterface {
     handle(err: any): this;
     alert(): this;
     log(): this;
+    toConsole(): this;
     sendEmail(): this;
 }
 
@@ -29,18 +34,33 @@ export class ExceptionHandler implements ExceptionHandlerInterface {
     // Getting the email recipients list from Script Parameters
     // emailRecipients: string[] = .getValue('').toString().replace(/\s/g, '').split(',');
 
-    constructor(err: any){
+    constructor(err: any) {
         this.handle(err);
-        this.log();
+        // this.log();
+        // this.toConsole();
+
     }
 
-
+    isJsonString(str: string) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
     handle(err: any) {
 
         if (typeof err === 'string') {
             // If the Exception is a JSON string
             // err.replace(/\n/g, "\\n").replace(/\r/g, "\\r").replace(/\t/g, "\\t").replace(/\f/g, "\\f").replace(/\s/g, "\\s");
-            err = JSON.parse(err);
+            if (!this.isJsonString(err))
+                err = {
+                    name: null,
+                    message: err
+                };
+            else
+                err = JSON.parse(err);
         }
 
         this.code = err.name;
@@ -69,7 +89,13 @@ export class ExceptionHandler implements ExceptionHandlerInterface {
         return this;
     }
 
+    toConsole() {
+        console.log(this.code, this.message);
+        return this;
+    }
+
     sendEmail() {
+        
         email.send.promise({
             subject: `Error at ${this.subsidiaryName} - ScriptID: ${runtime.getCurrentScript().id}`,
             author: runtime.getCurrentUser().id,

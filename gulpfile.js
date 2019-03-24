@@ -50,7 +50,7 @@
  // Shared Files.
  const core_src = 'src/Core/*/*.ts';
  // Forms/Contexts/Pages or whatever you call it
- const pages_src = 'src/Pages/*/*.ts';
+ const pages_src = 'src/Records/*/*.ts';
  
  
  // Output directory
