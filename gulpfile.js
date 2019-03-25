@@ -28,7 +28,7 @@
  * - src:
  *  - Core: Shared classes of the system (Will be combined and shared with all generated files)
  *    - CoreClass/fileName.js || CoreClass.js
- *  - Pages: Your Pages
+ *  - Records: Your Records
  *    - PageName/fileType.js
  * 
  * ## Expected Result:
@@ -49,8 +49,8 @@
  // ## Directory Structure
  // Shared Files.
  const core_src = 'src/Core/*/*.ts';
- // Forms/Contexts/Pages or whatever you call it
- const pages_src = 'src/Pages/*/*.ts';
+ // Forms/Contexts/Records or whatever you call it
+ const records_src = 'src/Records/*/*.ts';
  
  
  // Output directory
@@ -59,7 +59,7 @@
  function build() {
    // todo Add versioning
  
-   return src(pages_src)
+   return src(records_src)
      .pipe(named(function(file) {
        // Rename files to "parentDirectory.fileType.js"
        return path.dirname(file.path).split(path.sep).pop() + '.' + file.stem;
