@@ -3,16 +3,24 @@
       "module": "amd",
       "target": "es5",
       "moduleResolution":"node",
+      // "rootDirs": ["node_modules/@types", "node_modules", "src/Core", "src/Records"],
       "sourceMap": false,
       "newLine": "LF",
       "experimentalDecorators": true,
       "noImplicitUseStrict": true,
+      // "declaration": true,
       "baseUrl": ".",
       "lib": ["es5", "es2015.promise", "dom"],
       "paths": {
         "N": ["node_modules/@hitc/netsuite-types/N"],
-        "N/*": ["node_modules/@hitc/netsuite-types/N/*"]
+        "N/*": ["node_modules/@hitc/netsuite-types/N/*"],
+        "Core": ["src/Core"],
+        "Core/*": ["src/Core/*"],
       }
     },
-    "exclude": ["node_modules"]
-  }
+    "include": [
+      "src/**/*"
+  ]
+  // "exclude": ["node_modules"]
+
+}

@@ -49,8 +49,13 @@
  // ## Directory Structure
  // Shared Files.
  const core_src = 'src/Core/*/*.ts';
+<<<<<<< HEAD
  // Forms/Contexts/Records or whatever you call it
  const records_src = 'src/Records/*/*.ts';
+=======
+ // Forms/Contexts/Pages or whatever you call it
+ const pages_src = 'src/Records/*/*.ts';
+>>>>>>> 0bd31f953c68318b19e10176ceefc3f6c6c5c6c9
  
  
  // Output directory
