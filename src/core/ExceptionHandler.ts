@@ -18,7 +18,7 @@ interface ExceptionHandlerInterface {
 }
 
 
-export class ExceptionHandler implements ExceptionHandlerInterface {
+class ExceptionHandler implements ExceptionHandlerInterface {
 
     emailRecipients: string[] = ['mohamed.elshowel@edigitsconsulting.com'];
     subsidiaryName: string = 'AHK';
@@ -87,4 +87,4 @@ export class ExceptionHandler implements ExceptionHandlerInterface {
     }
 }
 
-// export { ExceptionHandler };
+export { ExceptionHandler };
