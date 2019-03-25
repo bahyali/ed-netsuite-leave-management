@@ -6,7 +6,7 @@
  */
 
 import { EntryPoints } from 'N/types';
-import search = require('N/search');
+import * as search from '@hitc/netsuite-types/N/search';
 import record = require('N/record');
 import runtime = require('N/runtime');
 import serverWidget = require('N/ui/serverWidget');
@@ -48,8 +48,6 @@ var wasApproved;
 
 
 export function pageInit(context: EntryPoints.Client.pageInitContext) {
-
-    
 
     // Hiding the 'List' and 'Search' Links from the Employee Center.
     if (currentUser.roleCenter == 'EMPLOYEE') {
@@ -474,7 +472,7 @@ export function saveRecord(context: EntryPoints.Client.saveRecordContext) {
 function getEmpData(empId) {
     // ================= Load the Selected Employee Vacations Balance ============
     var thisYear = new Date().getFullYear();
-    var empVacationsSearch = search.create({
+    var empVacBalance = search.create({
         type: 'customrecord_edc_emp_vac_balance',
         filters: [
             search.createFilter({
@@ -500,17 +498,8 @@ function getEmpData(empId) {
             search.createColumn({ name: 'custrecord_edc_vac_balance_replacement' }),
             search.createColumn({ name: 'custrecord_edc_vac_balance_unpaid' }),
             search.createColumn({ name: 'custrecord_edc_vac_balance_total_regular' }),
-
-            search.createColumn({ name: 'custrecord_edc_vac_balance_casual_cb' }),
-            search.createColumn({ name: 'custrecord_edc_vac_balance_weekends_cb' }),
-            search.createColumn({ name: 'custrecord_edc_vac_balance_weekends_list' }),
         ]
-    });
-
-    var empVacBalance = empVacationsSearch.run().getRange({
-        start: 0,
-        end: 1
-    });
+    }).run().getRange({ start: 0, end: 1 });
 
     if (empVacBalance[0]) {
         empBalance_id = empVacBalance[0].id;
@@ -527,9 +516,34 @@ function getEmpData(empId) {
         unpaidBalance = Number(empVacBalance[0].getValue('custrecord_edc_vac_balance_unpaid'));
         totalRegularBalance = Number(empVacBalance[0].getValue('custrecord_edc_vac_balance_total_regular'));
 
-        casualFromAnnual_bool = Boolean(empVacBalance[0].getValue('custrecord_edc_vac_balance_casual_cb'));
-        weekendDeduction_bool = Boolean(empVacBalance[0].getValue('custrecord_edc_vac_balance_weekends_cb'));
-        // weekendsList = Array(empVacBalance[0].getValue('custrecord_edc_vac_balance_weekends_list'));  // Array
+        // ================= Getting Subsidiary's Vacations Rules ============
+        var subsidiaryRules = search.create({
+            type: 'customrecord_edc_vac_rule',
+            filters: [
+                search.createFilter({
+                    name: 'custrecord_edc_vac_rule_subsidiary',
+                    operator: search.Operator.ANYOF,
+                    values: Number(subsidiary)
+                }),
+                search.createFilter({
+                    name: 'custrecord_edc_vac_rule_year',
+                    operator: search.Operator.CONTAINS,
+                    values: thisYear
+                })],
+            columns: [
+                'custrecord_edc_vac_rule_casual_as_annual',
+                'custrecord_edc_vac_rule_weekend_apply'
+            ]
+        }).run().getRange({ start: 0, end: 1 });
+
+        if (subsidiaryRules[0]) {
+            casualFromAnnual_bool = Boolean(subsidiaryRules[0].getValue('custrecord_edc_vac_rule_casual_as_annual'));
+            weekendDeduction_bool = Boolean(subsidiaryRules[0].getValue('custrecord_edc_vac_rule_weekend_apply'));
+        } else {
+            alert('This employee\'s subsidiary does not have a vacation rule!');
+            hasBalance = false;
+            return false;
+        }
 
         hasBalance = true;
         return true;
@@ -576,7 +590,7 @@ function deductWeekends(totalVacNo, vacStartDate, empSubsidiary) {
 
         var weekendsArray = subsidiaryVacRule[0].getText('custrecord_edc_vac_rule_weekend_days').split(',');
         var netVacDaysNo = totalVacNo;
-        
+
         for (var i = 0; i <= totalVacNo - 1; i++) {
 
             var vacDay = new Date(vacStartDate);
