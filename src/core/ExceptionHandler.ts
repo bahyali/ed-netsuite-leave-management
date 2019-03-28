@@ -1,9 +1,10 @@
-/*
- * ExceptionHandler Class 
- */
 /**
- * @NAPIVersion 2.0
- * @NScriptType ClientScript
+ * @module      LeaveManagement
+ * @class       ExceptionHandler
+ * @description Exception Handler Class customized for SuiteScript 2.0 using TypeScript
+ * @author      Mohamed Elshowel
+ * @version     1.0.0
+ * @repo        https://github.com/bahyali/ed-netsuite-leave-management
  */
 
 import * as log from 'N/log';
@@ -11,22 +12,30 @@ import * as email from 'N/email';
 import * as runtime from 'N/runtime';
 
 interface ExceptionHandlerInterface {
+    /** @member code in Exception (title/name) - ex: `errorMsg.name` */
     code: string;
+    /** @member message in Exception. */
     message: string;
+    /** @member stack in Exception - for more details */
     stack: string;
 
+    /** Handle the Exception. */
     handle(err: any): this;
+    /** Alert the logged in user with that "something went wrong!" */
     alert(): this;
+    /** Log the Exception/Error Message to the NetSuite system notes */
     log(): this;
+    /** Log the Exception/Error Message to the browser's console for debugging purposes */
     toConsole(): this;
+    /** Send an email from the current logged in user to the system administrator or consultant */
     sendEmail(): this;
 }
 
 
 class ExceptionHandler implements ExceptionHandlerInterface {
 
-    emailRecipients: string[] = ['mohamed.elshowel@edigitsconsulting.com'];
-    subsidiaryName: string = 'AHK';
+    private emailRecipients: string[] = ['mohamed.elshowel@edigitsconsulting.com'];
+    private subsidiaryName: string = 'AHK';
     code: string;
     message: string;
     stack: string;
@@ -37,9 +46,28 @@ class ExceptionHandler implements ExceptionHandlerInterface {
     constructor(err: any) {
         this.handle(err);
         // this.log();
-        // this.toConsole();
-
     }
+
+    /** Get the recipients of the Exception Email */
+    getEmailRecipients(): string[]{
+        return this.emailRecipients;
+    }
+
+    /** Set the recipients of the Exception Email */
+    setEmailRecipients(emailRecipients: string[]){
+        this.emailRecipients = emailRecipients;
+    }
+
+    /** Get the name of the subsidary */
+    getSubsidiaryName(): string{
+        return this.subsidiaryName;
+    }
+
+    /** Set the name of the subsidary */
+    setSubsidiaryName(subsidiaryName: string){
+        this.subsidiaryName = subsidiaryName;
+    }
+
 
     isJsonString(str: string) {
         try {
@@ -49,6 +77,7 @@ class ExceptionHandler implements ExceptionHandlerInterface {
         }
         return true;
     }
+
     handle(err: any) {
 
         if (typeof err === 'string') {
