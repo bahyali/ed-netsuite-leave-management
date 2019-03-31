@@ -189,8 +189,8 @@ class BaseModel implements BaseModelInterface {
             case 'string':
                 nsOperator['=='] = search.Operator.IS;
                 nsOperator['!='] = search.Operator.ISNOT;
-                nsOperator['null'] = search.Operator.ISEMPTY;
-                nsOperator['!null'] = search.Operator.ISNOTEMPTY;
+                nsOperator['empty'] = search.Operator.ISEMPTY;
+                nsOperator['!empty'] = search.Operator.ISNOTEMPTY;
                 nsOperator['%'] = search.Operator.CONTAINS;
                 nsOperator['x%'] = search.Operator.STARTSWITH;
                 nsOperator['!x%'] = search.Operator.DOESNOTSTARTWITH;
@@ -202,8 +202,8 @@ class BaseModel implements BaseModelInterface {
                 nsOperator['>='] = search.Operator.LESSTHANOREQUALTO;
                 nsOperator['<'] = search.Operator.GREATERTHAN;
                 nsOperator['<='] = search.Operator.GREATERTHANOREQUALTO;
-                nsOperator['null'] = search.Operator.ISEMPTY;
-                nsOperator['!null'] = search.Operator.ISNOTEMPTY;
+                nsOperator['empty'] = search.Operator.ISEMPTY;
+                nsOperator['!empty'] = search.Operator.ISNOTEMPTY;
                 nsOperator['between'] = search.Operator.BETWEEN;
                 break;
             case 'boolean':
