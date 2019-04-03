@@ -10,6 +10,7 @@
       "noImplicitUseStrict": true,
       // "declaration": true,
       "baseUrl": ".",
+      "outDir": "build/tsc-bundle",
       "lib": ["es5", "es2015.promise", "dom"],
       "paths": {
         "N": ["node_modules/@hitc/netsuite-types/N"],
