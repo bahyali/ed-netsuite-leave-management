@@ -1,5 +1,5 @@
 import {EntryPoints} from 'N/types'
-import {BaseModel, DataType, FilterObject} from '../../Core/BaseModel';
+import {BaseModel, DataType} from '../../Core/BaseModel';
 
 
 export function pageInit(context: EntryPoints.Client.pageInitContext){
@@ -19,6 +19,10 @@ export function pageInit(context: EntryPoints.Client.pageInitContext){
     //     fieldValue: new Date().getFullYear()
     // }).find(DataType.value, 1, ['custrecord_edc_vac_balance_annual', 'custrecord_edc_vac_balance_casual']);
 
+    // Get a specific record
+    let empResults = empVacBalance.get(3904, DataType.value, ['custrecord_edc_vac_balance_annual']);
+
+    alert(empResults);
     debugger;
     console.log(empVacBalance);
 }

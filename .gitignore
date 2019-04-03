@@ -2,6 +2,10 @@ node_modules
 build/*
 NFT-SS2-4.3.*/*
 
+#Eclipse Files/Folders
+.project
+.settings
+
 #Compiled JavaScript Files
 Core/*.js
 Records/*/*.js

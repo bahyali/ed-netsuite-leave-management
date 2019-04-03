@@ -10,30 +10,8 @@
 import * as record from 'N/record';
 import * as search from 'N/search';
 
-/** Interface of Fitler Object which used in 'Where()' functions */
-interface FilterObject {
-    fieldId: string;
-    operator: string;
-    fieldValue: any;
-    fieldType: any;
-}
-
-/** 
- * NetSuite Fields Types:
- *  - string:   Free-Form Text, Email Address, Long Text, Password, Percent, Phone Number, Rich Text, Text Area.
- *  - boolean:  Check Box.
- *  - number:   Decimal Number, Currency, Time of Day.
- *  - object:   Multi Select.
- *  - date:     Date.
- *  - list:     List/Record, Document, Image.
- */
-enum FieldType { string, boolean, number, object, date, list };
-
 /** Data Type of NetSuite 'List/Record' fields and NetSuite 'Multiple Select' fields.  */
 enum DataType { value, text };
-
-
-
 
 interface BaseModelInterface {
 
@@ -49,7 +27,7 @@ interface BaseModelInterface {
     /** Get the values/texts of results for specific Record. */
     get(recordId: number, fieldsDataType: DataType | string, columns?: string[]): {};
     /** Find the values of matched results of the selected filters. */
-    find(fieldsDataType: DataType | string, resultsCount?: number, columns?: string[]): any[] | {};
+    find(fieldsDataType: DataType | string, columns?: string[], resultsCount?: number): any[] | {};
     /** Add filters to 'find()' to concise the search results. */
     where(fieldId: string, fieldType: any, operator: string, fieldValue?: any): this;
 }
@@ -150,6 +128,13 @@ class BaseModel implements BaseModelInterface {
         return this.attributes;
     }
 
+
+    /**
+     * @param recordId - Record ID (Auto-Generated in NetSuite) - ex: 4
+     * @param fieldsDataType - The type of desired data whether it is `value` or `text`.
+     * + PS. Use `text` only if the field is type of 'List/Record' or 'Multiple Select'.
+     * @param columns        - An Array of Field IDs (columns) the will be gotten from the search.
+     */
     get(recordId: number, fieldsDataType: DataType | string, columns?: string[]) {
         let _fieldsDataType: string;
         if (typeof fieldsDataType !== 'string') {
@@ -178,7 +163,7 @@ class BaseModel implements BaseModelInterface {
                     // If the field is from 'Multiple Select' Type in NetSuite
                     let valuesArr = [];
                     for (let j = 0; j < results[colName].length; j++) {
-                        valuesArr.push(results[colName][j][DataType[fieldsDataType]]);
+                        valuesArr.push(results[colName][j][_fieldsDataType]);
                     }
                     this.attributes[colName] = valuesArr;
                 }
@@ -195,10 +180,10 @@ class BaseModel implements BaseModelInterface {
     /**
      * @param fieldsDataType - The type of desired data whether it is `value` or `text`.
      * + PS. Use `text` only if the field is type of 'List/Record' or 'Multiple Select'.
-     * @param resultsCount   - The number of results (Min: `1` - Max: `999`).
      * @param columns        - An Array of Field IDs (columns) the will be gotten from the search.
+     * @param resultsCount   - The number of results (Min: `1` - Max: `999`).
      */
-    find(fieldsDataType: DataType | string, resultsCount?: number, columns?: string[]) {
+    find(fieldsDataType: DataType | string, columns: string[], resultsCount?: number) {
 
         // Set default values for optional parameters
         resultsCount = resultsCount || 1;
@@ -222,6 +207,7 @@ class BaseModel implements BaseModelInterface {
                 } else {
                     throw dataTypeException;
                 }
+                this.attributes['id'] = searchResults[0].id;
             }
             return this.attributes;
 
@@ -243,8 +229,9 @@ class BaseModel implements BaseModelInterface {
                 resultCols['id'] = searchResults[i].id;
                 results.push(resultCols);
             }
-            return results;
+            this.attributes = results; // <=====
         }
+        return this.attributes;
     }
 
 
@@ -285,10 +272,10 @@ class BaseModel implements BaseModelInterface {
         if (!fieldType) {
             fieldType = typeof fieldValue;
         }
-        
+
         // NetSuite Search Operator
         let nsOperator: search.Operator;
-        
+
         // Equivalent Operator to NetSuite Operator
         let eqvOperator = this.operatorsMatrix[operator];
         if (!eqvOperator) {
@@ -296,7 +283,7 @@ class BaseModel implements BaseModelInterface {
             if (!nsOperator) {
                 throw searchOperatorException;
             }
-        } else { 
+        } else {
             nsOperator = eqvOperator[fieldType]
         }
 
@@ -323,65 +310,19 @@ class BaseModel implements BaseModelInterface {
 export { BaseModel, DataType };
 
 /**
- * @constant Invalid_NetSuite_Search_Operator_Exception
+ * @constant ExceptionObject (For Developers)
  */
+
+// Invalid_NetSuite_Search_Operator_Exception
 const searchOperatorException = {
     name: 'Invalid_NetSuite_Search_Operator',
     message: `Search Operator must be one of the \"Operators Matrix\" or NetSuite Search Operators as a string,
     check: https://system.na2.netsuite.com/app/help/helpcenter.nl?fid=section_n3005172.html`
 }
 
-/**
- * @constant Invalid_Data_Type_Exception
- */
+
+// Invalid_Data_Type_Exception
 const dataTypeException = {
     name: 'Invalid_Data_Type',
     message: 'DataType must be \"value\" or \"text\".'
 }
-
-/*
-        switch (fieldType) {
-            case 'string':
-                nsOperator['=='] = search.Operator.IS;
-                nsOperator['!='] = search.Operator.ISNOT;
-                nsOperator['empty'] = search.Operator.ISEMPTY;
-                nsOperator['!empty'] = search.Operator.ISNOTEMPTY;
-                nsOperator['%'] = search.Operator.CONTAINS;
-                nsOperator['x%'] = search.Operator.STARTSWITH;
-                nsOperator['!x%'] = search.Operator.DOESNOTSTARTWITH;
-                break;
-            case 'number':
-                nsOperator['=='] = search.Operator.EQUALTO;
-                nsOperator['!='] = search.Operator.NOTEQUALTO;
-                nsOperator['>'] = search.Operator.LESSTHAN;
-                nsOperator['>='] = search.Operator.LESSTHANOREQUALTO;
-                nsOperator['<'] = search.Operator.GREATERTHAN;
-                nsOperator['<='] = search.Operator.GREATERTHANOREQUALTO;
-                nsOperator['empty'] = search.Operator.ISEMPTY;
-                nsOperator['!empty'] = search.Operator.ISNOTEMPTY;
-                nsOperator['between'] = search.Operator.BETWEEN;
-                break;
-            case 'boolean':
-                nsOperator['=='] = search.Operator.IS;
-                break;
-            case 'object':
-                nsOperator['==='] = search.Operator.ALLOF;
-                nsOperator['!=='] = search.Operator.NOTALLOF;
-            case 'list':
-                nsOperator['=='] = search.Operator.ANYOF;
-                nsOperator['!='] = search.Operator.NONEOF;
-                break;
-            case 'date':
-                nsOperator['=='] = search.Operator.ON;
-                nsOperator['!='] = search.Operator.NOTON;
-                nsOperator['empty'] = search.Operator.ISEMPTY;
-                nsOperator['!empty'] = search.Operator.ISNOTEMPTY;
-                nsOperator['!>'] = search.Operator.NOTONORBEFORE;
-                nsOperator['>'] = search.Operator.BEFORE;
-                nsOperator['>='] = search.Operator.ONORBEFORE;
-                nsOperator['!<'] = search.Operator.NOTONORAFTER;
-                nsOperator['<'] = search.Operator.AFTER;
-                nsOperator['<='] = search.Operator.ONORAFTER;
-                break;
-        }
-*/
