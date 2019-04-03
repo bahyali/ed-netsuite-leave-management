@@ -1,3 +1,9 @@
+/**
+ * @NApiVersion 2.0
+ * @NScriptType ClientScript
+ * @NModuleScope SameAccount
+ */
+
 import { EntryPoints } from 'N/types';
 import { ExceptionHandler } from 'Core/ExceptionHandler';
 

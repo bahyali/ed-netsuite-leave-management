@@ -21,8 +21,10 @@ interface BaseModelInterface {
     getDefaultColumns(): string[];
     /** Get the filters applied from `Where()` function */
     getFilters(): any[];
-    /** Get attributes (values of columns) gotten from the search results */
-    getAttributes(): {} | any[];
+    /** Get Columns (fields values) for one specific record (used with `get()` function) */
+    getColumns(): object;
+    /** Get Results (array of fields values) for many records (used with `find()` function) */
+    getResults(): any[];
 
     /** Get the values/texts of results for specific Record. */
     get(recordId: number, fieldsDataType: DataType | string, columns?: string[]): {};
@@ -40,9 +42,11 @@ class BaseModel implements BaseModelInterface {
     /** Default Columns (Fields) to be gotten from the search results. */
     private defaultColumns: string[];
     /** Filters which applies on the search to find the purposed results. */
-    private filters: any[];
-    /** The object which contains the Columns(Fields) and their values in a an object dictionary format. */
-    private attributes: {} | any[];
+    private filters = [];
+    /** The object which contains the Columns (Fields) and their values in a an object dictionary format. */
+    private columns = {};
+    /** Array that holds an object (`columns`) for each search result and the `columns` object contains the columns and their values */
+    private results: any[];
     /** Operators Martix represents each operator with its allowed field types and also its representer in NetSuite ex: `search.Operator.ANYOF` */
     private operatorsMatrix = {
         'empty': {
@@ -124,16 +128,19 @@ class BaseModel implements BaseModelInterface {
         return this.filters;
     }
 
-    getAttributes() {
-        return this.attributes;
+    getColumns() {
+        return this.columns;
     }
 
+    getResults(){
+        return this.results;
+    }
 
     /**
      * @param recordId - Record ID (Auto-Generated in NetSuite) - ex: 4
      * @param fieldsDataType - The type of desired data whether it is `value` or `text`.
      * + PS. Use `text` only if the field is type of 'List/Record' or 'Multiple Select'.
-     * @param columns        - An Array of Field IDs (columns) the will be gotten from the search.
+     * @param columns  - An Array of Field IDs (columns) the will be gotten from the search.
      */
     get(recordId: number, fieldsDataType: DataType | string, columns?: string[]) {
         let _fieldsDataType: string;
@@ -157,7 +164,7 @@ class BaseModel implements BaseModelInterface {
             if (results[colName] instanceof Array) {
                 if (results[colName].length === 1) {
                     // Generic form of ex: ``` results.colName[0].value ```
-                    this.attributes[colName] = results[colName][0][_fieldsDataType]
+                    this.columns[colName] = results[colName][0][_fieldsDataType]
 
                 } else if (results[colName].length > 1) {
                     // If the field is from 'Multiple Select' Type in NetSuite
@@ -165,14 +172,14 @@ class BaseModel implements BaseModelInterface {
                     for (let j = 0; j < results[colName].length; j++) {
                         valuesArr.push(results[colName][j][_fieldsDataType]);
                     }
-                    this.attributes[colName] = valuesArr;
+                    this.columns[colName] = valuesArr;
                 }
             } else {
                 // If the field is a type of string, number, boolean
-                this.attributes[colName] = results[colName];
+                this.columns[colName] = results[colName];
             }
         }
-        return this.attributes;
+        return this.columns;
     }
 
 
@@ -183,11 +190,12 @@ class BaseModel implements BaseModelInterface {
      * @param columns        - An Array of Field IDs (columns) the will be gotten from the search.
      * @param resultsCount   - The number of results (Min: `1` - Max: `999`).
      */
-    find(fieldsDataType: DataType | string, columns: string[], resultsCount?: number) {
+    find(fieldsDataType: DataType | string, columns: string[], resultsCount?: number): any[] | {} {
 
+        let fields = columns.slice();
         // Set default values for optional parameters
         resultsCount = resultsCount || 1;
-        resultsCount < 999 ? resultsCount : 999;
+        resultsCount = (resultsCount < 999) ? resultsCount : 999;
 
         // SuiteScipt 2.0 function to create Search:
         const searchResults = search.create({
@@ -198,30 +206,30 @@ class BaseModel implements BaseModelInterface {
 
         // If the search is looking for a unique record (resultsCount == 1)
         if (searchResults.length === 1 && resultsCount === 1) {
-            for (let i = 0; i < columns.length; i++) {
-                const colName = columns[i].toString();
+            for (let i = 0; i < fields.length; i++) {
+                const colName = fields[i].toString();
                 if (fieldsDataType === DataType.value || fieldsDataType.toString().toLowerCase() === 'value') {
-                    this.attributes[colName] = searchResults[0].getValue(columns[i]);
+                    this.columns[colName] = searchResults[0].getValue(fields[i]);
                 } else if (fieldsDataType === DataType.text || fieldsDataType.toLowerCase() === 'text') {
-                    this.attributes[colName] = searchResults[0].getText(columns[i]);
+                    this.columns[colName] = searchResults[0].getText(fields[i]);
                 } else {
                     throw dataTypeException;
                 }
-                this.attributes['id'] = searchResults[0].id;
+                this.columns['id'] = searchResults[0].id;
             }
-            return this.attributes;
+            return this.columns;
 
             // If the search is looking for all the records that match the conditions in filters
         } else if (searchResults.length) {
             let results = [];
             for (let i = 0; i < searchResults.length; i++) {
                 let resultCols = {};
-                for (let j = 0; j < columns.length; j++) {
-                    const colName = columns[j].toString();
+                for (let j = 0; j < fields.length; j++) {
+                    const colName = fields[j].toString();
                     if (fieldsDataType === DataType.value || fieldsDataType.toString().toLowerCase() === 'value') {
-                        resultCols[colName] = searchResults[i].getValue(columns[j]);
+                        resultCols[colName] = searchResults[i].getValue(fields[j]);
                     } else if (fieldsDataType === DataType.text || fieldsDataType.toLowerCase() === 'text') {
-                        resultCols[colName] = searchResults[i].getText(columns[j]);
+                        resultCols[colName] = searchResults[i].getText(fields[j]);
                     } else {
                         throw dataTypeException;
                     }
@@ -229,9 +237,9 @@ class BaseModel implements BaseModelInterface {
                 resultCols['id'] = searchResults[i].id;
                 results.push(resultCols);
             }
-            this.attributes = results; // <=====
+            this.results = results; // <=====
         }
-        return this.attributes;
+        return this.results;
     }
 
 
@@ -279,7 +287,7 @@ class BaseModel implements BaseModelInterface {
         // Equivalent Operator to NetSuite Operator
         let eqvOperator = this.operatorsMatrix[operator];
         if (!eqvOperator) {
-            nsOperator = search.Operator[operator];
+            nsOperator = search.Operator[operator.toUpperCase()];
             if (!nsOperator) {
                 throw searchOperatorException;
             }
