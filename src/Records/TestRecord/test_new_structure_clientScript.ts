@@ -9,6 +9,7 @@ import * as runtime from 'N/runtime';
 import { BaseModel, DataType } from '../../Core/BaseModel';
 
 
+
 class VacationBalance extends BaseModel {
     recordType: string = 'customrecord_edc_emp_vac_balance'
 
