@@ -70,7 +70,7 @@ class BaseModel implements BaseModelInterface {
     /** Filters which applies on the search to find the purposed results. */
     private filters: search.Filter[] = [];
     /** An array contains objects.  Each object represents a search result that contains its `columns` (Fields Values) */
-    private results: object[];
+    private results: object[] = [];
     /** `OperatorsMartix` represents each operator with its allowed field types and also its representer in NetSuite 
      * - ex: `==` in `list` >> `search.Operator.ANYOF`. */
     protected operatorsMatrix: object = {
@@ -172,6 +172,9 @@ class BaseModel implements BaseModelInterface {
      * + PS. The default Data Type is `value`.
      */
     get(recordId: number, columns?: string[], fieldsDataType: DataType | string = 'value') {
+        // Clear the previous search First-Result
+        this.firstResult = {};
+        
         // Configuring the Data Type (`value` or `text`):
         if (fieldsDataType.toString().toUpperCase() in DataType) {
             if (typeof fieldsDataType !== 'string') {
@@ -223,7 +226,11 @@ class BaseModel implements BaseModelInterface {
      * + PS. Use `text` only if the field is type of 'List/Record' or 'Multiple Select'.
      */
     find(columns?: string[], fieldsDataType: DataType | string = 'value') {
+        // Clear the previous search results
+        this.results = [];
         // Make copy of columns IDs to use these string IDs as keys in results objects.
+        if (!columns)
+            columns = this.defaultColumns;
         let fields = columns.slice();
         // Set default values for optional parameters
         this.numberOfSearchResults = this.numberOfSearchResults || 1;
@@ -304,10 +311,6 @@ class BaseModel implements BaseModelInterface {
      * @param fieldValue - The specific value which will be compared with the content in the field.
      */
     where(fieldId: string, fieldType: FieldType | string, operator: string, fieldValue?: any) {
-
-        if (!fieldType) {
-            fieldType = typeof fieldValue;
-        }
 
         if (fieldType.toString().toUpperCase() in FieldType) {
             if (typeof fieldType !== 'string') {

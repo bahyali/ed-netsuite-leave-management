@@ -7,7 +7,7 @@
  * @repo        https://github.com/bahyali/ed-netsuite-leave-management
  * @NApiVersion 2.0
  */
-import { BaseModel, FieldType } from '../../Core/BaseModel';
+import { BaseModel, FieldType, DataType } from '../../Core/BaseModel';
 
 
 
@@ -22,7 +22,7 @@ export class LeaveBalance extends BaseModel {
     columnsObject: object = {
         //fieldName: fieldType
         year: FieldType.STRING,
-        emp_name: FieldType.STRING,
+        emp_name: FieldType.LIST,
         subsidiary: FieldType.LIST,
         jobtitle: FieldType.STRING,
         department: FieldType.LIST,
@@ -38,8 +38,16 @@ export class LeaveBalance extends BaseModel {
         sick: FieldType.NUMBER,
     }
 
-    protected defaultColumns = Object.keys(this.columnsObject);
+    protected defaultColumns = this.addFieldsPrefix(Object.keys(this.columnsObject));
 
+    private addFieldsPrefix(columns: string[]) {
+        if (columns) {   
+            for (let i = 0; i < columns.length; i++) {
+                columns[i] = this.fieldsPrefix + columns[i];
+            }
+        }
+        return columns;
+    }
 
     /**
      * @param fieldName - Field name without any prefix - (ex: `year` , `annual`, ... ).
@@ -67,8 +75,12 @@ export class LeaveBalance extends BaseModel {
      * - `between`: `number` between 2 numbers.
      * @param fieldValue - The specific value which will be compared with the content in the field.
      */
-    where(fieldName: string, operator: string, fieldValue?: any) {
+    public where(fieldName: string, operator: string, fieldValue?: any) {
         let fieldId = this.fieldsPrefix + fieldName;
-        return super.where(fieldId, this.columnsObject[fieldId], operator, fieldValue);
+        return super.where(fieldId, this.columnsObject[fieldName], operator, fieldValue);
+    }
+
+    public find(columns?: string[], fieldsDataType?: DataType | string) {
+        return super.find(this.addFieldsPrefix(columns), fieldsDataType)
     }
 }

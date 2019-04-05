@@ -7,28 +7,30 @@
 import { EntryPoints } from 'N/types';
 import * as runtime from 'N/runtime';
 import { BaseModel, DataType, FieldType } from '../../Core/BaseModel';
-import { LeaveBalance } from '../Leave Balance/LeaveBalance';
+import { LeaveBalance } from '../LeaveBalance/LeaveBalance';
 
 
 export function pageInit(context: EntryPoints.Client.pageInitContext) {
     const testRecord = context.currentRecord;
-
+    debugger;
     let empBalanceQuery = new LeaveBalance().where('emp_name', '==', runtime.getCurrentUser().id);
-    let empName = empBalanceQuery.first();
-    let empResults = empBalanceQuery.find();
-    compileEmpInfo(empName, empResults);
+    let empName = empBalanceQuery.first(['emp_name']);
+    let empResults = empBalanceQuery.limit(10).find();
+
+    testRecord.setValue('custrecord_test_01', compileEmpInfo(empName, empResults));
 }
 
 
 function compileEmpInfo(empName: object, empResults: object[]) {
+    debugger;
     let empInfo = `Name:\t ${empName['emp_name']}\n`;
-    
+
     for (let i = 0; i < empResults.length; i++) {
         empInfo += '---------------------------------------------------\n';
-        for (const key in empResults) {
-            if (empResults.hasOwnProperty(key)) {
-                const value = empResults[key];
-                empInfo+= `${key}: \t ${value}\n`;
+        for (const key in empResults[i]) {
+            if (empResults[i].hasOwnProperty(key)) {
+                const value = empResults[i][key];
+                empInfo += `${key}: \t ${value}\n`;
             }
         }
     }
