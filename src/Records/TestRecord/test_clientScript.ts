@@ -14,8 +14,10 @@ export function pageInit(context: EntryPoints.Client.pageInitContext) {
     const testRecord = context.currentRecord;
     debugger;
     let empBalanceQuery = new LeaveBalance().where('emp_name', '==', runtime.getCurrentUser().id);
-    let empName = empBalanceQuery.first(['emp_name']);
     let empResults = empBalanceQuery.limit(10).find();
+    // let empName = empBalanceQuery.first(['emp_name'], DataType.TEXT);
+    debugger;
+    let empName = empBalanceQuery.get(Number(empResults[0]['id']), ['emp_name'], DataType.TEXT);
 
     testRecord.setValue('custrecord_test_01', compileEmpInfo(empName, empResults));
 }
@@ -30,7 +32,7 @@ function compileEmpInfo(empName: object, empResults: object[]) {
         for (const key in empResults[i]) {
             if (empResults[i].hasOwnProperty(key)) {
                 const value = empResults[i][key];
-                empInfo += `${key}: \t ${value}\n`;
+                empInfo += `${key}:  ${value}\n`;
             }
         }
     }

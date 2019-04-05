@@ -40,14 +40,36 @@ export class LeaveBalance extends BaseModel {
 
     protected defaultColumns = this.addFieldsPrefix(Object.keys(this.columnsObject));
 
+    /** Add NetSuite & Custom Record Prefixes to the IDs of Fields (`columns`) to be able to use in Search in NetSuite.
+     * @param columns - The array of columns (Fields IDs).
+     */
     private addFieldsPrefix(columns: string[]) {
-        if (columns) {   
+        if (columns) {
             for (let i = 0; i < columns.length; i++) {
                 columns[i] = this.fieldsPrefix + columns[i];
             }
         }
         return columns;
     }
+
+    /** Remove NetSuite & Custom Record Prefixes from the IDs of the fields to make it more readable.
+     * @param results - The array of objects for search results.
+     */
+    private removeFieldsPrefix(results: object[]) {
+        if (results) {
+            for (let i = 0; i < results.length; i++) {
+                for (let key in results[i]) {
+                    if (key !== 'id') {
+                        let keyWithoutPrefix = key.split(this.fieldsPrefix)[1];
+                        results[i][keyWithoutPrefix] = results[i][key];
+                        delete results[i][key];
+                    }
+                }
+            }
+        }
+        return results;
+    }
+
 
     /**
      * @param fieldName - Field name without any prefix - (ex: `year` , `annual`, ... ).
@@ -81,6 +103,10 @@ export class LeaveBalance extends BaseModel {
     }
 
     public find(columns?: string[], fieldsDataType?: DataType | string) {
-        return super.find(this.addFieldsPrefix(columns), fieldsDataType)
+        return this.removeFieldsPrefix(super.find(this.addFieldsPrefix(columns), fieldsDataType));
+    }
+
+    public get(recordId: number, columns?: string[], fieldsDataType?: DataType | string) {
+        return this.removeFieldsPrefix([super.get(recordId, this.addFieldsPrefix(columns), fieldsDataType)])[0];
     }
 }
