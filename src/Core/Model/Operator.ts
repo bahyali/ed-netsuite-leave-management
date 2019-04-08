@@ -5,18 +5,33 @@ interface OperatorInterface {
 }
 
 class Operator implements OperatorInterface {
-    static get(operator, dataType): search.Operator {
+    static get(operator, dataType?): search.Operator {
         let nsOperator: search.Operator;
+
         try {
             nsOperator = operators[operator][dataType];
         } catch (e) {
-            throw searchOperatorException;
+            nsOperator = this.getNsOperator(operator);
+
+            if (!nsOperator)
+                throw searchOperatorException;
         }
+
         return nsOperator;
+    }
+
+    static getNsOperator(operator): search.Operator | undefined {
+
+        if (operator.toUpperCase() in search.Operator)
+            return (<any>search.Operator)[operator.toUpperCase()];
+
+        return;
     }
 }
 
-export {Operator};
+export {
+    Operator
+};
 
 export const operator = Operator;
 

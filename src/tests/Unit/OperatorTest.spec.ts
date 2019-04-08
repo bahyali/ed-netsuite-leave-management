@@ -8,6 +8,11 @@ describe('Operator ', () => {
         expect(result).toBeTruthy()
     });
 
+    it('should return value of nsOperator', () => {
+        const result = Operator.get('is');
+        expect(result).toBeTruthy()
+    });
+
     it('should break on wrong operator', () => {
         const result = () => Operator.get('wrongOperator', ColumnType.BOOLEAN);
         expect(result).toThrowError();
