@@ -9,16 +9,14 @@ import {QueryResults} from "../../Core/Model/QueryResults";
  * - Returns QueryResults : find
  * - Returns Object : get
  * */
+
+
 describe('Query Builder', () => {
 
     it('can build queries', () => {
-        const builder = new QueryBuilder();
+        const builder = build();
 
-        builder.recordType = "vacations";
-        builder.typeMap = [{
-            'days': ColumnType.STRING,
-            'employee': ColumnType.STRING
-        }];
+        builder.columns = ['foo', 'bar'];
 
         builder.where('days', '==', 'april')
             .where('name', '==', 'khaled');
@@ -31,16 +29,7 @@ describe('Query Builder', () => {
     });
 
     it('can Query using lookupFields ', () => {
-        const builder = new QueryBuilder();
-
-        builder.recordType = "ns_prefix_vacations";
-
-        builder.columnPrefix = "ns_prefix_col";
-
-        builder.typeMap = {
-                'foo': ColumnType.STRING,
-                'bar': ColumnType.BOOLEAN
-            };
+        const builder = build();
 
         builder.columns = ['foo', 'bar'];
 
@@ -56,16 +45,7 @@ describe('Query Builder', () => {
     });
 
     it('can Query using searchCreate ', () => {
-        const builder = new QueryBuilder();
-
-        builder.recordType = "ns_prefix_vacations";
-
-        builder.columnPrefix = "ns_prefix_col";
-
-        builder.typeMap = {
-            'foo': ColumnType.STRING,
-            'bar': ColumnType.NUMBER
-        };
+        const builder = build();
 
         builder.columns = ['foo', 'bar'];
 
@@ -76,12 +56,19 @@ describe('Query Builder', () => {
         expect(record).toBeInstanceOf(QueryResults);
     });
 
-    it('should break', () => {
-        let leaveBalance = new LeaveBalance();
-
-        leaveBalance.where('days', '==', 'april')
-            .where('name', '==', 'khaled')
-            .find(['days', 'year']);
-    });
-
 });
+
+const build = () => {
+    const builder = new QueryBuilder();
+
+    builder.recordType = "ns_prefix_vacations";
+
+    builder.columnPrefix = "ns_prefix_col";
+
+    builder.typeMap = {
+        'foo': ColumnType.STRING,
+        'bar': ColumnType.NUMBER
+    };
+
+    return builder;
+};

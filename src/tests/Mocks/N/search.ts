@@ -1,10 +1,24 @@
-import * as search from "@hitc/netsuite-types/N/search";
+import {Filter} from "@hitc/netsuite-types/N/search";
 
-export const createFilter = jest.fn();
+export const filter: Filter = {
+    name: null,
+    join: null,
+    operator: null,
+    summary: null,
+    formula: null
+};
 
-export const create = jest.fn().mockReturnValue({
-    run: jest.fn().mockReturnValue({'getRange': jest.fn().mockReturnValue([{'error': 'lol'}])})
+export const createFilter = jest.fn((obj) => {
+    return obj;
 });
+
+export const run = jest.fn(() => {
+    return {'getRange': jest.fn(() => [{'success': 'lol'}])}
+});
+
+export const create = jest.fn(() =>
+    ({run: run})
+);
 
 export const lookupFields = jest.fn().mockReturnValue({
     'foo': 'bar',
