@@ -2,12 +2,15 @@
 Leave Management Module customized for NetSuite System
 
 **Technologies:**
-- Netsuite, SuiteScript 2
-- TypeScript
-- Jest
+- Netsuite
+- SuiteScript 2
+- [TypeScript](https://www.typescriptlang.org/docs/home.html)
+- [Jest](https://github.com/facebook/jest)
 
+**Key Concepts:**
+- [Abstraction Layer](https://en.wikipedia.org/wiki/Abstraction_layer)
+- [AMD](https://github.com/amdjs/amdjs-api/blob/master/AMD.md)
 ## Getting Started
-Using TypeScript for SuiteScript 2.0 
 
 **Transpile Project**
 
@@ -25,7 +28,6 @@ tsc
 npm test
 ```
 ### Testing Resources
-- [jest](https://github.com/facebook/jest)
 - [ts-jest](https://github.com/kulshekhar/ts-jest)
 
 Please check these repos for more details about these packages
