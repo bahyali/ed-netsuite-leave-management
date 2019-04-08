@@ -22,7 +22,7 @@ export class QueryResults extends Array<object>
             this[0] : null;
     }
 
-    private parse(results: Result[]) {
+    parse(results: Result[]) {
         for (let i = 0; i < results.length; i++) {
             this._objects.push(results[i]);
         }
