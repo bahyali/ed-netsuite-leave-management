@@ -1,5 +1,6 @@
 import {ColumnType, QueryBuilder} from "../../Core/Model/QueryBuilder";
 import {LeaveBalance} from "../../Records/LeaveBalance/LeaveBalance";
+import {QueryResults} from "../../Core/Model/QueryResults";
 
 /**
  * Test Query Builder
@@ -32,16 +33,18 @@ describe('Query Builder', () => {
     it('can Query using lookupFields ', () => {
         const builder = new QueryBuilder();
 
-        builder.recordType = "vacations";
+        builder.recordType = "ns_prefix_vacations";
 
-        builder.typeMap = [
-            {
+        builder.columnPrefix = "ns_prefix_col";
+
+        builder.typeMap = {
                 'foo': ColumnType.STRING,
                 'bar': ColumnType.BOOLEAN
-            }
-        ];
+            };
 
-        let record = builder.get(1, ['foo', 'bar']);
+        builder.columns = ['foo', 'bar'];
+
+        let record = builder.get(1);
 
         expect(record).toBeInstanceOf(Object);
 
@@ -50,6 +53,27 @@ describe('Query Builder', () => {
             'bar': 'foo'
         });
 
+    });
+
+    it('can Query using searchCreate ', () => {
+        const builder = new QueryBuilder();
+
+        builder.recordType = "ns_prefix_vacations";
+
+        builder.columnPrefix = "ns_prefix_col";
+
+        builder.typeMap = {
+            'foo': ColumnType.STRING,
+            'bar': ColumnType.NUMBER
+        };
+
+        builder.columns = ['foo', 'bar'];
+
+        let record = builder
+            .where('bar', '==', 'april')
+            .find();
+
+        expect(record).toBeInstanceOf(QueryResults);
     });
 
     it('should break', () => {
