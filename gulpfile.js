@@ -41,10 +41,9 @@
  // Modules
  const { src, dest, series } = require('gulp');
  const path = require('path');
- const del = require('del')
+ const del = require('webpack')
  const named = require('vinyl-named');
- const webpack = require('webpack-stream');
- 
+
  
  // ## Directory Structure
  // Shared Files.
@@ -59,16 +58,7 @@
  const build_dir = 'build';
  
  function build() {
-   // todo Add versioning
- 
-   return src(records_src)
-     .pipe(named(function(file) {
-       // Rename files to "parentDirectory.fileType.js"
-       return path.dirname(file.path).split(path.sep).pop() + '.' + file.stem;
-     }))
-     // Bundle into SuiteScript Friendly Structure
-     .pipe(webpack(require('./webpack.config.js')))
-     .pipe(dest(build_dir))
+
  }
  
  // Clean Build Directory

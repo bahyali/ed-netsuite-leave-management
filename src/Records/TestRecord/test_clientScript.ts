@@ -4,26 +4,34 @@
  * @NModuleScope SameAccount
  */
 
-import { EntryPoints } from 'N/types';
+import {EntryPoints} from 'N/types';
 import * as runtime from 'N/runtime';
-import { BaseModel, DataType, FieldType } from '../../Core/BaseModel';
-import { LeaveBalance } from '../LeaveBalance/LeaveBalance';
+import {LeaveBalance} from '../LeaveBalance/LeaveBalance';
+import {QueryResults} from "../../Core/Model/QueryResults";
 
 
 export function pageInit(context: EntryPoints.Client.pageInitContext) {
-    const testRecord = context.currentRecord;
-    debugger;
-    let empBalanceQuery = new LeaveBalance().where('emp_name', '==', runtime.getCurrentUser().id);
-    let empResults = empBalanceQuery.limit(10).find();
-    // let empName = empBalanceQuery.first(['emp_name'], DataType.TEXT);
-    debugger;
-    let empName = empBalanceQuery.get(Number(empResults[0]['id']), ['emp_name'], DataType.TEXT);
+    const testRecord = context.currentRecord; // todo Build Model from Record
 
-    testRecord.setValue('custrecord_test_01', compileEmpInfo(empName, empResults));
+    // Employee Balances
+    let repository = new LeaveBalance()
+        .where('emp_name', '==', runtime.getCurrentUser().id);
+
+    let employeeBalances = repository
+        .limit(10)
+        .find();
+
+    if (employeeBalances) {
+        let employeeName = repository.get(employeeBalances.first()['id'], ['emp_name']);
+
+        // do something
+        if (employeeName)
+            testRecord.setValue('custrecord_test_01', compileEmpInfo(employeeName, employeeBalances));
+    }
 }
 
 
-function compileEmpInfo(empName: object, empResults: object[]) {
+function compileEmpInfo(empName: object, empResults: QueryResults) {
     debugger;
     let empInfo = `Name:\t ${empName['emp_name']}\n`;
 
@@ -38,17 +46,6 @@ function compileEmpInfo(empName: object, empResults: object[]) {
     }
     return empInfo;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 // empVacBalance.where({

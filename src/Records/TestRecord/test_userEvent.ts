@@ -5,7 +5,7 @@
  */
 
 import { EntryPoints } from 'N/types';
-import { ExceptionHandler } from 'Core/ExceptionHandler';
+import { ExceptionHandler } from '../../Core/ExceptionHandler';
 
 
 function pageInit(context: EntryPoints.Client.pageInitContext) {

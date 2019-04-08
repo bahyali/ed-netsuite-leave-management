@@ -1,27 +1,38 @@
 {
-    "compilerOptions": {
-      "module": "amd",
-      "target": "es5",
-      "moduleResolution":"node",
-      // "rootDirs": ["node_modules/@types", "node_modules", "src/Core", "src/Records"],
-      "sourceMap": false,
-      "newLine": "LF",
-      "experimentalDecorators": true,
-      "noImplicitUseStrict": true,
-      // "declaration": true,
-      "baseUrl": ".",
-      "outDir": "build/tsc-bundle",
-      "lib": ["es5", "es2015.promise", "dom"],
-      "paths": {
-        "N": ["node_modules/@hitc/netsuite-types/N"],
-        "N/*": ["node_modules/@hitc/netsuite-types/N/*"],
-        "Core": ["src/Core"],
-        "Core/*": ["src/Core/*"],
-      }
-    },
-    "include": [
-      "src/**/*"
+  "compilerOptions": {
+    "module": "amd",
+    "target": "es5",
+    "moduleResolution": "node",
+    "types": [
+      "jest"
+    ],
+    "esModuleInterop": true,
+    //       "rootDirs": ["node_modules/@types", "node_modules", "src/Core", "src/Records"],
+    "sourceMap": false,
+    "newLine": "LF",
+    "experimentalDecorators": true,
+    "noImplicitUseStrict": true,
+    // "declaration": true,
+    "baseUrl": ".",
+    "outDir": "build/tsc-bundle",
+    "lib": [
+      "es5",
+      "es2015.promise",
+      "dom"
+    ],
+    "paths": {
+      "N": [
+        "node_modules/@hitc/netsuite-types/N"
+      ],
+      "N/*": [
+        "node_modules/@hitc/netsuite-types/N/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/tests"
   ]
-  // "exclude": ["node_modules"]
-
 }

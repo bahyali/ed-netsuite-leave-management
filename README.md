@@ -5,10 +5,16 @@ Leave Management Module customized for NetSuite System
 # Getting Started
 Using TypeScript for SuiteScript 2.0 
 
-### Install these packages as dependencies
+##### Transpile Project
 
 ```
-npm install
+npm transpile "OR" tsc
+```
+
+##### Test Project
+
+```
+npm test
 ```
 
 
