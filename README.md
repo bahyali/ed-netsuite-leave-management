@@ -1,25 +1,33 @@
 # NetSuite Leave Management
 Leave Management Module customized for NetSuite System
 
+**Technologies:**
+- Netsuite, SuiteScript 2
+- TypeScript
+- Jest
 
-# Getting Started
+## Getting Started
 Using TypeScript for SuiteScript 2.0 
 
-##### Transpile Project
+**Transpile Project**
 
 ```
-npm transpile "OR" tsc
+npm transpile
+```
+_OR_
+```
+tsc
 ```
 
-##### Test Project
-
+### Testing
+**Run tests**
 ```
 npm test
 ```
-
-
+### Testing Resources
+- [jest](https://github.com/facebook/jest)
+- [ts-jest](https://github.com/kulshekhar/ts-jest)
 
 Please check these repos for more details about these packages
 - [SuiteScript 2.0 Typings](https://github.com/headintheclouddev/typings-suitescript-2.0)
-- [NetSuite Fasttrack Toolkit](https://github.com/ExploreConsulting/netsuite-fasttrack-toolkit-ss2)
 - [Class Validator](https://github.com/typestack/class-validator)
