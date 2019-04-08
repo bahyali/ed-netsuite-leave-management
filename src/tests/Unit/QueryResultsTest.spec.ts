@@ -1,5 +1,6 @@
 import {QueryResults} from "../../Core/Model/QueryResults";
 import faker from 'faker';
+import {Result} from "@hitc/netsuite-types/N/search";
 
 /**
  * Query Results:
@@ -33,10 +34,13 @@ describe('Query Results', () => {
 
 });
 
-const factory = (): object => ({
-    'id': faker.random.number(),
-    'first_name': faker.name.firstName(),
-    'last_name': faker.name.lastName()
+// search.Result mock
+const factory = (): Result => ({
+    id: faker.random.number(),
+    columns: [],
+    recordType: faker.random.words(),
+    getValue: (column) => 'value of ' + column,
+    getText: (column) => 'text of ' + column
 });
 
 const makeFactory = (count) => {
