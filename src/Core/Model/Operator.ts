@@ -1,17 +1,15 @@
 import * as search from "N/search";
 import * as error from "N/error";
 
-interface OperatorInterface {
-}
 
-class Operator implements OperatorInterface {
-    static get(operator, dataType?): search.Operator {
+export class Operator {
+    static get(operator: string, dataType?: string): search.Operator {
         let nsOperator: search.Operator;
 
         try {
             nsOperator = operators[operator][dataType];
         } catch (e) {
-            nsOperator = this.getNsOperator(operator);
+            nsOperator = search.Operator[operator.toUpperCase()];
 
             if (!nsOperator)
                 throw searchOperatorException;
@@ -19,19 +17,7 @@ class Operator implements OperatorInterface {
 
         return nsOperator;
     }
-
-    static getNsOperator(operator): search.Operator | undefined {
-
-        if (operator.toUpperCase() in search.Operator)
-            return (<any>search.Operator)[operator.toUpperCase()];
-
-        return;
-    }
 }
-
-export {
-    Operator
-};
 
 export const operator = Operator;
 
@@ -121,6 +107,6 @@ export const operators: object = {
 /** Invalid NetSuite search operator exception. */
 export const searchOperatorException = error.create({
     name: 'Invalid_NetSuite_Search_Operator',
-    message: `Search Operator must be one of the \"Operators Matrix\" or NetSuite Search Operators as a string,
-    check: https://system.na2.netsuite.com/app/help/helpcenter.nl?fid=section_n3005172.html`,
+    message: 'Search Operator must be one of the Defined Operators or NetSuite Search Operators as a string, ' +
+        '- Check: https://system.na2.netsuite.com/app/help/helpcenter.nl?fid=section_n3005172.html',
 });

@@ -2,8 +2,8 @@
 Leave Management Module customized for NetSuite System
 
 **Technologies:**
-- Netsuite
-- SuiteScript 2
+- [NetSuite](www.netsuite.com/portal/home.shtml)
+- [SuiteScript 2.0](https://docs.oracle.com/cloud/latest/netsuitecs_gs/NSAPI/NSAPI.pdf)
 - [TypeScript](https://www.typescriptlang.org/docs/home.html)
 - [Jest](https://github.com/facebook/jest)
 
