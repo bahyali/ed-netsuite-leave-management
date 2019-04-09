@@ -12,10 +12,10 @@ class Operator implements OperatorInterface {
             nsOperator = operators[operator][dataType];
         } catch (e) {
             nsOperator = this.getNsOperator(operator);
-
-            if (!nsOperator)
-                throw searchOperatorException;
         }
+
+        if (!nsOperator)
+            throw searchOperatorException;
 
         return nsOperator;
     }
