@@ -15,7 +15,7 @@ export class LeaveBalance extends BaseModel {
 
     recordType: string = 'customrecord_edc_emp_vac_balance';
 
-    columnPrefix: string = 'custrecord_edc_vac_balance';
+    columnPrefix: string = 'custrecord_edc_vac_balance_';
 
     // Mapping
     typeMap: object = {
@@ -37,5 +37,5 @@ export class LeaveBalance extends BaseModel {
         "sick": ColumnType.NUMBER,
     };
 
-    columns = this.prefix(Object.keys(this.typeMap));
+    columns = this.addPrefix(Object.keys(this.typeMap));
 }

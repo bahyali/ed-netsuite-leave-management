@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ccf2919a-a2dd-4c0c-8eb5-55ccfbfbb4d5" name="Finish BaseModel" comment="BaseModel &amp; Fields" />
+    <list default="true" id="ccf2919a-a2dd-4c0c-8eb5-55ccfbfbb4d5" name="Finish BaseModel" comment="Merge with Master &amp; Resolve conflicts">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Model/BaseModel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Model/BaseModel.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Page/Field.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Model/Field.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Page/FieldGroup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Model/FieldGroup.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Core/Page/Page.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/Unit/BaseModelTest.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/Unit/BaseModelTest.spec.ts" afterDir="false" />
+    </list>
+    <list id="c1ae1ee8-a826-446d-b576-c9b4228c7452" name="New changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/Core/Model/QueryBuilder.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Core/Model/QueryBuilder.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Records/LeaveBalance/LeaveBalance.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/Records/LeaveBalance/LeaveBalance.ts" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -17,55 +28,21 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Core/Model/BaseModel.ts">
+        <entry file="file://$PROJECT_DIR$/src/Records/LeaveBalance/LeaveBalance.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1722">
-              <caret line="82" column="32" lean-forward="true" selection-start-line="82" selection-start-column="32" selection-end-line="82" selection-end-column="32" />
-              <folding>
-                <element signature="e#309#365#0" expanded="true" />
-                <element signature="n#!!block;n#prepareResults#0;n#BaseModel#0" />
-              </folding>
+            <state relative-caret-position="378">
+              <caret line="26" column="32" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/node_modules/@hitc/netsuite-types/N/search.d.ts">
+        <entry file="file://$PROJECT_DIR$/src/Core/Model/QueryBuilder.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="61" column="11" selection-start-line="61" selection-start-column="11" selection-end-line="61" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/tests/Unit/QueryBuilderTest.spec.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="903">
-              <caret line="43" column="7" lean-forward="true" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
+            <state relative-caret-position="273">
+              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
               <folding>
-                <element signature="e#0#71#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/tests/Unit/FieldTest.spec.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="147">
-              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/tests/Unit/BaseModelTest.spec.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="41" column="44" selection-end-line="63" />
-              <folding>
-                <element signature="e#0#65#0" expanded="true" />
+                <element signature="e#0#36#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -74,7 +51,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/tests/Mocks/N/search.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
+            <state relative-caret-position="357">
               <caret line="17" column="20" lean-forward="true" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="20" />
               <folding>
                 <element signature="n#Operator#0" />
@@ -93,34 +70,55 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/tests/Unit/OperatorTest.spec.ts">
+        <entry file="file://$PROJECT_DIR$/src/tests/Mocks/N/error.ts">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/old_src/edc_ue_update_vac_balance.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="21" column="42" lean-forward="true" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
+            <state relative-caret-position="1003">
+              <caret line="81" column="16" lean-forward="true" selection-start-line="81" selection-start-column="16" selection-end-line="81" selection-end-column="16" />
               <folding>
-                <element signature="e#0#51#0" expanded="true" />
+                <element signature="e#156#194#0" expanded="true" />
+                <element signature="n#!!block;n#beforeLoad#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Core/Page/Field.ts">
+        <entry file="file://$PROJECT_DIR$/old_src/edc_sl_myvacs.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="25" column="21" lean-forward="true" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+            <state relative-caret-position="211">
+              <caret line="77" column="55" selection-start-line="77" selection-start-column="55" selection-end-line="77" selection-end-column="55" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/old_src/edc_mr_vac_balance.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1093">
+              <caret line="55" column="42" lean-forward="true" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Core/Model/Operator.ts">
+        <entry file="file://$PROJECT_DIR$/src/Core/Model/Field.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="129">
-              <caret line="19" column="26" lean-forward="true" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="357">
+              <caret line="17" column="27" lean-forward="true" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Core/Model/FieldGroup.ts">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="399">
+              <caret line="19" column="5" lean-forward="true" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -208,14 +206,14 @@
         <option value="$PROJECT_DIR$/src/Records/Employee/Employee.ts" />
         <option value="$PROJECT_DIR$/src/tests/Unit/FieldTest.spec.ts" />
         <option value="$PROJECT_DIR$/old_src/edc_cs_permissions.ts" />
-        <option value="$PROJECT_DIR$/src/Core/Page/Field.ts" />
-        <option value="$PROJECT_DIR$/src/Core/Model/QueryBuilder.ts" />
         <option value="$PROJECT_DIR$/src/tests/Unit/OperatorTest.spec.ts" />
         <option value="$PROJECT_DIR$/src/tests/Unit/QueryBuilderTest.spec.ts" />
         <option value="$PROJECT_DIR$/src/tests/Mocks/N/record.ts" />
         <option value="$PROJECT_DIR$/src/tests/Mocks/N/search.ts" />
         <option value="$PROJECT_DIR$/src/Core/Model/BaseModel.ts" />
         <option value="$PROJECT_DIR$/src/tests/Unit/BaseModelTest.spec.ts" />
+        <option value="$PROJECT_DIR$/src/Core/Page/Field.ts" />
+        <option value="$PROJECT_DIR$/src/Core/Model/QueryBuilder.ts" />
       </list>
     </option>
   </component>
@@ -258,13 +256,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Core" type="462c0819:PsiDirectoryNode" />
               <item name="Model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="leave-management" type="b2602c69:ProjectViewProjectNode" />
-              <item name="leave-management" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Core" type="462c0819:PsiDirectoryNode" />
-              <item name="Page" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="leave-management" type="b2602c69:ProjectViewProjectNode" />
@@ -340,13 +331,13 @@
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$/src/Core/Model" />
-      <recent name="$PROJECT_DIR$" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/tests" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Core/Model" />
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -361,7 +352,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Jest.BaseModel .should prepare from Record ">
+  <component name="RunManager" selected="Jest.BaseModel .should retrieve Record by Id">
     <configuration name="BaseModel .should Prepare from Record " type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -390,6 +381,20 @@
       </test-names>
       <method v="2" />
     </configuration>
+    <configuration name="BaseModel .should retrieve Record by Id" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/tests/Unit/BaseModelTest.spec.ts" />
+      <test-names>
+        <test-name value="BaseModel " />
+        <test-name value="should retrieve Record by Id" />
+      </test-names>
+      <method v="2" />
+    </configuration>
     <configuration name="BaseModel .should retrieve Record" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -401,20 +406,6 @@
       <test-names>
         <test-name value="BaseModel " />
         <test-name value="should retrieve Record" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Query Builder.can build queries" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/src/tests/Unit/QueryBuilderTest.spec.ts" />
-      <test-names>
-        <test-name value="Query Builder" />
-        <test-name value="can build queries" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -437,21 +428,6 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="Operator gets " type="mocha-javascript-test-runner" temporary="true" nameIsGenerated="true">
-      <node-interpreter>project</node-interpreter>
-      <node-options />
-      <mocha-package>$PROJECT_DIR$/node_modules/mocha</mocha-package>
-      <working-directory>$PROJECT_DIR$</working-directory>
-      <pass-parent-env>true</pass-parent-env>
-      <ui>mocha-typescript</ui>
-      <extra-mocha-options>--require ts-node/register</extra-mocha-options>
-      <test-kind>SUITE</test-kind>
-      <test-file>$PROJECT_DIR$/tests/Unit/OperatorTest.spec.ts</test-file>
-      <test-names>
-        <name value="Operator gets " />
-      </test-names>
-      <method v="2" />
-    </configuration>
     <configuration default="true" type="mocha-javascript-test-runner">
       <node-interpreter>project</node-interpreter>
       <node-options />
@@ -467,19 +443,18 @@
     </configuration>
     <list>
       <item itemvalue="Jest.BaseModel .should retrieve Record" />
-      <item itemvalue="Jest.Query Builder.can build queries" />
       <item itemvalue="Jest.BaseModel .should Prepare from Record " />
       <item itemvalue="Jest.BaseModel .should prepare from Record " />
-      <item itemvalue="Mocha.Operator gets " />
       <item itemvalue="npm.test" />
+      <item itemvalue="Jest.BaseModel .should retrieve Record by Id" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Jest.BaseModel .should prepare from Record " />
         <item itemvalue="npm.test" />
+        <item itemvalue="Jest.BaseModel .should retrieve Record by Id" />
+        <item itemvalue="Jest.BaseModel .should prepare from Record " />
         <item itemvalue="Jest.BaseModel .should Prepare from Record " />
         <item itemvalue="Jest.BaseModel .should retrieve Record" />
-        <item itemvalue="Jest.Query Builder.can build queries" />
       </list>
     </recent_temporary>
   </component>
@@ -492,7 +467,7 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="ccf2919a-a2dd-4c0c-8eb5-55ccfbfbb4d5" name="Default Changelist" comment="" />
-      <changelist id="" name="Test QueryBuilder" comment="" />
+      <changelist id="c1ae1ee8-a826-446d-b576-c9b4228c7452" name="New changelist" comment="" />
       <created>1554389161934</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -501,6 +476,7 @@
       <workItem from="1554391643081" duration="128000" />
       <workItem from="1554569313951" duration="20324000" />
       <workItem from="1554595946836" duration="92088000" />
+      <workItem from="1554893373634" duration="4862000" />
     </task>
     <task id="LOCAL-00001" summary="Restructured Code, and Added Testing to the process">
       <created>1554733971313</created>
@@ -579,19 +555,17 @@
       <option name="project" value="LOCAL" />
       <updated>1554890131045</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Merge with Master &amp; Resolve conflicts">
+      <created>1554893421152</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1554893421152</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Query_Builder_can_build_queries - 2019.04.10 at 03h 53m 37s.xml">
-      <configuration name="Query Builder.can build queries" configurationId="JavaScriptTestRunnerJest" />
-    </history-entry>
-    <history-entry file="BaseModel__should_retrieve_Record - 2019.04.10 at 03h 55m 45s.xml">
-      <configuration name="BaseModel .should retrieve Record" configurationId="JavaScriptTestRunnerJest" />
-    </history-entry>
-    <history-entry file="BaseModel__should_retrieve_Record - 2019.04.10 at 03h 56m 42s.xml">
-      <configuration name="BaseModel .should retrieve Record" configurationId="JavaScriptTestRunnerJest" />
-    </history-entry>
     <history-entry file="BaseModel__should_retrieve_Record - 2019.04.10 at 03h 57m 54s.xml">
       <configuration name="BaseModel .should retrieve Record" configurationId="JavaScriptTestRunnerJest" />
     </history-entry>
@@ -613,9 +587,18 @@
     <history-entry file="BaseModel__should_prepare_from_Record_ - 2019.04.10 at 04h 19m 00s.xml">
       <configuration name="BaseModel .should prepare from Record " configurationId="JavaScriptTestRunnerJest" />
     </history-entry>
+    <history-entry file="BaseModel__should_retrieve_Record_by_Id - 2019.04.10 at 12h 54m 19s.xml">
+      <configuration name="BaseModel .should retrieve Record by Id" configurationId="JavaScriptTestRunnerJest" />
+    </history-entry>
+    <history-entry file="BaseModel__should_retrieve_Record_by_Id - 2019.04.10 at 13h 04m 50s.xml">
+      <configuration name="BaseModel .should retrieve Record by Id" configurationId="JavaScriptTestRunnerJest" />
+    </history-entry>
+    <history-entry file="BaseModel__should_retrieve_Record_by_Id - 2019.04.10 at 13h 51m 33s.xml">
+      <configuration name="BaseModel .should retrieve Record by Id" configurationId="JavaScriptTestRunnerJest" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114983000" />
+    <option name="totallyTimeSpent" value="119845000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -627,32 +610,32 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="830" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="831" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Repositories" weight="0.32980973" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.3125" visible="true" weight="0.18604651" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.311804" visible="true" weight="0.18604651" />
       <window_info id="Structure" order="1" sideWeight="0.6869806" side_tool="true" weight="0.18604651" />
-      <window_info id="Gulp" order="2" sideWeight="0.40401787" side_tool="true" weight="0.18604651" />
-      <window_info id="npm" order="3" sideWeight="0.6875" side_tool="true" weight="0.18604651" />
+      <window_info id="Gulp" order="2" sideWeight="0.688196" side_tool="true" weight="0.18604651" />
+      <window_info id="npm" order="3" sideWeight="0.688196" side_tool="true" weight="0.18604651" />
       <window_info id="Favorites" order="4" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" weight="0.32963988" />
+      <window_info id="Repositories" order="5" weight="0.32980973" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32963988" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.37950137" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39889196" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3789765" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39834026" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32963988" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="8" visible="true" weight="0.32825485" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.384509" />
       <window_info anchor="bottom" id="TypeScript" order="9" weight="0.32825485" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.26454294" />
-      <window_info anchor="right" id="Coverage" side_tool="true" weight="0.3297568" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.26417705" />
+      <window_info anchor="bottom" id="Messages" order="12" weight="0.32963988" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Coverage" order="3" side_tool="true" weight="0.3297568" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -710,7 +693,20 @@
     <MESSAGE value="Test QueryBuilder" />
     <MESSAGE value="Throw exception if did't find Operator" />
     <MESSAGE value="BaseModel &amp; Fields" />
-    <option name="LAST_COMMIT_MESSAGE" value="BaseModel &amp; Fields" />
+    <MESSAGE value="Merge with Master &amp; Resolve conflicts" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge with Master &amp; Resolve conflicts" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/tests/Unit/BaseModelTest.spec.ts</url>
+          <line>15</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/leave_management$BaseModel__should_retrieve_Record.info" NAME="BaseModel .should retrieve Record Coverage Results" MODIFIED="1554860716268" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="JestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
@@ -718,72 +714,68 @@
     <SUITE FILE_PATH="coverage/leave_management$Query_Builder.info" NAME="Query Builder Coverage Results" MODIFIED="1554860826510" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="JestJavaScriptTestRunnerCoverage" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="debuggerHistoryManager">
+    <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>record.columnPrefix == '12121'</expression-string>
+        <language-id>TypeScript</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>if(record.columnPrefix == '12121')
+    return false;</expression-string>
+        <language-id>TypeScript</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
+    </expressions>
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>record['emp_name'].disabled = true</expression-string>
+        <language-id>TypeScript</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>record['emp_name'].disabled</expression-string>
+        <language-id>TypeScript</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>record['emp_name'].text</expression-string>
+        <language-id>TypeScript</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>record['emp_name'].value</expression-string>
+        <language-id>TypeScript</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>record['emp_name']</expression-string>
+        <language-id>TypeScript</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>record.emp_name</expression-string>
         <language-id>TypeScript</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>record.emp_name.value</expression-string>
+        <expression-string>record.emp_name.disabled</expression-string>
         <language-id>TypeScript</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>record.emp_name.value = 1</expression-string>
+        <expression-string>record.emp_name.disabled = true</expression-string>
         <language-id>TypeScript</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>record</expression-string>
-        <language-id>TypeScript</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>record['jobtitle'].value</expression-string>
-        <language-id>TypeScript</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>record['jobtitle']</expression-string>
-        <language-id>TypeScript</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>record.jobtitle.value</expression-string>
-        <language-id>TypeScript</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>record.jobtitle.value = 'lol'</expression-string>
-        <language-id>TypeScript</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>record.jobtitle.vaue</expression-string>
+        <expression-string>record['emp_name'].disable()</expression-string>
         <language-id>TypeScript</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="147">
-            <caret line="7" column="25" lean-forward="true" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="10" column="19" selection-start-line="10" selection-start-column="19" selection-end-line="10" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build/tsc-bundle/Records/TestRecord/test_new_structure_clientScript.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
@@ -823,13 +815,6 @@
         <state relative-caret-position="-282" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/old_src/edc_mr_vac_balance.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6153">
-          <caret line="299" column="67" lean-forward="true" selection-start-line="299" selection-start-column="67" selection-end-line="299" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build/tsc-bundle/Records/TestRecord/test_userEvent.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
@@ -854,13 +839,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Core/Model/QueryResults.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="11" column="3" selection-start-line="11" selection-start-column="3" selection-end-line="17" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/old_src/edc_cs_overtime_rules.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-606">
@@ -868,19 +846,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/NFT-SS2-4.3.1/DataAccess/Record.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1000" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NFT-SS2-4.3.1/governance.d.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NFT-SS2-4.3.1/DataAccess/CustomerBase.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1396" />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/NFT-SS2-4.3.1/DataAccess/Record.d.ts" />
+    <entry file="file://$PROJECT_DIR$/NFT-SS2-4.3.1/governance.d.ts" />
+    <entry file="file://$PROJECT_DIR$/NFT-SS2-4.3.1/DataAccess/CustomerBase.d.ts" />
     <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es5.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -888,16 +856,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/NFT-SS2-4.3.1/IntroGuideExamples.d.ts">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NFT-SS2-4.3.1/immutable.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4363">
-          <caret line="22" column="13" lean-forward="true" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/NFT-SS2-4.3.1/IntroGuideExamples.d.ts" />
+    <entry file="file://$PROJECT_DIR$/NFT-SS2-4.3.1/immutable.d.ts" />
     <entry file="file://$PROJECT_DIR$/old_src/edc_cs_vac_balance.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1931">
@@ -952,23 +912,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Core/Page/FieldGroup.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="23" column="5" lean-forward="true" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Core/Page/Page.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/old_src/edc_cs_vac_types.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
@@ -980,13 +923,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
           <caret line="11" column="34" lean-forward="true" selection-start-line="11" selection-start-column="34" selection-end-line="11" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Records/LeaveBalance/LeaveBalance.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="15" column="2" lean-forward="true" selection-start-line="15" selection-start-column="2" selection-end-line="39" selection-end-column="53" />
         </state>
       </provider>
     </entry>
@@ -1010,24 +946,6 @@
     <entry file="file://$PROJECT_DIR$/src/Records/Employee/Employee.ts">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/old_src/edc_sl_myvacs.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="77" column="55" selection-start-line="77" selection-start-column="55" selection-end-line="77" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/old_src/edc_ue_update_vac_balance.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="81" column="16" lean-forward="true" selection-start-line="81" selection-start-column="16" selection-end-line="81" selection-end-column="16" />
-          <folding>
-            <element signature="e#156#194#0" expanded="true" />
-            <element signature="n#!!block;n#beforeLoad#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/old_src/edc_sl_my_permissions.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="253">
@@ -1045,20 +963,143 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Core/Model/QueryBuilder.ts">
+    <entry file="file://$PROJECT_DIR$/node_modules/@hitc/netsuite-types/N/search.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="49">
-          <caret line="64" column="53" lean-forward="true" selection-start-line="64" selection-start-column="53" selection-end-line="64" selection-end-column="53" />
+        <state relative-caret-position="1281">
+          <caret line="61" column="11" selection-start-line="61" selection-start-column="11" selection-end-line="61" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/Unit/QueryBuilderTest.spec.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="903">
+          <caret line="43" column="7" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
           <folding>
-            <element signature="e#0#36#0" expanded="true" />
+            <element signature="e#0#71#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="-54">
+            <caret line="7" column="25" lean-forward="true" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/Unit/FieldTest.spec.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="5" column="7" lean-forward="true" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Core/Model/QueryResults.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Core/Model/Operator.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="9" lean-forward="true" selection-start-line="9" selection-end-line="9" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/@hitc/netsuite-types/N/record.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="76" column="10" selection-start-line="76" selection-start-column="10" selection-end-line="76" selection-end-column="10" />
+        <state relative-caret-position="398">
+          <caret line="43" column="61" selection-start-line="43" selection-start-column="56" selection-end-line="43" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Core/Model/BaseModel.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="492">
+          <caret line="84" column="38" lean-forward="true" selection-start-line="84" selection-start-column="38" selection-end-line="84" selection-end-column="38" />
+          <folding>
+            <element signature="e#309#365#0" expanded="true" />
+            <element signature="n#!!block;n#prepareResults#0;n#BaseModel#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/Unit/BaseModelTest.spec.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="15" column="8" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/Unit/OperatorTest.spec.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="13" column="35" lean-forward="true" selection-start-line="13" selection-start-column="35" selection-end-line="13" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Core/Model/QueryBuilder.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Records/LeaveBalance/LeaveBalance.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="26" column="32" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Core/Model/Field.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="17" column="27" lean-forward="true" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Core/Page/Page.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Core/Model/FieldGroup.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="19" column="5" lean-forward="true" selection-start-line="19" selection-start-column="5" selection-end-line="19" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tests/Mocks/N/search.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="17" column="20" lean-forward="true" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="20" />
+          <folding>
+            <element signature="n#Operator#0" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1069,85 +1110,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Core/Model/Operator.ts">
+    <entry file="file://$PROJECT_DIR$/src/tests/Mocks/N/error.ts">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/old_src/edc_ue_update_vac_balance.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="19" column="26" lean-forward="true" selection-start-line="19" selection-start-column="26" selection-end-line="19" selection-end-column="26" />
+        <state relative-caret-position="1003">
+          <caret line="81" column="16" lean-forward="true" selection-start-line="81" selection-start-column="16" selection-end-line="81" selection-end-column="16" />
           <folding>
-            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#156#194#0" expanded="true" />
+            <element signature="n#!!block;n#beforeLoad#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/Unit/QueryBuilderTest.spec.ts">
+    <entry file="file://$PROJECT_DIR$/old_src/edc_sl_myvacs.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="903">
-          <caret line="43" column="7" lean-forward="true" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#71#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="211">
+          <caret line="77" column="55" selection-start-line="77" selection-start-column="55" selection-end-line="77" selection-end-column="55" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/Unit/OperatorTest.spec.ts">
+    <entry file="file://$PROJECT_DIR$/old_src/edc_mr_vac_balance.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="21" column="42" lean-forward="true" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/Unit/FieldTest.spec.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/@hitc/netsuite-types/N/search.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="61" column="11" selection-start-line="61" selection-start-column="11" selection-end-line="61" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/Mocks/N/search.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="17" column="20" lean-forward="true" selection-start-line="17" selection-start-column="20" selection-end-line="17" selection-end-column="20" />
-          <folding>
-            <element signature="n#Operator#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Core/Page/Field.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="25" column="21" lean-forward="true" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Core/Model/BaseModel.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1722">
-          <caret line="82" column="32" lean-forward="true" selection-start-line="82" selection-start-column="32" selection-end-line="82" selection-end-column="32" />
-          <folding>
-            <element signature="e#309#365#0" expanded="true" />
-            <element signature="n#!!block;n#prepareResults#0;n#BaseModel#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/tests/Unit/BaseModelTest.spec.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="41" column="44" selection-end-line="63" />
-          <folding>
-            <element signature="e#0#65#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-1093">
+          <caret line="55" column="42" lean-forward="true" selection-start-line="55" selection-start-column="42" selection-end-line="55" selection-end-column="42" />
         </state>
       </provider>
     </entry>

@@ -38,7 +38,7 @@ class QueryBuilder implements QueryBuilderInterface {
             return search.lookupFields({
                 type: this.recordType,
                 id: recordId,
-                columns: columns ? this.prefix(columns) : this.prefix(this.columns),
+                columns: columns ? this.addPrefix(columns) : this.addPrefix(this.columns),
             });
 
         return record.load({id: recordId, type: this.recordType, isDynamic: false})
@@ -49,7 +49,7 @@ class QueryBuilder implements QueryBuilderInterface {
         let results = search.create({
             type: this.recordType,
             filters: this._query,
-            columns: columns ? this.prefix(columns) : this.prefix(this.columns),
+            columns: columns ? this.addPrefix(columns) : this.addPrefix(this.columns),
         }).run()
             .getRange({start: 0, end: this._limit});
 
@@ -93,19 +93,19 @@ class QueryBuilder implements QueryBuilderInterface {
         return records;
     }
 
-     getColumnType(column): string {
+    getColumnType(column): string {
         return this.typeMap[column];
     }
 
-    getColumnId(column, sep = '_'): string {
-        return this.columnPrefix + sep + column;
+    getColumnId(column): string {
+        return this.columnPrefix + column;
     }
 
-    protected prefix(columns: string[], sep = '_'): string[] {
+    protected addPrefix(columns: string[]): string[] {
         let prefixed: string[] = [];
 
         for (let i = 0; i < columns.length; i++)
-            prefixed.push(this.getColumnId(columns[i], sep));
+            prefixed.push(this.getColumnId(columns[i]));
 
         return prefixed;
     }

@@ -8,7 +8,7 @@
  * @NApiVersion 2.0
  */
 import {QueryBuilder, ColumnType} from './QueryBuilder';
-import {Field} from "../Page/Field";
+import {Field} from "./Field";
 import {ClientCurrentRecord, Record, Field as NsField} from "N/record";
 import * as search from "N/search";
 import {QueryResults} from "./QueryResults";
@@ -30,6 +30,8 @@ interface BaseModelInterface {
     first(columns: string[], value): object;
 
     createFromRecord(record: Record);
+
+    getRecord(id);
 
     setRecord(id);
 }
@@ -75,12 +77,12 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
         return result ? result.first() : null;
     }
 
-    protected getField(id, result?:boolean) {
+    protected getField(fieldId, result?:boolean) {
         let nsField = this._record.getField({
-            fieldId: this.getColumnId(id)
+            fieldId: this.getColumnId(fieldId)
         });
 
-        return this[id] = new Field(id, nsField, this._record);
+        return this[fieldId] = new Field(fieldId, nsField, this._record);
     }
 
     // Override Query Builder prepareResults

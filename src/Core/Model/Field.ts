@@ -18,6 +18,12 @@ export class Field implements FieldInterface {
     _field: NsRecord.Field;
     _record: NsRecord.Record | NsRecord.ClientCurrentRecord;
 
+    private _disabled: boolean;
+    private _mandatory: boolean;
+    private _readOnly: boolean;
+    private _value: FieldValue;
+    private _text: string | string[];
+
     constructor(id, field: NsRecord.Field, record?: NsRecord.Record | NsRecord.ClientCurrentRecord) {
         this._id = id;
         this._field = field;
@@ -77,10 +83,6 @@ export class Field implements FieldInterface {
         this._field.isReadOnly = value;
     }
 
-    private _disabled: boolean;
-    private _mandatory: boolean;
-    private _readOnly: boolean;
-    private _value: FieldValue;
-    private _text: string | string[];
+
 
 }

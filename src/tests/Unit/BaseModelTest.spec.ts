@@ -1,5 +1,5 @@
 import {BaseModel, ColumnType} from "../../Core/Model/BaseModel";
-import {Field} from "../../Core/Page/Field";
+import {Field} from "../../Core/Model/Field";
 import {Record as NsRecord} from "../Mocks/N/record";
 import * as record from "@hitc/netsuite-types/N/record";
 import * as search from "@hitc/netsuite-types/N/search";

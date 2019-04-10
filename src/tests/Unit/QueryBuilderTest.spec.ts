@@ -62,7 +62,7 @@ const build = () => {
 
     builder.recordType = "ns_prefix_vacations";
 
-    builder.columnPrefix = "ns_prefix_col";
+    builder.columnPrefix = "ns_prefix_col_";
 
     builder.typeMap = {
         'foo': ColumnType.STRING,
