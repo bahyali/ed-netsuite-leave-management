@@ -1,4 +1,4 @@
-import {Filter} from "@hitc/netsuite-types/N/search";
+import {Filter, Result, Column} from "@hitc/netsuite-types/N/search";
 
 export const filter: Filter = {
     name: null,
@@ -8,6 +8,18 @@ export const filter: Filter = {
     formula: null
 };
 
+export const result: Result = {
+    columns: [],
+    id: "",
+    recordType: undefined,
+    getText(options: Column | string): string {
+        return "";
+
+    }, getValue(column: Column | string): boolean | string | string[] {
+        return undefined;
+    }
+
+}
 export const createFilter = jest.fn((obj) => {
     return obj;
 });
@@ -20,9 +32,13 @@ export const create = jest.fn(() =>
     ({run: run})
 );
 
-export const lookupFields = jest.fn().mockReturnValue({
-    'foo': 'bar',
-    'bar': 'foo'
+export const lookupFields = jest.fn((options) => {
+    let obj: object = {};
+
+    for (let i = 0; i < options.columns.length; i++)
+        obj[options.columns[i]] = 'result';
+
+    return obj;
 });
 
 

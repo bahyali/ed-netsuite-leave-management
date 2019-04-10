@@ -9,7 +9,7 @@ export class QueryResults extends Array<object>
 
     _objects: object[] = [];
 
-    private constructor(results: Result[]) {
+    private constructor(results: Result[] | object[]) {
         super(...results);
     }
 
@@ -22,9 +22,11 @@ export class QueryResults extends Array<object>
             this[0] : null;
     }
 
-    parse(results: Result[]) {
+    parse(results: Result[]): object[] {
         for (let i = 0; i < results.length; i++) {
             this._objects.push(results[i]);
         }
+
+        return;
     }
 }

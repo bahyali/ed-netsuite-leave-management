@@ -7,6 +7,7 @@
  * @repo        https://github.com/bahyali/ed-netsuite-leave-management
  * @NApiVersion 2.0
  */
+
 import {BaseModel, ColumnType} from '../../Core/Model/BaseModel';
 
 
