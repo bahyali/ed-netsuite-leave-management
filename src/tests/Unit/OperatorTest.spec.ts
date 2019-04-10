@@ -1,11 +1,12 @@
 import {Operator} from "../../Core/Model/Operator";
 import {ColumnType} from "../../Core/Model/BaseModel";
+import * as search from '../../../node_modules/@hitc/netsuite-types/N/search';
 
 describe('Operator ', () => {
 
     it('should return value', () => {
         const result = Operator.get('==', ColumnType.STRING);
-        expect(result).toBeTruthy()
+        expect(result).toBe(search.Operator.IS)
     });
 
     it('should return value of nsOperator', () => {

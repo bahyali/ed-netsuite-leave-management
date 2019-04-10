@@ -1,13 +1,12 @@
-import {Result} from "N/search";
+import { Result } from "N/search";
 
 interface QueryResultsInterface extends Array<object> {
     first(): object;
 }
 
-export class QueryResults extends Array<object>
-    implements QueryResultsInterface {
+export class QueryResults extends Array<object> implements QueryResultsInterface {
 
-    _objects: object[] = [];
+    private _objects: object[] = [];
 
     private constructor(results: Result[] | object[]) {
         super(...results);
