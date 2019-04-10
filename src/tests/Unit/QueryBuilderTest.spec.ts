@@ -1,5 +1,4 @@
 import {ColumnType, QueryBuilder} from "../../Core/Model/QueryBuilder";
-import {LeaveBalance} from "../../Records/LeaveBalance/LeaveBalance";
 import {QueryResults} from "../../Core/Model/QueryResults";
 
 /**
@@ -18,8 +17,8 @@ describe('Query Builder', () => {
 
         builder.columns = ['foo', 'bar'];
 
-        builder.where('days', '==', 'april')
-            .where('name', '==', 'khaled');
+        builder.where('foo', '==', 'april')
+            .where('bar', '==', 'khaled');
 
         // Should return itself in Query Building
         expect(builder).toBeInstanceOf(QueryBuilder);
@@ -37,10 +36,10 @@ describe('Query Builder', () => {
 
         expect(record).toBeInstanceOf(Object);
 
-        expect(record).toEqual({
-            'foo': 'bar',
-            'bar': 'foo'
-        });
+        expect(record).toEqual(expect.objectContaining({
+            'ns_prefix_col_foo': expect.any(String),
+            'ns_prefix_col_bar': expect.any(String),
+        }));
 
     });
 
@@ -63,7 +62,7 @@ const build = () => {
 
     builder.recordType = "ns_prefix_vacations";
 
-    builder.columnPrefix = "ns_prefix_col";
+    builder.columnPrefix = "ns_prefix_col_";
 
     builder.typeMap = {
         'foo': ColumnType.STRING,

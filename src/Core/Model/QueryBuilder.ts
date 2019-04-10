@@ -1,6 +1,7 @@
 import {Operator} from './Operator';
 import {QueryResults} from "./QueryResults";
 import * as search from "N/search";
+import * as record from "N/record";
 
 export enum ColumnType { STRING = 'string', BOOLEAN = 'boolean', NUMBER = 'number', DATE = 'date', LIST = 'list', MULTI = 'multi' }
 
@@ -32,29 +33,27 @@ class QueryBuilder implements QueryBuilderInterface {
     _query: search.Filter[] = [];
 
 
-    get(recordId: number, columns?: string[]): object | false {
-        let results = QueryResults.create();
+    get(recordId: number, columns?: string[], load?: boolean): object | record.Record {
+        if (!load)
+            return search.lookupFields({
+                type: this.recordType,
+                id: recordId,
+                columns: columns ? this.addPrefix(columns) : this.addPrefix(this.columns),
+            });
 
-        results.push(search.lookupFields({
-            type: this.recordType,
-            id: recordId,
-            columns: columns ? this.prefix(columns) : this.prefix(this.columns),
-        }));
-
-        return results.first();
+        return record.load({id: recordId, type: this.recordType, isDynamic: false})
     }
 
     find(columns?: string[]): QueryResults | false {
-        let records = QueryResults.create();
 
-        records.push(...search.create({
+        let results = search.create({
             type: this.recordType,
             filters: this._query,
-            columns: columns ? this.prefix(columns) : this.prefix(this.columns),
+            columns: columns ? this.addPrefix(columns) : this.addPrefix(this.columns),
         }).run()
-            .getRange({start: 0, end: this._limit}));
+            .getRange({start: 0, end: this._limit});
 
-        return records;
+        return this.prepareResults(results);
     }
 
     query(): boolean {
@@ -83,19 +82,30 @@ class QueryBuilder implements QueryBuilderInterface {
         return this;
     }
 
-    protected getColumnType(column): string {
+    protected prepareResults(results: search.Result[] | object) {
+        let records = QueryResults.create();
+
+        if (results instanceof Array)
+            records.push(...results);
+        else
+            records.push(results);
+
+        return records;
+    }
+
+    getColumnType(column): string {
         return this.typeMap[column];
     }
 
-    protected getColumnId(column, sep = '_'): string {
-        return this.columnPrefix + sep + column;
+    getColumnId(column): string {
+        return this.columnPrefix + column;
     }
 
-    protected prefix(columns: string[], sep = '_'): string[] {
+    protected addPrefix(columns: string[]): string[] {
         let prefixed: string[] = [];
 
         for (let i = 0; i < columns.length; i++)
-            prefixed.push(this.getColumnId(columns[i], sep));
+            prefixed.push(this.getColumnId(columns[i]));
 
         return prefixed;
     }

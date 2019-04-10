@@ -20,8 +20,8 @@ describe('Operator ', () => {
     });
 
     it('should not break on wrong columnType', () => {
-        const result = Operator.get('==', 'wrongDataType');
-        expect(result).toBeUndefined();
+        const result = () => Operator.get('==', 'wrongDataType');
+        expect(result).toThrowError();
     });
 
 });
