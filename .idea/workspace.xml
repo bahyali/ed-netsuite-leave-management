@@ -469,8 +469,9 @@
       <item itemvalue="Jest.BaseModel .should retrieve Record" />
       <item itemvalue="Jest.Query Builder.can build queries" />
       <item itemvalue="Jest.BaseModel .should Prepare from Record " />
-      <item itemvalue="npm.test" />
       <item itemvalue="Jest.BaseModel .should prepare from Record " />
+      <item itemvalue="Mocha.Operator gets " />
+      <item itemvalue="npm.test" />
     </list>
     <recent_temporary>
       <list>

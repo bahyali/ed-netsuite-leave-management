@@ -5,3 +5,7 @@ NFT-SS2-4.3.*/*
 #Eclipse Files/Folders
 .project
 .settings
+
+#Editors
+.idea
+.vscode
