@@ -10,6 +10,7 @@
 
 import {BaseModel, ColumnType} from '../../Core/Model/BaseModel';
 import {Validation} from '../../Core/Validation';
+// import {Field} from '../../Core/Model/Field';
 import {currentRecord} from "N";
 
 export class LeaveType extends BaseModel {
@@ -28,28 +29,35 @@ export class LeaveType extends BaseModel {
     columns = this.addPrefix(Object.keys(this.typeMap));
 
     private validations: object = {
-        'mapping': [this.isNotEmpty, this.isUnique],
-        'max_days_request': [this.isNotExceededLimit()],
+        'mapping': [Validation['isEmpty'], Validation['isUnique']],
+        'max_days_request': [/*this.isNotExceededLimit()*/],
         'freq_type': [],
         'freq_value': [],
     };
 
-    private isEmpty(columnId): boolean {
-        return !!(this.getField(columnId).value);
+    public validateField(fieldId) {
+        let validations = super.getField(fieldId).addFieldValidations(this.validations[fieldId]);
+        for (let i = 0; i < validations.length; i++) {
+            validations[i](fieldId);
+        }
     }
 
-    private isNotEmpty(columnId): boolean {
-        return !(this.getField(columnId).value);
-    }
-
-    private isUnique(columnId): boolean {
-        return !(this.where(columnId, '==', this.getField(columnId).value)
-            .first(['id'])
-            ['id']);
-    }
-
-    private isNotExceededLimit(){
-        return (this.getField('days_limit').value >= this.getField('max_days_request').value);
-    }
+    // private isEmpty(columnId): boolean {
+    //     return !!(this.getField(columnId).value);
+    // }
+    //
+    // private isNotEmpty(columnId): boolean {
+    //     return !(this.getField(columnId).value);
+    // }
+    //
+    // private isUnique(columnId): boolean {
+    //     return !(this.where(columnId, '==', this.getField(columnId).value)
+    //         .first(['id'])
+    //         ['id']);
+    // }
+    //
+    // private isNotExceededLimit() {
+    //     return (this.getField('days_limit').value >= this.getField('max_days_request').value);
+    // }
 }
 

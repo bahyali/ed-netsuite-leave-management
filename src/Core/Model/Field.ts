@@ -1,4 +1,5 @@
 import * as NsRecord from "N/record"
+import {Validation} from "../Validation";
 
 type FieldValue = Date | number | number[] | string | string[] | boolean | null;
 
@@ -83,6 +84,11 @@ export class Field implements FieldInterface {
         this._field.isReadOnly = value;
     }
 
+    private _validations = [];
 
+    addFieldValidations(fieldValidations: []) {
+        this._validations.push(...fieldValidations);
+        return this._validations;
+    }
 
 }
