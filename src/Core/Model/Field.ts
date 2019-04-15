@@ -19,6 +19,7 @@ export class Field implements FieldInterface {
     _field: NsRecord.Field;
     _record: NsRecord.Record | NsRecord.ClientCurrentRecord;
 
+    private _rules = [];
     private _disabled: boolean;
     private _mandatory: boolean;
     private _readOnly: boolean;
@@ -84,11 +85,10 @@ export class Field implements FieldInterface {
         this._field.isReadOnly = value;
     }
 
-    private _validations = [];
+    addRules(fieldValidations: []) {
+        this._rules.push(...fieldValidations);
 
-    addFieldValidations(fieldValidations: []) {
-        this._validations.push(...fieldValidations);
-        return this._validations;
+        return this;
     }
 
 }

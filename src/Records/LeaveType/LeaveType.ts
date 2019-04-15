@@ -28,36 +28,14 @@ export class LeaveType extends BaseModel {
 
     columns = this.addPrefix(Object.keys(this.typeMap));
 
-    private validations: object = {
-        'mapping': [Validation['isEmpty'], Validation['isUnique']],
-        'max_days_request': [/*this.isNotExceededLimit()*/],
+    validation: object = {
+        'mapping': [
+            Validation['isEmpty'],
+            Validation['isUnique']
+        ],
+        'max_days_request': [],
         'freq_type': [],
         'freq_value': [],
     };
-
-    public validateField(fieldId) {
-        let validations = super.getField(fieldId).addFieldValidations(this.validations[fieldId]);
-        for (let i = 0; i < validations.length; i++) {
-            validations[i](fieldId);
-        }
-    }
-
-    // private isEmpty(columnId): boolean {
-    //     return !!(this.getField(columnId).value);
-    // }
-    //
-    // private isNotEmpty(columnId): boolean {
-    //     return !(this.getField(columnId).value);
-    // }
-    //
-    // private isUnique(columnId): boolean {
-    //     return !(this.where(columnId, '==', this.getField(columnId).value)
-    //         .first(['id'])
-    //         ['id']);
-    // }
-    //
-    // private isNotExceededLimit() {
-    //     return (this.getField('days_limit').value >= this.getField('max_days_request').value);
-    // }
 }
 

@@ -24,6 +24,8 @@ interface BaseModelInterface {
 
     columns: string[];
 
+    validation: object;
+
     [key: string]: any
 
     /** Get the first result (object) in search results. */
@@ -38,6 +40,8 @@ interface BaseModelInterface {
 
 class BaseModel extends QueryBuilder implements BaseModelInterface {
     _record: ClientCurrentRecord | Record;
+
+    validation;
 
     getRecord(id) {
         return <Record>this.get(id, null, true);
@@ -55,7 +59,7 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
 
         if (this.columns)
             this.columns.forEach((column) => {
-                this.getField(column);
+                this.prepareField(column);
             });
 
         return this;
@@ -66,7 +70,7 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
 
         if (result.columns)
             result.columns.forEach((column) => {
-                this.getField(column, true);
+                this.prepareField(column);
             });
 
         return this;
@@ -77,12 +81,36 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
         return result ? result.first() : null;
     }
 
-    protected getField(fieldId, result?:boolean) {
-        let nsField = this._record.getField({
+    protected getValidationRules(fieldId) {
+        let rules;
+
+        try {
+            rules = this.validation[fieldId];
+        } catch (e) {
+            // lol sorry
+        }
+
+        return rules;
+    }
+
+    protected prepareField(fieldId) {
+        let nsField = this.getNsField(fieldId);
+
+        let field = new Field(fieldId, nsField, this._record);
+
+        let rules = this.getValidationRules(fieldId);
+
+        if (rules)
+            field.addRules(rules);
+
+        // add Field to Model as a Param & Return
+        return this[fieldId] = field;
+    }
+
+    protected getNsField(fieldId, result?: boolean) {
+        return this._record.getField({
             fieldId: this.getColumnId(fieldId)
         });
-
-        return this[fieldId] = new Field(fieldId, nsField, this._record);
     }
 
     // Override Query Builder prepareResults
