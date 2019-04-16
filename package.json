@@ -24,5 +24,7 @@
     "del": "^3.0.0",
     "vinyl-named": "^1.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "validator": "^10.11.0"
+  }
 }

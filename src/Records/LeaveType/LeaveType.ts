@@ -38,18 +38,11 @@ export class LeaveType extends BaseModel {
 
     columns = this.addPrefix(Object.keys(this.typeMap));
 
-    private validations: object = {
+    validation: object = {
         'mapping': [Validation['isEmpty'], Validation['isUnique']],
         'max_days_request': [],
         'freq_type': [],
         'freq_value': [],
     };
-
-    public validateField(fieldId) {
-        let validations = super.getField(fieldId).addFieldValidations(this.validations[fieldId]);
-        for (let i = 0; i < validations.length; i++) {
-            validations[i](fieldId);
-        }
-    }
 }
 

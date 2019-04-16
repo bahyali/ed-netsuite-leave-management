@@ -3,6 +3,7 @@ import {Field} from "../../Core/Model/Field";
 import {Record as NsRecord} from "../Mocks/N/record";
 import * as record from "@hitc/netsuite-types/N/record";
 import * as search from "@hitc/netsuite-types/N/search";
+import {Validation} from "../../Core/Validation";
 
 describe('BaseModel ', () => {
 
@@ -35,7 +36,7 @@ describe('BaseModel ', () => {
     it('should prepare from Result Instance ', function () {
         // Build Model from Result
         let record = new TestRecord()
-            // .createFromResult(<search.Result>NsRecord);
+        // .createFromResult(<search.Result>NsRecord);
 
         // Has field
         // expect(record).toEqual(expect.objectContaining({
@@ -43,12 +44,25 @@ describe('BaseModel ', () => {
         //     'jobtitle': expect.any(Field)
         // }));
     });
+
+    it('should validate fields ', function () {
+        // Build Model from NsRecord
+        let record = new TestRecord()
+            .createFromRecord(<record.ClientCurrentRecord | record.Record>NsRecord);
+
+        record.validate();
+        // Has field
+        expect(record).toEqual(expect.objectContaining({
+            'emp_name': expect.any(Field),
+            'jobtitle': expect.any(Field)
+        }));
+    });
 });
 
 class TestRecord extends BaseModel {
     recordType: string = 'customrecord_edc_emp_vac_balance';
 
-    columnPrefix: string = 'custrecord_edc_vac_balance';
+    columnPrefix: string = 'custrecord_edc_vac_balance_';
 
     // Mapping
     typeMap: object = {
@@ -56,6 +70,14 @@ class TestRecord extends BaseModel {
         "emp_name": ColumnType.LIST,
         "subsidiary": ColumnType.LIST,
         "jobtitle": ColumnType.STRING,
+    };
+
+    validation = {
+        'year': [
+            'isEmpty', //simple only
+            () => true, //
+            {isEmpty: []}
+        ]
     };
 
     // Default Columns
