@@ -57,13 +57,12 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
         let field = leaveType.getField(LeaveTypeFields.MAPPING);
         let valid = field.validate();
 
-        if (field.text.toString().toLowerCase() !== 'custom' && !valid) {
-            showMessage('Error', 'Type: is already created.');
+        if (field.text.toString().toLowerCase() !== 'custom' && !valid)
+            showMessage('Warning', field.text.toString() + ' already exists.');
+        else
+            return true;
 
-            return false;
-        } else {
-            disableFields(leaveType.columns, false);
-        }
+        return false;
     }
 
     return true;
@@ -79,7 +78,7 @@ function showMessage(title, message, type = UIMessage.Type.WARNING) {
         title: title,
         message: message,
         type: type
-    }).show({duration: 3000});
+    }).show({duration: 5000});
 }
 
 export = {
