@@ -29,7 +29,7 @@ class QueryBuilder implements QueryBuilderInterface {
     columnPrefix: string;
     columns: string[];
 
-    _limit: number;
+    _limit: number = 999;
     _query: search.Filter[] = [];
 
 

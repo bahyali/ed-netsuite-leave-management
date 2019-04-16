@@ -8,7 +8,6 @@
  * @NApiVersion 2.0
  */
 
-import validator from 'validator';
 import {Field} from "./Model/Field";
 import {BaseModel} from "./Model/BaseModel";
 
@@ -72,7 +71,7 @@ export class Rule implements RuleInterface {
 
 export class Validation {
     static isEmpty(field) {
-        return () => validator.isEmpty(field.value);
+        // return () => validator.isEmpty(field.value);
     }
 
     static isUnique(field) {

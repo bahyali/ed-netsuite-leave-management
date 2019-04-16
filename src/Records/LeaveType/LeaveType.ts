@@ -45,5 +45,14 @@ export class LeaveType extends BaseModel {
         'freq_type': [],
         'freq_value': [],
     };
+
+    isUnique(value) {
+        let leaveType = new LeaveType();
+
+        let exists = leaveType.where('mapping', '==', value)
+            .first(this.columns);
+
+        return !!(exists);
+    }
 }
 

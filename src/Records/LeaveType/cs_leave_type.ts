@@ -62,22 +62,27 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
     leaveType.createFromRecord(context.currentRecord);
 
     if (context.fieldId == leaveType.getColumnId(LeaveTypeFields.MAPPING)) {
-        const mappingText = leaveType.getField(LeaveTypeFields.MAPPING).text.toString();
+        const mappingText = leaveType
+            .getField(LeaveTypeFields.MAPPING)
+            .text
+            .toString();
 
-        if (mappingText.toLowerCase() !== 'custom') {
-            for (let i = 0; i < leaveType.columns.length; i++)
-                leaveType.getField(leaveType.columns[i]).disabled = true;
+        let exists = leaveType.isUnique(leaveType.getField(LeaveTypeFields.MAPPING).value);
 
-            showMessage('Error', 'Type already created.');
-
+        if (mappingText.toLowerCase() !== 'custom' && exists) {
+            disableFields(leaveType.columns, true);
+            showMessage('Error', 'Type: ' + mappingText + ' already created.');
         } else {
-            // Field Group
-            for (let i = 0; i < leaveType.columns.length; i++)
-                leaveType.getField(leaveType.columns[i]).disabled = false;
+            disableFields(leaveType.columns, false);
         }
     }
 
     return true;
+}
+
+function disableFields(fields, disabled = true) {
+    for (let i = 0; i < fields.length; i++)
+        leaveType.getField(fields[i]).disabled = disabled;
 }
 
 function showMessage(title, message, type = UIMessage.Type.WARNING) {
