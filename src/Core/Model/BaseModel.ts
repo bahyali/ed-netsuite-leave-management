@@ -125,6 +125,10 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
         });
     }
 
+    getField(fieldId){
+        return this.prepareField(fieldId);
+    }
+
     // Override Query Builder prepareResults
     protected prepareResults(results: search.Result[]) {
         let records = QueryResults.create();

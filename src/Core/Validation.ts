@@ -21,11 +21,11 @@ interface RuleInterface {
 const enum RuleType {String, Object, Callback}
 
 export class Rule implements RuleInterface {
-    private _type: RuleType;
-    private _validator;
+    readonly _type: RuleType;
+    readonly _validator;
+    readonly _field: Field;
 
     private _model: BaseModel;
-    private _field: Field;
 
     constructor(validator, field: Field, model?: BaseModel) {
         this._validator = validator;
