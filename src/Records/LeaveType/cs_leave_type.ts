@@ -7,41 +7,47 @@
 
 import {EntryPoints} from 'N/types';
 import * as runtime from 'N/runtime';
+
 import {LeaveType, LeaveTypeFields} from './LeaveType';
+import * as UIMessage from 'N/ui/message';
+
 import {Field} from '../../Core/Model/Field';
 import {LeaveBalance} from '../LeaveBalance/LeaveBalance';
 import {QueryResults} from "../../Core/Model/QueryResults";
 
 let leaveType = new LeaveType();
 
+leaveType.columns = [
+    LeaveTypeFields.DAYS_LIMIT,
+    LeaveTypeFields.MAX_DAYS_REQUEST,
+    LeaveTypeFields.FREQUENT_TYPE,
+    LeaveTypeFields.FREQUENT_VALUE
+];
+
 function pageInit(context: EntryPoints.Client.pageInitContext) {
+    leaveType.createFromRecord(context.currentRecord);
 
     if (context.mode == 'edit') {
-        leaveType.createFromRecord(context.currentRecord);
-
         // Getting the text of the item selected in "Mapping" DropDownList Field.
         const mappingText = leaveType.getField(LeaveTypeFields.MAPPING).text.toString();
 
         if (mappingText.toLowerCase() !== 'custom') {
             leaveType.getField(LeaveTypeFields.DAYS_LIMIT).mandatory = false;
 
-            let customTypeFields = [
-                LeaveTypeFields.DAYS_LIMIT,
-                LeaveTypeFields.MAX_DAYS_REQUEST,
-                LeaveTypeFields.FREQUENT_TYPE,
-                LeaveTypeFields.FREQUENT_VALUE
-            ];
-
             // Disable all fields
-            for (let i = 0; i < customTypeFields.length; i++)
-                leaveType.getField(customTypeFields[i]).disabled = true;
+            for (let i = 0; i < leaveType.columns.length; i++)
+                leaveType.getField(leaveType.columns[i]).disabled = true;
 
         }
+    } else if (context.mode == 'create') {
+
     }
 
 }
 
 function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
+    return;
+
     leaveType.createFromRecord(context.currentRecord);
 
     if (context.fieldId == leaveType.getColumnId(LeaveTypeFields.FREQUENT_TYPE)) {
@@ -59,18 +65,27 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
         const mappingText = leaveType.getField(LeaveTypeFields.MAPPING).text.toString();
 
         if (mappingText.toLowerCase() !== 'custom') {
-            let customTypeFields = [LeaveTypeFields.DAYS_LIMIT, LeaveTypeFields.MAX_DAYS_REQUEST,
-                LeaveTypeFields.FREQUENT_TYPE, LeaveTypeFields.FREQUENT_VALUE];
+            for (let i = 0; i < leaveType.columns.length; i++)
+                leaveType.getField(leaveType.columns[i]).disabled = true;
 
-            for (let i = 0; i < customTypeFields.length; i++) {
-                leaveType.getField(customTypeFields[i]).disabled = true;
-            }
+            showMessage('Error', 'Type already created.');
+
         } else {
-            // Check if the field is Unique
+            // Field Group
+            for (let i = 0; i < leaveType.columns.length; i++)
+                leaveType.getField(leaveType.columns[i]).disabled = false;
         }
     }
 
     return true;
+}
+
+function showMessage(title, message, type = UIMessage.Type.WARNING) {
+    UIMessage.create({
+        title: title,
+        message: message,
+        type: type
+    }).show({duration: 5000});
 }
 
 export = {
