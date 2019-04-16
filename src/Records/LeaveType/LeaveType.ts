@@ -8,12 +8,13 @@
  * @NApiVersion 2.0
  */
 
-import { BaseModel, ColumnType } from '../../Core/Model/BaseModel';
-import { Validation } from '../../Core/Validation';
+import {ColumnType} from '../../Core/Model/QueryBuilder';
+import {BaseModel} from '../../Core/Model/BaseModel';
+import {Validation} from '../../Core/Validation';
 
 
 /** Defining the Fields in the Leave Type Record */
-export enum LeaveTypeFields { 
+export enum LeaveTypeFields {
     MAPPING = 'mapping',
     DAYS_LIMIT = 'days_limit',
     MAX_DAYS_REQUEST = 'max_days_request',
@@ -36,7 +37,7 @@ export class LeaveType extends BaseModel {
         'accept_past_date': ColumnType.BOOLEAN,
     };
 
-    columns = this.addPrefix(Object.keys(this.typeMap));
+    columns = Object.keys(this.typeMap);
 
     validation: object = {
         'mapping': [Validation['isEmpty'], Validation['isUnique']],
