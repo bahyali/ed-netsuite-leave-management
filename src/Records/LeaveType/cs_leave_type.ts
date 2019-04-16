@@ -42,10 +42,10 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
 }
 
 function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
-    const vacationType = context.currentRecord;
+    leaveType.createFromRecord(context.currentRecord);
 
     if (context.fieldId == leaveType.getColumnId(LeaveTypeFields.FREQUENT_TYPE)) {
-        let frequentType = vacationType.getValue(LeaveTypeFields.FREQUENT_TYPE);
+        let frequentType = leaveType.getField(LeaveTypeFields.FREQUENT_TYPE).value;
 
         leaveType.getField(LeaveTypeFields.FREQUENT_VALUE).disabled = !!(frequentType);
         leaveType.getField(LeaveTypeFields.FREQUENT_VALUE).mandatory = !!(frequentType);
@@ -53,10 +53,11 @@ function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
 }
 
 function validateField(context: EntryPoints.Client.validateFieldContext) {
-    const vacationType = context.currentRecord;
+    leaveType.createFromRecord(context.currentRecord);
 
     if (context.fieldId == leaveType.getColumnId(LeaveTypeFields.MAPPING)) {
-        const mappingText = vacationType.getText(leaveType.getColumnId(LeaveTypeFields.MAPPING)).toString();
+        const mappingText = leaveType.getField(LeaveTypeFields.MAPPING).text.toString();
+
         if (mappingText.toLowerCase() !== 'custom') {
             let customTypeFields = [LeaveTypeFields.DAYS_LIMIT, LeaveTypeFields.MAX_DAYS_REQUEST,
                 LeaveTypeFields.FREQUENT_TYPE, LeaveTypeFields.FREQUENT_VALUE];
@@ -66,7 +67,6 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
             }
         } else {
             // Check if the field is Unique
-
         }
     }
 
