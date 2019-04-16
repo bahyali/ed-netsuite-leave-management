@@ -40,19 +40,16 @@ export class LeaveType extends BaseModel {
     columns = Object.keys(this.typeMap);
 
     validation: object = {
-        'mapping': [Validation['isEmpty'], Validation['isUnique']],
+        'mapping': [
+            (field, model) => {
+                if (field.text.toLowerCase() !== 'custom')
+                    // call isUnique Validator
+                    return Validation.isUnique(field, model)();
+            }
+        ],
         'max_days_request': [],
         'freq_type': [],
         'freq_value': [],
     };
-
-    isUnique(value) {
-        let leaveType = new LeaveType();
-
-        let exists = leaveType.where('mapping', '==', value)
-            .first(this.columns);
-
-        return !!(exists);
-    }
 }
 

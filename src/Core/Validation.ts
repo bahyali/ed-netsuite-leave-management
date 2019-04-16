@@ -1,15 +1,6 @@
-/**
- * @module      LeaveManagement
- * @class       Validation
- * @description LeaveBalance class extends `BaseModel` class to access the data of Leave Balances in NetSuite.
- * @author      Mohamed Elshowel
- * @version     1.0.0
- * @repo        https://github.com/bahyali/ed-netsuite-leave-management
- * @NApiVersion 2.0
- */
-
 import {Field} from "./Model/Field";
 import {BaseModel} from "./Model/BaseModel";
+import validator from 'validator';
 
 // Translator of Rule
 
@@ -44,23 +35,26 @@ export class Rule implements RuleInterface {
     }
 
     validate(): boolean {
+        let args = [this._field, this._model];
+
         if (this._type == RuleType.String) {
             // String validation on Field Value
-            return Validation[this._validator](this._field)();
+            return Validation[this._validator](...args)();
 
         } else if (this._type == RuleType.Object) {
             // Parse Object and Extract Data
             //{ validatorName: [arg1, arg2, arg3] };
 
             let validator = Object.keys(this._validator)[0];
-            let args = this._validator[validator];
+
+            args.push(...this._validator[validator]);
 
             return Validation[validator](...args)();
 
         } else if (this._type == RuleType.Callback)
         // Run Function
         //()=> {return boolean}
-            return this._validator();
+            return this._validator(...args);
 
         // If no validators could run, it should be valid.
         return true;
@@ -70,11 +64,15 @@ export class Rule implements RuleInterface {
 // Our validation layer
 
 export class Validation {
-    static isEmpty(field) {
-        // return () => validator.isEmpty(field.value);
+    static isEmpty(field: Field) {
+        return () => validator.isEmpty(field.value);
     }
 
-    static isUnique(field) {
+    static isNotEmpty(field: Field) {
+        return () => !validator.isEmpty(field.value);
+    }
 
+    static isUnique(field: Field, model) {
+        return () => !model.exists(field._id, field.value)
     }
 }

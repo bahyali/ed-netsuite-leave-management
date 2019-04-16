@@ -1,5 +1,5 @@
 import {Operator} from "../../Core/Model/Operator";
-import {ColumnType} from "../../Core/Model/BaseModel";
+import {ColumnType} from "../../Core/Model/QueryBuilder";
 import * as search from '../../../node_modules/@hitc/netsuite-types/N/search';
 
 describe('Operator ', () => {

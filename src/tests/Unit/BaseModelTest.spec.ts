@@ -51,7 +51,7 @@ describe('BaseModel ', () => {
         let record = new TestRecord()
             .createFromRecord(<record.ClientCurrentRecord | record.Record>NsRecord);
 
-        record.validate();
+        let valid = record.validateField('year');
         // Has field
         expect(record).toEqual(expect.objectContaining({
             'emp_name': expect.any(Field),
@@ -75,9 +75,12 @@ class TestRecord extends BaseModel {
 
     validation = {
         'year': [
-            'isEmpty', //simple only
-            () => true, //
-            {isEmpty: []}
+            'isNotEmpty', //simple only
+            // 'isUnique', //simple
+            (field, model) => {
+                return Validation.isUnique(field, model)();
+            }, //
+            // {isEmpty: []}
         ]
     };
 

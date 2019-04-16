@@ -80,9 +80,26 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
         return this;
     }
 
+    exists(id, value) {
+        let model = new BaseModel();
+        //setup
+        model.recordType = this.recordType;
+        model.columnPrefix = this.columnPrefix;
+        model.typeMap = this.typeMap;
+
+        let exists = model.where(id, '==', value)
+            .first(this.columns);
+
+        return !!(exists);
+    }
+
     first(columns: string[]): object {
         let result = this.find(columns);
         return result ? result.first() : null;
+    }
+
+    validateField(id): boolean {
+        return this.getField(id).validate();
     }
 
     validate(): boolean {
@@ -125,7 +142,11 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
         });
     }
 
-    getField(fieldId){
+    removePrefix(fieldId){
+        return fieldId.replace(this.columnPrefix, '');
+    }
+
+    getField(fieldId) {
         return this.prepareField(fieldId);
     }
 

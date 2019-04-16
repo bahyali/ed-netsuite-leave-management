@@ -6,14 +6,8 @@
  */
 
 import {EntryPoints} from 'N/types';
-import * as runtime from 'N/runtime';
-
 import {LeaveType, LeaveTypeFields} from './LeaveType';
 import * as UIMessage from 'N/ui/message';
-
-import {Field} from '../../Core/Model/Field';
-import {LeaveBalance} from '../LeaveBalance/LeaveBalance';
-import {QueryResults} from "../../Core/Model/QueryResults";
 
 let leaveType = new LeaveType();
 
@@ -46,8 +40,6 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
 }
 
 function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
-    return;
-
     leaveType.createFromRecord(context.currentRecord);
 
     if (context.fieldId == leaveType.getColumnId(LeaveTypeFields.FREQUENT_TYPE)) {
@@ -62,16 +54,12 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
     leaveType.createFromRecord(context.currentRecord);
 
     if (context.fieldId == leaveType.getColumnId(LeaveTypeFields.MAPPING)) {
-        const mappingText = leaveType
-            .getField(LeaveTypeFields.MAPPING)
-            .text
-            .toString();
+        let field = leaveType.getField(LeaveTypeFields.MAPPING);
+        let valid = field.validate();
 
-        let exists = leaveType.isUnique(leaveType.getField(LeaveTypeFields.MAPPING).value);
+        if (field.text.toString().toLowerCase() !== 'custom' && !valid) {
+            showMessage('Error', 'Type: is already created.');
 
-        if (mappingText.toLowerCase() !== 'custom' && exists) {
-            // disableFields(leaveType.columns, true);
-            showMessage('Error', 'Type: ' + mappingText + ' already created.');
             return false;
         } else {
             disableFields(leaveType.columns, false);
