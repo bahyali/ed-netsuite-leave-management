@@ -26,3 +26,14 @@ export const Validation: object = {
         return !(new BaseModel().setRecord(recordType).where(fieldId, '==', fieldValue).first(['id'])['id']);
     }
 };
+
+
+// /** Under Development... */
+// interface ValidationInterface{
+//     isEmpty(fieldValue: any): boolean;
+// }
+// export class ValidationClass implements ValidationInterface {
+//     public isEmpty(fieldValue: any) {
+//         return !!fieldValue;
+//     }
+// }

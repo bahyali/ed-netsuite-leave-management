@@ -77,7 +77,7 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
         return result ? result.first() : null;
     }
 
-    protected getField(fieldId, result?:boolean) {
+    getField(fieldId, result?:boolean) {
         let nsField = this._record.getField({
             fieldId: this.getColumnId(fieldId)
         });
