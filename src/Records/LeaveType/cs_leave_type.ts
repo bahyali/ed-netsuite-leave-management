@@ -70,8 +70,9 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
         let exists = leaveType.isUnique(leaveType.getField(LeaveTypeFields.MAPPING).value);
 
         if (mappingText.toLowerCase() !== 'custom' && exists) {
-            disableFields(leaveType.columns, true);
+            // disableFields(leaveType.columns, true);
             showMessage('Error', 'Type: ' + mappingText + ' already created.');
+            return false;
         } else {
             disableFields(leaveType.columns, false);
         }
@@ -90,7 +91,7 @@ function showMessage(title, message, type = UIMessage.Type.WARNING) {
         title: title,
         message: message,
         type: type
-    }).show({duration: 5000});
+    }).show({duration: 3000});
 }
 
 export = {
