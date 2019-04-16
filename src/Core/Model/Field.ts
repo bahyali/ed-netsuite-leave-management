@@ -10,6 +10,12 @@ interface FieldInterface {
 
     _field: NsRecord.Field
     _record: NsRecord.Record | NsRecord.ClientCurrentRecord
+
+    disable(): void
+
+    makeMandatory(): void
+
+    validate(): boolean
 }
 
 export class Field implements FieldInterface {
@@ -34,6 +40,30 @@ export class Field implements FieldInterface {
         if (record) {
             this._record = record;
         }
+    }
+
+    addRules(fieldValidations: [], model) {
+        let $self = this;
+
+        fieldValidations.forEach((rule) => {
+            this._rules.push(new Rule(rule, $self, model));
+        });
+
+        return this;
+    }
+
+    validate() {
+        return this._rules.every((rule) => {
+            return rule.validate();
+        })
+    }
+
+    disable(disabled=true) {
+        this.disabled = disabled;
+    }
+
+    makeMandatory() {
+        this.mandatory = true;
     }
 
     get value(): FieldValue {
@@ -83,22 +113,6 @@ export class Field implements FieldInterface {
     set readOnly(value: boolean) {
         this._readOnly = value;
         this._field.isReadOnly = value;
-    }
-
-    addRules(fieldValidations: [], model) {
-        let $self = this;
-
-        fieldValidations.forEach((rule)=>{
-            this._rules.push(new Rule(rule, $self, model));
-        });
-
-        return this;
-    }
-
-    validate(){
-        this._rules.every((rule)=>{
-            return rule.validate();
-        })
     }
 
 }
