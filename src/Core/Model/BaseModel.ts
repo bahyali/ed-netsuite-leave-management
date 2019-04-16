@@ -7,7 +7,7 @@
  * @repo        https://github.com/bahyali/ed-netsuite-leave-management
  * @NApiVersion 2.0
  */
-import {QueryBuilder, ColumnType} from './QueryBuilder';
+import {QueryBuilder} from './QueryBuilder';
 import {Field} from "./Field";
 import {ClientCurrentRecord, Record, Field as NsField} from "N/record";
 import * as search from "N/search";
@@ -143,4 +143,4 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
     }
 }
 
-export {BaseModel, ColumnType};
+export {BaseModel};

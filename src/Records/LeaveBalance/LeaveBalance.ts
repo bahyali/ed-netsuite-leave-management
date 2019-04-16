@@ -8,7 +8,8 @@
  * @NApiVersion 2.0
  */
 
-import {BaseModel, ColumnType} from '../../Core/Model/BaseModel';
+import {BaseModel} from '../../Core/Model/BaseModel';
+import {ColumnType} from "../../Core/Model/QueryBuilder";
 
 
 export class LeaveBalance extends BaseModel {

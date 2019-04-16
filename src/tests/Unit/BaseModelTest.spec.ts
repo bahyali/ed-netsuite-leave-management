@@ -1,9 +1,10 @@
-import {BaseModel, ColumnType} from "../../Core/Model/BaseModel";
+import {BaseModel} from "../../Core/Model/BaseModel";
 import {Field} from "../../Core/Model/Field";
 import {Record as NsRecord} from "../Mocks/N/record";
 import * as record from "@hitc/netsuite-types/N/record";
 import * as search from "@hitc/netsuite-types/N/search";
 import {Validation} from "../../Core/Validation";
+import {ColumnType} from "../../Core/Model/QueryBuilder";
 
 describe('BaseModel ', () => {
 
