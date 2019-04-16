@@ -36,10 +36,14 @@ interface BaseModelInterface {
     getRecord(id);
 
     setRecord(id);
+
+    validate(): boolean;
 }
 
 class BaseModel extends QueryBuilder implements BaseModelInterface {
     _record: ClientCurrentRecord | Record;
+
+    private _fields = [];
 
     validation;
 
@@ -81,6 +85,12 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
         return result ? result.first() : null;
     }
 
+    validate(): boolean {
+        return this._fields.every((field) => {
+            return field.validate();
+        });
+    }
+
     protected getValidationRules(fieldId) {
         let rules;
 
@@ -101,13 +111,15 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
         let rules = this.getValidationRules(fieldId);
 
         if (rules)
-            field.addRules(rules);
+            field.addRules(rules, this);
 
-        // add Field to Model as a Param & Return
+        this._fields.push(field);
+
+        // Add Field to Model as a Param & Return
         return this[fieldId] = field;
     }
 
-    protected getNsField(fieldId, result?: boolean) {
+    protected getNsField(fieldId) {
         return this._record.getField({
             fieldId: this.getColumnId(fieldId)
         });

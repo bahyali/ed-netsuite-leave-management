@@ -1,5 +1,5 @@
 import * as NsRecord from "N/record"
-import {Validation} from "../Validation";
+import {Rule, Validation} from "../Validation";
 
 type FieldValue = Date | number | number[] | string | string[] | boolean | null;
 
@@ -85,10 +85,20 @@ export class Field implements FieldInterface {
         this._field.isReadOnly = value;
     }
 
-    addRules(fieldValidations: []) {
-        this._rules.push(...fieldValidations);
+    addRules(fieldValidations: [], model) {
+        let $self = this;
+
+        fieldValidations.forEach((rule)=>{
+            this._rules.push(new Rule(rule, $self, model));
+        });
 
         return this;
+    }
+
+    validate(){
+        this._rules.every((rule)=>{
+            return rule.validate();
+        })
     }
 
 }

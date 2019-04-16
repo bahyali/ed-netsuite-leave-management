@@ -44,12 +44,25 @@ describe('BaseModel ', () => {
         //     'jobtitle': expect.any(Field)
         // }));
     });
+
+    it('should validate fields ', function () {
+        // Build Model from NsRecord
+        let record = new TestRecord()
+            .createFromRecord(<record.ClientCurrentRecord | record.Record>NsRecord);
+
+        record.validate();
+        // Has field
+        expect(record).toEqual(expect.objectContaining({
+            'emp_name': expect.any(Field),
+            'jobtitle': expect.any(Field)
+        }));
+    });
 });
 
 class TestRecord extends BaseModel {
     recordType: string = 'customrecord_edc_emp_vac_balance';
 
-    columnPrefix: string = 'custrecord_edc_vac_balance';
+    columnPrefix: string = 'custrecord_edc_vac_balance_';
 
     // Mapping
     typeMap: object = {
@@ -61,9 +74,10 @@ class TestRecord extends BaseModel {
 
     validation = {
         'year': [
-            Validation['isEmpty'],
-            Validation['isUnique']
-        ],
+            'isEmpty', //simple only
+            () => true, //
+            {isEmpty: []}
+        ]
     };
 
     // Default Columns
