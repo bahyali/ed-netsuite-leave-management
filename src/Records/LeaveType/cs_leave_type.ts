@@ -23,18 +23,13 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
 
     if (context.mode == 'edit') {
         // Getting the text of the item selected in "Mapping" DropDownList Field.
-        const mappingText = leaveType.getField(LeaveTypeFields.MAPPING).text.toString();
+        const mapping = leaveType.getField(LeaveTypeFields.MAPPING);
 
-        if (mappingText.toLowerCase() !== 'custom') {
-            let daysLimit = leaveType.getField(LeaveTypeFields.DAYS_LIMIT);
+        if (mapping.text.toString().toLowerCase() !== 'custom')
+            mapping.disable();
+    }
 
-            daysLimit.mandatory = false;
-
-            // Disable all fields
-            disableFields(leaveType.columns);
-
-        }
-    } else if (context.mode == 'create') {
+    else if (context.mode == 'create') {
 
     }
 }
