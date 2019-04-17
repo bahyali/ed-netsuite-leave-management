@@ -5,8 +5,8 @@
  * @NModuleScope SameAccount
  */
 
-import {EntryPoints} from 'N/types';
-import {LeaveType, LeaveTypeFields} from './LeaveType';
+import { EntryPoints } from 'N/types';
+import { LeaveType, LeaveTypeFields } from './LeaveType';
 import * as UIMessage from 'N/ui/message';
 
 let leaveType = new LeaveType();
@@ -40,7 +40,7 @@ function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
     if (context.fieldId == leaveType.getColumnId(LeaveTypeFields.FREQUENT_TYPE)) {
         let frequentType = leaveType.getField(LeaveTypeFields.FREQUENT_TYPE).value;
 
-        leaveType.getField(LeaveTypeFields.FREQUENT_VALUE).disabled = !!(frequentType);
+        leaveType.getField(LeaveTypeFields.FREQUENT_VALUE).disabled = !(frequentType);
         leaveType.getField(LeaveTypeFields.FREQUENT_VALUE).mandatory = !!(frequentType);
     }
 }
@@ -54,8 +54,12 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
 
         if (!valid)
             showMessage('Warning', field.text.toString() + ' already exists.');
-        else
+        else {
+            if (field.text.toString().toLowerCase() !== 'custom') 
+                disableFields(leaveType.columns)
+            
             return true;
+        }
 
         return false;
     }
@@ -73,7 +77,7 @@ function showMessage(title, message, type = UIMessage.Type.WARNING) {
         title: title,
         message: message,
         type: type
-    }).show({duration: 5000});
+    }).show({ duration: 5000 });
 }
 
 export = {
