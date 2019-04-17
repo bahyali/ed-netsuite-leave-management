@@ -1,12 +1,3 @@
-/**
- * @module      LeaveManagement
- * @class       BaseModel
- * @description Base Model Class customized for SuiteScript 2.0 using TypeScript to be extended
- * @author      Mohamed Elshowel
- * @version     1.0.0
- * @repo        https://github.com/bahyali/ed-netsuite-leave-management
- * @NApiVersion 2.0
- */
 import {QueryBuilder} from './QueryBuilder';
 import {Field} from "./Field";
 import {ClientCurrentRecord, Record, Field as NsField} from "N/record";

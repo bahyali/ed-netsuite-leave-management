@@ -42,9 +42,11 @@ export class LeaveType extends BaseModel {
     validation: object = {
         'mapping': [
             (field, model) => {
-                if (field.text.toLowerCase() !== 'custom')
-                    // call isUnique Validator
+                if (field.text.toString().toLowerCase() !== 'custom')
+                // call isUnique Validator
                     return Validation.isUnique(field, model)();
+
+                return true;
             }
         ],
         'max_days_request': [],

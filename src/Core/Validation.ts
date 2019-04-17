@@ -35,6 +35,7 @@ export class Rule implements RuleInterface {
     }
 
     validate(): boolean {
+        //dependencies to inject in all validators
         let args = [this._field, this._model];
 
         if (this._type == RuleType.String) {
