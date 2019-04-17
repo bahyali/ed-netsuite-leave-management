@@ -1,12 +1,3 @@
-/**
- * @module      LeaveManagement
- * @class       ExceptionHandler
- * @description Exception Handler Class customized for SuiteScript 2.0 using TypeScript
- * @author      Mohamed Elshowel
- * @version     1.0.0
- * @repo        https://github.com/bahyali/ed-netsuite-leave-management
- */
-
 import * as log from 'N/log';
 import * as email from 'N/email';
 import * as runtime from 'N/runtime';

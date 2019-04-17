@@ -26,17 +26,17 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
         const mappingText = leaveType.getField(LeaveTypeFields.MAPPING).text.toString();
 
         if (mappingText.toLowerCase() !== 'custom') {
-            leaveType.getField(LeaveTypeFields.DAYS_LIMIT).mandatory = false;
+            let daysLimit = leaveType.getField(LeaveTypeFields.DAYS_LIMIT);
+
+            daysLimit.mandatory = false;
 
             // Disable all fields
-            for (let i = 0; i < leaveType.columns.length; i++)
-                leaveType.getField(leaveType.columns[i]).disabled = true;
+            disableFields(leaveType.columns);
 
         }
     } else if (context.mode == 'create') {
 
     }
-
 }
 
 function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
@@ -66,6 +66,11 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
     }
 
     return true;
+}
+
+function disableFields(fields, disabled = true) {
+    for (let i = 0; i < fields.length; i++)
+        leaveType.getField(fields[i]).disabled = disabled;
 }
 
 function showMessage(title, message, type = UIMessage.Type.WARNING) {
