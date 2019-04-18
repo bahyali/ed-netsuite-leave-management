@@ -5,8 +5,8 @@
  * @NModuleScope SameAccount
  */
 
-import { EntryPoints } from 'N/types';
-import { LeaveType, LeaveTypeFields } from './LeaveType';
+import {EntryPoints} from 'N/types';
+import {LeaveType, LeaveTypeFields} from './LeaveType';
 import * as UIMessage from 'N/ui/message';
 
 let leaveType = new LeaveType();
@@ -27,9 +27,7 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
 
         if (mapping.text.toString().toLowerCase() !== 'custom')
             mapping.disable();
-    }
-
-    else if (context.mode == 'create') {
+    } else if (context.mode == 'create') {
 
     }
 }
@@ -55,9 +53,13 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
         if (!valid)
             showMessage('Warning', field.text.toString() + ' already exists.');
         else {
-            if (field.text.toString().toLowerCase() !== 'custom') 
-                disableFields(leaveType.columns)
-            
+            if (field.text.toString().toLowerCase() !== 'custom') {
+                leaveType.getFields(leaveType.columns)
+                    .disable();
+                leaveType.getFields(leaveType.columns)
+                    .optional();
+            }
+
             return true;
         }
 
@@ -77,7 +79,7 @@ function showMessage(title, message, type = UIMessage.Type.WARNING) {
         title: title,
         message: message,
         type: type
-    }).show({ duration: 5000 });
+    }).show({duration: 5000});
 }
 
 export = {

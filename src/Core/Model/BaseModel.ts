@@ -1,6 +1,6 @@
-import {QueryBuilder} from './QueryBuilder';
-import {Field} from "./Field";
-import {ClientCurrentRecord, Record} from "N/record";
+import { QueryBuilder, ColumnType } from './QueryBuilder';
+import { Field } from "./Field";
+import { ClientCurrentRecord, Record, Field as NsField } from "N/record";
 import * as search from "N/search";
 import {QueryResults} from "./QueryResults";
 import {FieldGroup} from './FieldGroup';
@@ -32,7 +32,8 @@ interface BaseModelInterface {
     validate(): boolean;
 }
 
-class BaseModel extends QueryBuilder implements BaseModelInterface {
+
+export class BaseModel extends QueryBuilder implements BaseModelInterface {
     _record: ClientCurrentRecord | Record;
 
     private _fields = [];
@@ -134,7 +135,7 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
         });
     }
 
-    removePrefix(fieldId) {
+    removePrefix(fieldId){
         return fieldId.replace(this.columnPrefix, '');
     }
 
@@ -166,4 +167,4 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
     }
 }
 
-export {BaseModel};
+export { ColumnType };
