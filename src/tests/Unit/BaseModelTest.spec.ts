@@ -2,7 +2,6 @@ import {BaseModel} from "../../Core/Model/BaseModel";
 import {Field} from "../../Core/Model/Field";
 import {Record as NsRecord} from "../Mocks/N/record";
 import * as record from "@hitc/netsuite-types/N/record";
-import * as search from "@hitc/netsuite-types/N/search";
 import {Validation} from "../../Core/Validation";
 import {ColumnType} from "../../Core/Model/QueryBuilder";
 
@@ -34,9 +33,23 @@ describe('BaseModel ', () => {
         }));
     });
 
+
+    it('should get a FieldGroup ', function () {
+        // Build Model from NsRecord
+        let record = new TestRecord()
+            .createFromRecord(<record.ClientCurrentRecord | record.Record>NsRecord);
+
+        let fields = record.getFields(['emp_name', 'jobtitle']);
+
+        // Has field
+        expect(fields).toHaveLength(2);
+
+        expect(fields[0]).toBeTruthy();
+    });
+
     it('should prepare from Result Instance ', function () {
         // Build Model from Result
-        let record = new TestRecord()
+        // let record = new TestRecord()
         // .createFromResult(<search.Result>NsRecord);
 
         // Has field
@@ -53,10 +66,8 @@ describe('BaseModel ', () => {
 
         let valid = record.validateField('year');
         // Has field
-        expect(record).toEqual(expect.objectContaining({
-            'emp_name': expect.any(Field),
-            'jobtitle': expect.any(Field)
-        }));
+        expect(valid).toBeTruthy();
+
     });
 });
 

@@ -1,20 +1,16 @@
-import {Field} from "N/record";
+import {Field} from "./Field";
 
 interface FieldGroupInterface extends Array<object> {
-    _fields;
+    disable(key?);
 
-    disable(key);
+    enable(key?);
 
-    disableAll();
+    required(key?)
 
-    enable(key);
-
-    enableAll();
+    optional(key?)
 }
 
-class FieldGroup extends Array<Field> implements FieldGroupInterface {
-    _fields;
-
+export class FieldGroup extends Array<Field> implements FieldGroupInterface {
     private constructor(results) {
         super(...results);
     }
@@ -23,23 +19,43 @@ class FieldGroup extends Array<Field> implements FieldGroupInterface {
         return Object.create(FieldGroup.prototype);
     }
 
-    disable(id) {
-        this.find(id)[0].isDisabled = true;
+    disable(id?) {
+        if (id)
+            this.find(id)[0].disabled = true;
+        else
+            this.makeAllDisabled(true);
     }
 
-    disableAll() {
+    enable(id?) {
+        if (id)
+            this.find(id)[0].disabled = false;
+        else
+            this.makeAllDisabled(false);
+    }
+
+    required(id?) {
+        if (id)
+            this.find(id)[0].mandatory = true;
+        else
+            this.makeAllMandatory(true);
+    }
+
+    optional(id?) {
+        if (id)
+            this.find(id)[0].mandatory = false;
+        else
+            this.makeAllMandatory(false);
+    }
+
+    makeAllDisabled(value) {
         this.forEach((field) => {
-            field.isDisabled = true;
+            field.disabled = value;
         })
     }
 
-    enable(id) {
-        this.find(id)[0].isDisabled = false;
-    }
-
-    enableAll() {
+    makeAllMandatory(value) {
         this.forEach((field) => {
-            field.isDisabled = false;
+            field.mandatory = value;
         })
     }
 
@@ -47,11 +63,11 @@ class FieldGroup extends Array<Field> implements FieldGroupInterface {
         let index = this.find(id).length > 0 ? this.indexOf(this.find(id)[0]) : -1;
 
         if (index !== -1)
-            this.splice(index);
+            this.splice(index, 1);
     }
 
     private find(id) {
-        return this.filter(obj => obj.id == id);
+        return this.filter(obj => obj._id == id);
     }
 
 }

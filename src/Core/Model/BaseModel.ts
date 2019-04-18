@@ -1,8 +1,9 @@
 import {QueryBuilder} from './QueryBuilder';
 import {Field} from "./Field";
-import {ClientCurrentRecord, Record, Field as NsField} from "N/record";
+import {ClientCurrentRecord, Record} from "N/record";
 import * as search from "N/search";
 import {QueryResults} from "./QueryResults";
+import {FieldGroup} from './FieldGroup';
 
 interface BaseModelInterface {
     _record: object;
@@ -133,12 +134,22 @@ class BaseModel extends QueryBuilder implements BaseModelInterface {
         });
     }
 
-    removePrefix(fieldId){
+    removePrefix(fieldId) {
         return fieldId.replace(this.columnPrefix, '');
     }
 
     getField(fieldId) {
         return this.prepareField(fieldId);
+    }
+
+    getFields(fields: string[]): FieldGroup {
+        let fieldGroup = FieldGroup.create();
+
+        fields.forEach((fieldId) => {
+            fieldGroup.push(this.getField(fieldId));
+        });
+
+        return fieldGroup;
     }
 
     // Override Query Builder prepareResults
