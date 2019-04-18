@@ -76,4 +76,29 @@ export class Validation {
     static isUnique(field: Field, model) {
         return () => !model.exists(field._id, field.value)
     }
+
+    static greaterThan(field: Field, model: BaseModel, otherFieldId: string){
+        return () => {
+            const otherFieldValue = model.getField(otherFieldId).value;
+            const fieldValue = field.value;
+            return fieldValue > otherFieldValue;
+        }
+    }
+
+    static lessThan(field: Field, model: BaseModel, otherFieldId: string){
+        return ! this.greaterThan(field, model, otherFieldId);
+    }
+
+    static greaterThanOrEqual(field: Field, model: BaseModel, otherFieldId:string){
+        return () => {
+            const otherFieldValue = model.getField(otherFieldId).value;
+            const fieldValue = field.value;
+            return fieldValue >= otherFieldValue;
+        }
+    }
+
+    static lessThanOrEqual(field: Field, model: BaseModel, otherFieldId: string){
+        return ! this.greaterThanOrEqual(field, model, otherFieldId);
+    }
+
 }

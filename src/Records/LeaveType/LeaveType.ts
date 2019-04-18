@@ -8,9 +8,9 @@
  * @NApiVersion 2.0
  */
 
-import {ColumnType} from '../../Core/Model/QueryBuilder';
-import {BaseModel} from '../../Core/Model/BaseModel';
-import {Validation} from '../../Core/Validation';
+import { ColumnType } from '../../Core/Model/QueryBuilder';
+import { BaseModel } from '../../Core/Model/BaseModel';
+import { Validation } from '../../Core/Validation';
 
 
 /** Defining the Fields in the Leave Type Record */
@@ -40,18 +40,17 @@ export class LeaveType extends BaseModel {
     columns = Object.keys(this.typeMap);
 
     validation: object = {
-        'mapping': [
-            (field, model) => {
-                if (field.text.toString().toLowerCase() !== 'custom')
-                // call isUnique Validator
-                    return Validation.isUnique(field, model)();
-
-                return true;
-            }
+        'mapping': [isCustom],
+        'max_days_request': [
+            { lessThanOrEqual: ['days_limit'] }
         ],
-        'max_days_request': [],
-        'freq_type': [],
-        'freq_value': [],
     };
 }
 
+const isCustom = (field, model) => {
+    if (field.text.toString().toLowerCase() !== 'custom')
+        // call isUnique Validator
+        return Validation.isUnique(field, model)();
+
+    return true;
+};
