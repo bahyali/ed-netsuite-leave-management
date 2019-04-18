@@ -1,6 +1,5 @@
 import { LeaveBalance } from '../LeaveBalance/LeaveBalance';
-import { BaseModel } from '../../Core/Model/BaseModel';
-import { ColumnType } from '../../Core/Model/QueryBuilder';
+import { BaseModel, ColumnType } from '../../Core/Model/BaseModel';
 
 
 export class Employee extends BaseModel {

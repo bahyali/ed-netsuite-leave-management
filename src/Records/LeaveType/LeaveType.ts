@@ -8,8 +8,7 @@
  * @NApiVersion 2.0
  */
 
-import { ColumnType } from '../../Core/Model/QueryBuilder';
-import { BaseModel } from '../../Core/Model/BaseModel';
+import { ColumnType, BaseModel } from '../../Core/Model/BaseModel';
 import { Validation } from '../../Core/Validation';
 
 
@@ -47,10 +46,13 @@ export class LeaveType extends BaseModel {
     };
 }
 
+
+/* =====================[ CUSTOMIZED FUNCTIONS ]=====================  */
+// Function to check if the `Mapping` Field has a value of 'Custom' or 
 const isCustom = (field, model) => {
-    if (field.text.toString().toLowerCase() !== 'custom')
+    if (field.text.toString().toLowerCase() !== 'custom'){
         // call isUnique Validator
         return Validation.isUnique(field, model)();
-
+    }
     return true;
 };
