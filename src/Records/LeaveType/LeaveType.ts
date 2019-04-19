@@ -8,8 +8,8 @@
  * @NApiVersion 2.0
  */
 
-import { ColumnType, BaseModel } from '../../Core/Model/BaseModel';
-import { Validation } from '../../Core/Validation';
+import {ColumnType, BaseModel} from '../../Core/Model/BaseModel';
+import {Validation} from '../../Core/Validation';
 
 
 /** Defining the Fields in the Leave Type Record */
@@ -41,8 +41,11 @@ export class LeaveType extends BaseModel {
     validation: object = {
         'mapping': [isCustom],
         'max_days_request': [
-            { lessThanOrEqual: ['days_limit'] }
+            {lessThanOrEqual: ['days_limit']}
         ],
+        'days_limit': [
+            {greaterThanOrEqual: ['max_days_request']}
+        ]
     };
 }
 
@@ -50,7 +53,7 @@ export class LeaveType extends BaseModel {
 /* =====================[ CUSTOMIZED FUNCTIONS ]=====================  */
 // Function to check if the `Mapping` Field has a value of 'Custom' or 
 const isCustom = (field, model) => {
-    if (field.text.toString().toLowerCase() !== 'custom'){
+    if (field.text.toString().toLowerCase() !== 'custom') {
         // call isUnique Validator
         return Validation.isUnique(field, model)();
     }

@@ -46,9 +46,12 @@ function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
 function validateField(context: EntryPoints.Client.validateFieldContext) {
     leaveType.createFromRecord(context.currentRecord);
 
+    let field = leaveType.getField(leaveType.removePrefix(context.fieldId));
+
+    let valid = field ? field.validate() : true;
+
     if (context.fieldId == leaveType.getColumnId(LeaveTypeFields.MAPPING)) {
         let field = leaveType.getField(LeaveTypeFields.MAPPING);
-        let valid = field.validate();
         let relatedFields = leaveType.getFields(leaveType.columns);
 
         if (!valid)
@@ -77,7 +80,7 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
         return false;
     }
 
-    return true;
+    return valid;
 }
 
 export = {

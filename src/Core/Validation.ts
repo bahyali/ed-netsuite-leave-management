@@ -1,6 +1,5 @@
 import {Field} from "./Model/Field";
 import {BaseModel} from "./Model/BaseModel";
-import validator from 'validator';
 
 // Translator of Rule
 
@@ -66,18 +65,18 @@ export class Rule implements RuleInterface {
 
 export class Validation {
     static isEmpty(field: Field) {
-        return () => validator.isEmpty(field.value);
+        // return () => validator.isEmpty(field.value);
     }
 
     static isNotEmpty(field: Field) {
-        return () => !validator.isEmpty(field.value);
+        // return () => !validator.isEmpty(field.value);
     }
 
-    static isUnique(field: Field, model) {
+    static isUnique(field: Field, model): Function {
         return () => !model.exists(field._id, field.value)
     }
 
-    static greaterThan(field: Field, model: BaseModel, otherFieldId: string){
+    static greaterThan(field: Field, model: BaseModel, otherFieldId: string): Function {
         return () => {
             const otherFieldValue = model.getField(otherFieldId).value;
             const fieldValue = field.value;
@@ -85,20 +84,17 @@ export class Validation {
         }
     }
 
-    static lessThan(field: Field, model: BaseModel, otherFieldId: string){
-        return ! this.greaterThan(field, model, otherFieldId);
+    static lessThan(field: Field, model: BaseModel, otherFieldId: string): Function {
+        return () => !this.greaterThan(field, model, otherFieldId)();
     }
 
-    static greaterThanOrEqual(field: Field, model: BaseModel, otherFieldId:string){
-        return () => {
-            const otherFieldValue = model.getField(otherFieldId).value;
-            const fieldValue = field.value;
-            return fieldValue >= otherFieldValue;
-        }
+    static greaterThanOrEqual(field: Field, model: BaseModel, otherFieldId: string): Function {
+        return () => field.value >= model.getField(otherFieldId).value;
+
     }
 
-    static lessThanOrEqual(field: Field, model: BaseModel, otherFieldId: string){
-        return ! this.greaterThanOrEqual(field, model, otherFieldId);
+    static lessThanOrEqual(field: Field, model: BaseModel, otherFieldId: string): Function {
+        return () => field.value <= model.getField(otherFieldId).value;
     }
 
 }
