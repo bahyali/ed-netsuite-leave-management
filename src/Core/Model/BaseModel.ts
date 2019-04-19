@@ -1,6 +1,6 @@
-import { QueryBuilder, ColumnType } from './QueryBuilder';
-import { Field } from "./Field";
-import { ClientCurrentRecord, Record, Field as NsField } from "N/record";
+import {QueryBuilder, ColumnType} from './QueryBuilder';
+import {Field} from "./Field";
+import {ClientCurrentRecord, Record, Field as NsField} from "N/record";
 import * as search from "N/search";
 import {QueryResults} from "./QueryResults";
 import {FieldGroup} from './FieldGroup';
@@ -86,8 +86,8 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
         return !!(exists);
     }
 
-    first(columns: string[]): object {
-        let result = this.find(columns);
+    first(columns?: string[]): object {
+        let result = this.find(columns ? columns : this.columns);
         return result ? result.first() : null;
     }
 
@@ -116,6 +116,9 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
     protected prepareField(fieldId) {
         let nsField = this.getNsField(fieldId);
 
+        if (!nsField)
+            return;
+
         let field = new Field(fieldId, nsField, this._record);
 
         let rules = this.getValidationRules(fieldId);
@@ -135,7 +138,7 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
         });
     }
 
-    removePrefix(fieldId){
+    removePrefix(fieldId) {
         return fieldId.replace(this.columnPrefix, '');
     }
 
@@ -167,4 +170,4 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
     }
 }
 
-export { ColumnType };
+export {ColumnType};

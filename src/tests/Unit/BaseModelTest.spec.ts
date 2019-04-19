@@ -66,7 +66,7 @@ describe('BaseModel ', () => {
 
         let valid = record.validateField('year');
         // Has field
-        expect(valid).toBeTruthy();
+        expect(valid).toBeFalsy();
 
     });
 });
@@ -86,8 +86,8 @@ class TestRecord extends BaseModel {
 
     validation = {
         'year': [
-            'isNotEmpty', //simple only
-            // 'isUnique', //simple
+            // 'isNotEmpty', //simple only
+            'isUnique', //simple
             (field, model) => {
                 return Validation.isUnique(field, model)();
             }, //

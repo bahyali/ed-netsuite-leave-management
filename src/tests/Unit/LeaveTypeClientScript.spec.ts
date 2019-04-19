@@ -21,6 +21,8 @@ describe('LeaveType, ClientScript', () => {
     });
 
     it('should validate', function () {
+        validateFieldContext.currentRecord = new LeaveType().setRecord(1)._record;
+        validateFieldContext.fieldId = 'fld_id';
         ClientScript.validateField(validateFieldContext)
     });
 
