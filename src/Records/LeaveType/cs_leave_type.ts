@@ -7,8 +7,10 @@
 
 import {EntryPoints} from 'N/types';
 import {LeaveType, LeaveTypeFields} from './LeaveType';
-import * as UIMessage from 'N/ui/message';
+import {UI} from "../helpers";
+import showMessage = UI.showMessage;
 
+let stack = [];
 let leaveType = new LeaveType();
 
 leaveType.columns = [
@@ -27,8 +29,6 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
 
         if (mapping.text.toString().toLowerCase() !== 'custom')
             mapping.disable();
-    } else if (context.mode == 'create') {
-
     }
 }
 
@@ -49,15 +49,26 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
     if (context.fieldId == leaveType.getColumnId(LeaveTypeFields.MAPPING)) {
         let field = leaveType.getField(LeaveTypeFields.MAPPING);
         let valid = field.validate();
+        let relatedFields = leaveType.getFields(leaveType.columns);
 
         if (!valid)
             showMessage('Warning', field.text.toString() + ' already exists.');
         else {
             if (field.text.toString().toLowerCase() !== 'custom') {
-                leaveType.getFields(leaveType.columns)
+
+                stack.push(relatedFields.saveState());
+
+                relatedFields
                     .disable();
-                leaveType.getFields(leaveType.columns)
+                relatedFields
                     .optional();
+
+            } else {
+                let lastState = stack.pop();
+
+                // restore state
+                if (lastState)
+                    relatedFields.setState(lastState);
             }
 
             return true;
@@ -67,19 +78,6 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
     }
 
     return true;
-}
-
-function disableFields(fields, disabled = true) {
-    for (let i = 0; i < fields.length; i++)
-        leaveType.getField(fields[i]).disabled = disabled;
-}
-
-function showMessage(title, message, type = UIMessage.Type.WARNING) {
-    UIMessage.create({
-        title: title,
-        message: message,
-        type: type
-    }).show({duration: 5000});
 }
 
 export = {

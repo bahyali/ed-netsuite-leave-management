@@ -59,6 +59,36 @@ export class FieldGroup extends Array<Field> implements FieldGroupInterface {
         })
     }
 
+    persist(id?) {
+        if (id)
+            this.find(id)[0].persist();
+        else
+            this.persistAll();
+    }
+
+    persistAll() {
+        this.forEach((field) => {
+            field.persist();
+        })
+    }
+
+    saveState() {
+        let states = {};
+
+        this.forEach((field) => {
+            states[field._id] = field.saveState();
+        });
+
+        return states;
+    }
+
+    setState(states: object) {
+        Object.keys(states).forEach((key) => {
+            let field = this.find(key)[0];
+            field.setState(states[key]);
+        });
+    }
+
     remove(id) {
         let index = this.find(id).length > 0 ? this.indexOf(this.find(id)[0]) : -1;
 

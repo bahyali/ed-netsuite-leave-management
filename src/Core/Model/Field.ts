@@ -16,6 +16,8 @@ interface FieldInterface {
     makeMandatory(): void
 
     validate(): boolean
+
+    persist();
 }
 
 export class Field implements FieldInterface {
@@ -58,7 +60,7 @@ export class Field implements FieldInterface {
         })
     }
 
-    disable(disabled=true) {
+    disable(disabled = true) {
         this.disabled = disabled;
     }
 
@@ -115,4 +117,33 @@ export class Field implements FieldInterface {
         this._field.isReadOnly = value;
     }
 
+    persist() {
+        if (typeof this._mandatory !== 'undefined')
+            this.mandatory = this._mandatory;
+
+        if (typeof this._disabled !== 'undefined')
+            this.disabled = this._disabled;
+
+        if (typeof this._readOnly !== 'undefined')
+            this.readOnly = this._readOnly;
+    }
+
+    saveState() {
+        return {
+            disabled: this.disabled,
+            mandatory: this.mandatory,
+            readonly: this.readOnly
+        }
+    }
+
+    setState(obj: object) {
+        if (typeof obj['disabled'] !== 'undefined')
+            this.disabled = obj['disabled'];
+
+        if (typeof obj['mandatory'] !== 'undefined')
+            this.mandatory = obj['mandatory'];
+
+        if (typeof obj['readOnly'] !== 'undefined')
+            this.readOnly = obj['readOnly'];
+    }
 }
