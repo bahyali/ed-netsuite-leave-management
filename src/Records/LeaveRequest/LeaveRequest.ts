@@ -8,11 +8,12 @@
  * @NApiVersion 2.0
  */
 
-import { BaseModel, ColumnType } from '../../Core/Model/BaseModel';
-import { Validation } from '../../Core/Validation';
-import { Field } from 'src/Core/Model/Field';
-import { LeaveType, LeaveTypeFields } from '../LeaveType/LeaveType';
-import { LeaveRule } from "../LeaveRule/LeaveRule";
+import {BaseModel, ColumnType} from '../../Core/Model/BaseModel';
+import {Validation} from '../../Core/Validation';
+import {Field} from 'src/Core/Model/Field';
+import {LeaveType, LeaveTypeFields} from '../LeaveType/LeaveType';
+import {LeaveRule} from "../LeaveRule/LeaveRule";
+import {Employee} from "../Employee/Employee";
 // import { FieldGroup } from '../../Core/Model/FieldGroup';
 
 /** Defining the Fields in Vacation Request Record */
@@ -45,12 +46,7 @@ export enum RequestFields {
 }
 
 
-
-
 export class LeaveRequest extends BaseModel {
-
-    static fields = RequestFields;
-
     recordType = 'customrecord_edc_vac_request';
     columnPrefix = 'custrecord_edc_vac_req_';
 
@@ -81,31 +77,30 @@ export class LeaveRequest extends BaseModel {
         'status': ColumnType.LIST,
     };
 
-    columns = Object.keys(this.typeMap);
+    columns = [];
 
     validation = {
-        'type': [Validation.isNotEmpty,],
-        'start': [Validation.isNotEmpty, { greaterThanOrEqual: RequestFields.REQUEST_DATE }],
-        'end': [Validation.isNotEmpty,],
+        'type': ['isNotEmpty'],
+        'start': [],
+        'end': [],
+    };
 
+    relations = {
+        getEmployee: (model) => {
+            return new Employee()
+                .setRecord(model.getField(EmployeeFields.EMPLOYEE).value);
+        },
+
+        leaveRule: (subsidiary: number, year = new Date().getFullYear()) => {
+            return new LeaveRule()
+                .where('subsidiary', '==', subsidiary)
+                .where('year', '==', year);
+        },
+
+        leaveType: (model) => {
+            let leaveTypeId = model.getField(RequestFields.TYPE).value;
+            return new LeaveType()
+                .where(LeaveTypeFields.MAPPING, '==', leaveTypeId);
+        }
     }
-
-
-
-    leaveRule(subsidiary: number, year = new Date().getFullYear()) {
-        return new LeaveRule().where('subsidiary', '==', subsidiary).where('year', '==', year);
-    }
-
-    leaveType(type: number){
-        return new LeaveType().where(LeaveTypeFields.MAPPING, '==', type);
-    }
-
-    
-}
-
-
-/* =====================[ CUSTOMIZED FUNCTIONS ]=====================  */
-const isValidStartDate = (field: Field, model: BaseModel, reqField, ): boolean => {
-    const isPastDatesAccepted = new LeaveType().get();
-    return;
 }
