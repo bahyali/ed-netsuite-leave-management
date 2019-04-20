@@ -65,15 +65,19 @@ export class Rule implements RuleInterface {
 
 export class Validation {
     static isEmpty(field: Field) {
-        // return () => validator.isEmpty(field.value);
+        return () => field.value.toString().length == 0;
     }
 
     static isNotEmpty(field: Field) {
-        // return () => !validator.isEmpty(field.value);
+        return () => field.value.toString().length > 0;
     }
 
     static isUnique(field: Field, model): Function {
         return () => !model.exists(field._id, field.value)
+    }
+
+    static exists(field: Field, model): Function {
+        return () => model.exists(field._id, field.value)
     }
 
     static greaterThan(field: Field, model: BaseModel, otherFieldId: string): Function {
