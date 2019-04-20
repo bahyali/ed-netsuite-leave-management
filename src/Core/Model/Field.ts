@@ -34,10 +34,12 @@ export class Field implements FieldInterface {
     private _value: FieldValue;
     private _text: string | string[];
 
-    constructor(id, field: NsRecord.Field, record?: NsRecord.Record | NsRecord.ClientCurrentRecord) {
+    constructor(id, field?: NsRecord.Field, record?: NsRecord.Record | NsRecord.ClientCurrentRecord) {
         this._id = id;
         this._field = field;
-        this._fieldId = field.id;
+
+        if (field)
+            this._fieldId = field.id;
 
         if (record) {
             this._record = record;
