@@ -22,7 +22,7 @@ interface FieldInterface {
 
 export class Field implements FieldInterface {
     _id: string;
-    readonly _fieldId: string;
+    _fieldId: string;
 
     _field: NsRecord.Field;
     _record: NsRecord.Record | NsRecord.ClientCurrentRecord;
@@ -44,6 +44,11 @@ export class Field implements FieldInterface {
         if (record) {
             this._record = record;
         }
+    }
+
+    setPrefix(prefix) {
+        this._fieldId = prefix + this._id;
+        return this;
     }
 
     addRules(fieldValidations: [], model) {
