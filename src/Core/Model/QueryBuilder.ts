@@ -35,13 +35,13 @@ class QueryBuilder implements QueryBuilderInterface {
 
     get(recordId: number, columns?: string[], load?: boolean): object | record.Record {
         if (!load)
-            return search.lookupFields({
+            return this.prepareResult(search.lookupFields({
                 type: this.recordType,
                 id: recordId,
                 columns: columns ? this.addPrefix(columns) : this.addPrefix(this.columns),
-            });
+            }));
 
-        return record.load({id: recordId, type: this.recordType, isDynamic: false})
+        return this.prepareRecord(record.load({id: recordId, type: this.recordType, isDynamic: false}))
     }
 
     find(columns?: string[]): QueryResults | false {
@@ -82,13 +82,20 @@ class QueryBuilder implements QueryBuilderInterface {
         return this;
     }
 
-    protected prepareResults(results: search.Result[] | object) {
+    protected prepareRecord(record: record.Record): any {
+        return record;
+    }
+
+    protected prepareResult(result: search.Result): any {
+        return result;
+    }
+
+    protected prepareResults(results: search.Result[]) {
         let records = QueryResults.create();
 
-        if (results instanceof Array)
-            records.push(...results);
-        else
-            records.push(results);
+        for (let i = 0; i < results.length; i++) {
+            records.push(this.prepareResult(results[i]));
+        }
 
         return records;
     }

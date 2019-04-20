@@ -40,6 +40,14 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
 
     validation;
 
+    protected prepareRecord(record: Record) {
+        return this.newInstance().createFromRecord(record);
+    }
+
+    protected prepareResult(result: search.Result) {
+        return this.newInstance().createFromResult(result);
+    }
+
     getRecord(id) {
         return <Record>this.get(id, null, true);
     }
@@ -63,7 +71,7 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
     }
 
     createFromResult(result: search.Result): this {
-        // this._record = result;
+        this._record = <any>result;
 
         if (result.columns)
             result.columns.forEach((column) => {
@@ -73,15 +81,11 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
         return this;
     }
 
-    exists(id, value) {
-        let model = new BaseModel();
-        //setup
-        model.recordType = this.recordType;
-        model.columnPrefix = this.columnPrefix;
-        model.typeMap = this.typeMap;
+    exists(fieldId, value) {
+        let model = this.newInstance();
 
-        let exists = model.where(id, '==', value)
-            .first(this.columns);
+        let exists = model.where(fieldId, '==', value)
+            .first();
 
         return !!(exists);
     }
@@ -113,11 +117,20 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
         return rules;
     }
 
+    newInstance() {
+        let model = new BaseModel();
+
+        // copy public properties
+        model.recordType = this.recordType;
+        model.columnPrefix = this.columnPrefix;
+        model.typeMap = this.typeMap;
+        model.validation = this.validation;
+
+        return model;
+    }
+
     protected prepareField(fieldId) {
         let nsField = this.getNsField(fieldId);
-
-        if (!nsField)
-            return;
 
         let field = new Field(fieldId, nsField, this._record);
 
@@ -133,9 +146,13 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
     }
 
     protected getNsField(fieldId) {
-        return this._record.getField({
-            fieldId: this.getColumnId(fieldId)
-        });
+        try {
+            return this._record.getField({
+                fieldId: this.getColumnId(fieldId)
+            });
+        } catch (e) {
+            return;
+        }
     }
 
     removePrefix(fieldId) {
@@ -154,19 +171,6 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
         });
 
         return fieldGroup;
-    }
-
-    // Override Query Builder prepareResults
-    protected prepareResults(results: search.Result[]) {
-        let records = QueryResults.create();
-
-        // wrap record
-        if (results instanceof Array)
-            records.push(...results);
-        else
-            records.push(results);
-
-        return records;
     }
 }
 
