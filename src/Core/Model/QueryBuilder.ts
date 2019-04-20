@@ -24,16 +24,16 @@ interface QueryBuilderInterface {
 }
 
 class QueryBuilder implements QueryBuilderInterface {
-    recordType: string;
-    typeMap: object;
-    columnPrefix: string;
-    columns: string[];
+    recordType: string = '';
+    typeMap: object = {};
+    columnPrefix: string = '';
+    columns: string[] = [];
 
     _limit: number = 999;
     _query: search.Filter[] = [];
 
 
-    get(recordId: number, columns?: string[], load?: boolean): object | record.Record {
+    get(recordId: number, columns?: string[], load?: boolean): any {
         if (!load)
             return this.prepareResult(search.lookupFields({
                 type: this.recordType,

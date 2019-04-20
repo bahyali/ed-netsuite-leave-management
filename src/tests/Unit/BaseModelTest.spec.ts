@@ -14,10 +14,7 @@ describe('BaseModel ', () => {
             .setRecord(1);
 
         // Has field
-        expect(record).toEqual(expect.objectContaining({
-            'emp_name': expect.any(Field),
-            'jobtitle': expect.any(Field)
-        }));
+        expect(record).toBeInstanceOf(BaseModel);
 
     });
 
