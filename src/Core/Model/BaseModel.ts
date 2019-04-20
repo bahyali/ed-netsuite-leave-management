@@ -2,7 +2,6 @@ import {QueryBuilder, ColumnType} from './QueryBuilder';
 import {Field} from "./Field";
 import {ClientCurrentRecord, Record, Field as NsField} from "N/record";
 import * as search from "N/search";
-import {QueryResults} from "./QueryResults";
 import {FieldGroup} from './FieldGroup';
 
 interface BaseModelInterface {
@@ -17,6 +16,8 @@ interface BaseModelInterface {
     columns: string[];
 
     validation: object;
+
+    relations: object;
 
     [key: string]: any
 
@@ -38,7 +39,7 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
 
     private _fields = [];
 
-    validation;
+    validation = {};
 
     protected prepareRecord(record: Record) {
         return this.newInstance().createFromRecord(record);
@@ -53,10 +54,7 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
     }
 
     setRecord(id) {
-        let record = <Record>this.get(id, null, true);
-        this.createFromRecord(record);
-
-        return this;
+        return this.get(id, null, true);
     }
 
     createFromRecord(record: ClientCurrentRecord | Record): this {
@@ -75,7 +73,9 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
 
         if (result.columns)
             result.columns.forEach((column) => {
-                this.prepareField(column);
+                let fieldId = this.removePrefix(column.name);
+                this.columns.push(fieldId);
+                this.prepareField(fieldId);
             });
 
         return this;
@@ -85,7 +85,7 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
         let model = this.newInstance();
 
         let exists = model.where(fieldId, '==', value)
-            .first();
+            .first([]);
 
         return !!(exists);
     }
@@ -125,6 +125,7 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
         model.columnPrefix = this.columnPrefix;
         model.typeMap = this.typeMap;
         model.validation = this.validation;
+        model.relations = this.relations;
 
         return model;
     }
@@ -132,7 +133,8 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
     protected prepareField(fieldId) {
         let nsField = this.getNsField(fieldId);
 
-        let field = new Field(fieldId, nsField, this._record);
+        let field = new Field(fieldId, nsField, this._record)
+            .setPrefix(this.columnPrefix);
 
         let rules = this.getValidationRules(fieldId);
 
@@ -172,6 +174,8 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
 
         return fieldGroup;
     }
+
+    relations: object;
 }
 
 export {ColumnType};

@@ -1,5 +1,5 @@
-import { LeaveBalance } from '../LeaveBalance/LeaveBalance';
-import { BaseModel, ColumnType } from '../../Core/Model/BaseModel';
+import {LeaveBalance} from '../LeaveBalance/LeaveBalance';
+import {BaseModel, ColumnType} from '../../Core/Model/BaseModel';
 
 
 export class Employee extends BaseModel {
@@ -11,14 +11,14 @@ export class Employee extends BaseModel {
         'subsidiary': ColumnType.LIST,
         'supervisor': ColumnType.LIST,
         'department': ColumnType.LIST,
-    }
+    };
 
-    vacationBalance(year) {
-        let idField = this._record.getValue('entityid');
-        return new LeaveBalance().where('emp_name', '==', idField).where('year', '==', year);
+    relations = {
+        vacationBalance: (model, year) => {
+            let idField = model._record.getValue('id');
+            return new LeaveBalance().where('emp_name', '==', idField)
+                .where('year', '==', year);
+        }
     }
 
 }
-
-
-// new Employee().createFromRecord(currentRecord).vacationBalance().first();
