@@ -6,6 +6,14 @@ import * as record from "N/record";
 export enum ColumnType { STRING = 'string', BOOLEAN = 'boolean', NUMBER = 'number', DATE = 'date', LIST = 'list', MULTI = 'multi' }
 
 interface QueryBuilderInterface {
+    recordType: string
+
+    primaryKey: string
+
+    typeMap: object
+
+    columns: string[]
+
     _limit: number
 
     _query: object
@@ -25,6 +33,7 @@ interface QueryBuilderInterface {
 
 class QueryBuilder implements QueryBuilderInterface {
     recordType: string = '';
+    primaryKey: string = 'id';
     typeMap: object = {};
     columnPrefix: string = '';
     columns: string[] = [];
@@ -38,7 +47,7 @@ class QueryBuilder implements QueryBuilderInterface {
             return this.prepareResult(search.lookupFields({
                 type: this.recordType,
                 id: recordId,
-                columns: columns ? this.addPrefix(columns) : this.addPrefix(this.columns),
+                columns: columns ? this.prepareColumns(columns) : this.prepareColumns(this.columns),
             }));
 
         return this.prepareRecord(record.load({id: recordId, type: this.recordType, isDynamic: false}))
@@ -49,7 +58,7 @@ class QueryBuilder implements QueryBuilderInterface {
         let results = search.create({
             type: this.recordType,
             filters: this._query,
-            columns: columns ? this.addPrefix(columns) : this.addPrefix(this.columns),
+            columns: columns ? this.prepareColumns(columns) : this.prepareColumns(this.columns),
         }).run()
             .getRange({start: 0, end: this._limit});
 
@@ -80,6 +89,15 @@ class QueryBuilder implements QueryBuilderInterface {
     limit(limit: number): this {
         this._limit = limit;
         return this;
+    }
+
+    protected prepareColumns(columns) {
+        columns = this.addPrefix(columns);
+
+        // Add primary key : Important for integrity
+        columns.push(this.primaryKey);
+
+        return columns;
     }
 
     protected prepareRecord(record: record.Record): any {
