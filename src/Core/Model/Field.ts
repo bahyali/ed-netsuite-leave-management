@@ -31,6 +31,7 @@ export class Field implements FieldInterface {
     private _disabled: boolean;
     private _mandatory: boolean;
     private _readOnly: boolean;
+    private _hidden: boolean;
     private _value: FieldValue;
     private _text: string | string[];
 
@@ -90,12 +91,21 @@ export class Field implements FieldInterface {
         this._record.setValue(this._fieldId, value);
     }
 
-    get text(): string | string[] {
+    get text(): string {
         if (!this._record)
             return;
 
-        return this._text = this._record.getText(this._fieldId);
+        return this._text = this._record.getText(this._fieldId).toString();
     }
+
+    set text(text: string) {
+        if (!this._record)
+            return;
+
+        this._text = text;
+        this._record.setText(this._fieldId, text);
+    }
+
 
     get disabled(): boolean {
         return this._disabled = this._field.isDisabled;
@@ -114,6 +124,17 @@ export class Field implements FieldInterface {
         this._mandatory = value;
         this._field.isMandatory = value;
     }
+
+    
+    get visible(){
+        return this._hidden = this._field.isVisible;
+    }
+
+    set visible(value) {
+        this._hidden = value;
+        this._field.isVisible = value;
+    }
+    
 
     get readOnly(): boolean {
         return this._readOnly = this._field.isReadOnly;

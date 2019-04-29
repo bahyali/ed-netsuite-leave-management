@@ -8,16 +8,16 @@
  * @NApiVersion 2.0
  */
 
-import {BaseModel, ColumnType} from '../../Core/Model/BaseModel';
-import {Validation} from '../../Core/Validation';
-import {Field} from 'src/Core/Model/Field';
-import {LeaveType, LeaveTypeFields} from '../LeaveType/LeaveType';
-import {LeaveRule} from "../LeaveRule/LeaveRule";
-import {Employee} from "../Employee/Employee";
+import { BaseModel, ColumnType } from '../../Core/Model/BaseModel';
+import { Validation } from '../../Core/Validation';
+import { Field } from 'src/Core/Model/Field';
+import { LeaveType, LeaveTypeFields } from '../LeaveType/LeaveType';
+import { LeaveRule, LeaveRuleField } from "../LeaveRule/LeaveRule";
+import { Employee } from "../Employee/Employee";
 // import { FieldGroup } from '../../Core/Model/FieldGroup';
 
 /** Defining the Fields in Vacation Request Record */
-export enum EmployeeFields {
+export enum EmployeeField {
     EMPLOYEE = 'emp_name',
     SUBSIDIARY = 'subsidiary',
     SUPERVISOR = 'supervisor',
@@ -25,7 +25,7 @@ export enum EmployeeFields {
     JOBTITLE = 'jobtitle',
 }
 
-export enum BalanceFields {
+export enum BalanceField {
     ANNUAL = 'blc_annual',
     TRANSFERRED = 'blc_transferred',
     REPLACEMENT = 'blc_replacement',
@@ -35,7 +35,7 @@ export enum BalanceFields {
     UNPAID = 'blc_unpaid',
 }
 
-export enum RequestFields {
+export enum RequestField {
     TYPE = 'type',
     START = 'start',
     END = 'end',
@@ -77,7 +77,9 @@ export class LeaveRequest extends BaseModel {
         'status': ColumnType.LIST,
     };
 
-    columns = [];
+    balanceColumns: string[] = [];
+
+    columns: string[] = [];
 
     validation = {
         'type': ['isNotEmpty'],
@@ -88,17 +90,17 @@ export class LeaveRequest extends BaseModel {
     relations = {
         getEmployee: (model) => {
             return new Employee()
-                .setRecord(model.getField(EmployeeFields.EMPLOYEE).value);
+                .setRecord(model.getField(EmployeeField.EMPLOYEE).value);
         },
 
         leaveRule: (subsidiary: number, year = new Date().getFullYear()) => {
             return new LeaveRule()
-                .where('subsidiary', '==', subsidiary)
-                .where('year', '==', year);
+                .where(LeaveRuleField.SUBSIDIARY, '==', subsidiary)
+                .where(LeaveRuleField.YEAR, '==', year);
         },
 
-        leaveType: (model) => {
-            let leaveTypeId = model.getField(RequestFields.TYPE).value;
+        leaveType: (model: BaseModel) => {
+            let leaveTypeId = model.getField(RequestField.TYPE).value;
             return new LeaveType()
                 .where(LeaveTypeFields.MAPPING, '==', leaveTypeId);
         }
