@@ -1,6 +1,20 @@
 import * as UIMessage from "N/ui/message";
 import * as search from "N/search";
 
+
+export enum ApprovalStatus {
+    'PENDING_APPROVAL' = 1,
+    'APPROVED' = 2,
+    'REJECTED' = 3,
+}
+
+export enum PeriodFrequentType {
+    Days = 'days',
+    Months = 'months',
+    Years = 'years',
+    Lifetime = 'lifetime',
+}
+
 export namespace UI {
     export function showMessage(title, message, duration = 5000, type = UIMessage.Type.WARNING) {
         UIMessage.create({
@@ -46,5 +60,44 @@ export namespace Model {
         }
 
         return result;
+    }
+
+
+   export function convertPeriodStrToMins(periodString) {
+        let actualPeriod = 0;
+        let periodStrArray = periodString.split(' ');
+    
+        if (periodStrArray[0][1]) {                // Hours don't have [0][1]
+            actualPeriod = Number(periodStrArray[0]);
+    
+        } else {
+            actualPeriod = Number(periodStrArray[0]) * 60;
+            if (periodStrArray[3]) {        // Not Just an Hour ,but also have minutes (&)
+                actualPeriod += Number(periodStrArray[3]);
+            }
+        }
+        return actualPeriod;
+    }
+    
+    
+    
+   export function convertMinsToText(period) {
+    
+        let periodStr: string;
+        if (period >= 60) {
+    
+            let hours = Math.floor(period / 60);
+            let minutes = period - (hours * 60);
+            periodStr = hours + ' hour';
+            if (hours > 1) periodStr += 's';
+    
+            if (minutes) {
+                periodStr += ' & ' + minutes + ' minutes';
+            }
+        } else {
+            periodStr = period + ' minutes';
+        }
+    
+        return periodStr;
     }
 }

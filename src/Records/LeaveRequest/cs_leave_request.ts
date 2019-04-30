@@ -15,7 +15,7 @@ todo get & set configuration From Vacation Rule
 // import runtime from "N/runtime";
 import { EntryPoints } from 'N/types';
 import { LeaveRequest, EmployeeField, RequestField, BalanceField } from "./LeaveRequest";
-import { UI, Model } from "../helpers";
+import { UI, Model, ApprovalStatus, PeriodFrequentType } from "../helpers";
 import { LeaveRuleField } from '../LeaveRule/LeaveRule';
 import { LeaveType, LeaveTypeFields } from '../LeaveType/LeaveType';
 
@@ -131,7 +131,15 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
             updateCounters();
         }
     }
+    else if (field._id == RequestField.START || field._id == RequestField.END) {
+        let type = leaveType.getField(LeaveTypeFields.MAPPING).text.toString().toLowerCase();
+        let startDate = leaveRequest.getField(RequestField.START).value;
+        let endDate = leaveRequest.getField(RequestField.END).value;
 
+        if (type == StandardLeaveType.CUSTOM && startDate && endDate) {
+            valid = calculateCustomLeave(leaveType, startDate, endDate);
+        }
+    }
     return valid;
 }
 
@@ -173,6 +181,7 @@ function saveRecord(context: EntryPoints.Client.saveRecordContext) {
 
 
 function calculateVacation(vacationType, start, end) {
+    let period = 0;
     let startDate = new Date(start);
     let endDate = new Date(end);
 
@@ -181,6 +190,16 @@ function calculateVacation(vacationType, start, end) {
 
     partDayLeave(vacationType, start, end);
 
+    // Get Vacation Rule to extract the weekend days from it.
+    let subsidiaryId = Number(leaveRequest.getField('subsidiary').value);
+    let applyWeekend = leaveRequest.relations.leaveRule(subsidiaryId).getField(LeaveRuleField.APPLY_WEEKEND).value;
+    if (applyWeekend) {
+        let weekends = leaveRequest.relations.leaveRule(subsidiaryId).getField(LeaveRuleField.WEEKEND_DAYS).value;
+        debugger;
+        period = Model.getWorkingDays(start, end)
+    } else {
+        period = Model.millisecondsToHuman(new Date(end).getTime() - new Date(start).getTime()).days + 1;
+    }
     return Model.getWorkingDays(startDate, endDate);
 }
 
@@ -274,10 +293,12 @@ function deductRegularVacation() {
 }
 
 
-function partDayLeave(leaveType, startDate, endDate) {
-    debugger;
+function partDayLeave(leaveType, start, end) {
+    let startDate = new Date(start);
+    let endDate = new Date(end);
+
     if (leaveType.getField('mapping').text.toString().toLowerCase() == StandardLeaveType.ANNUAL) {
-        if (new Date(startDate).getTime() == new Date(endDate).getTime()) {
+        if (startDate.getTime() == endDate.getTime()) {
             let daysLeave = leaveRequest.getField(RequestField.LEAVE_DAYS);
             daysLeave.value = '';
             daysLeave.visible = false;
@@ -288,7 +309,7 @@ function partDayLeave(leaveType, startDate, endDate) {
     }
     if (startDate < endDate || !startDate && !endDate) {
         let daysLeave = leaveRequest.getField(RequestField.LEAVE_DAYS);
-        daysLeave.value = Model.millisecondsToHuman(endDate - startDate).days + 1;
+        daysLeave.value = Model.millisecondsToHuman(endDate.getTime() - startDate.getTime()).days + 1;
         daysLeave.visible = true;
         let partdayPeriod = leaveRequest.getField(RequestField.PART_DAY_LEAVE);
         partdayPeriod.value = '';
@@ -298,8 +319,47 @@ function partDayLeave(leaveType, startDate, endDate) {
 
 
 
-function calculateCustomTypes(leaveType: LeaveType) {
-    /* To be added later ... */
-    let maxDaysAllowed = Number(leaveType.getField(LeaveTypeFields.DAYS_LIMIT).value);
+function calculateCustomLeave(leaveType: LeaveType, startDate, endDate): boolean {
+    let maxAllowedDays = Number(leaveType.getField(LeaveTypeFields.DAYS_LIMIT).value);
+    let maxDaysPerRequest = Number(leaveType.getField(LeaveTypeFields.MAX_DAYS_REQUEST).value);
+    let frequentValue = Number(leaveType.getField(LeaveTypeFields.FREQUENT_VALUE).value);
+    let frequentTypeText = leaveType.getField(LeaveTypeFields.FREQUENT_TYPE).text.toLowerCase();
+    leavePeriod = Model.millisecondsToHuman(new Date(endDate).getTime() - new Date(startDate).getTime()).days + 1;
 
+    if (maxDaysPerRequest && leavePeriod > maxDaysPerRequest)
+        return false;
+
+    let requestDate = new Date(leaveRequest.getField(RequestField.REQUEST_DATE).value.toString());
+    let previousApprovedRequests = new LeaveRequest()
+        .where(EmployeeField.EMPLOYEE, '==', leaveRequest.getField(EmployeeField.EMPLOYEE).value)
+        .where(RequestField.TYPE, '==', leaveRequest.getField(RequestField.TYPE).value)
+        .where(RequestField.STATUS, '==', ApprovalStatus.APPROVED);
+
+    if (frequentValue && frequentTypeText) {
+        if (frequentTypeText == PeriodFrequentType.Days) {
+            requestDate.setDate(requestDate.getDate() - frequentValue)
+            previousApprovedRequests.where(RequestField.START, 'after', requestDate);
+
+        } else if (frequentTypeText == PeriodFrequentType.Months) {
+            requestDate.setDate(1);
+            requestDate.setMonth(requestDate.getMonth() - frequentValue);
+            previousApprovedRequests.where(RequestField.START, 'after', requestDate);
+
+        } else if (frequentTypeText == PeriodFrequentType.Years) {
+            requestDate.setDate(1);
+            requestDate.setMonth(0);
+            requestDate.setFullYear(requestDate.getFullYear() - frequentValue);
+            previousApprovedRequests.where(RequestField.START, 'after', requestDate);
+        }
+
+        let previousLeaveDays = previousApprovedRequests.find([RequestField.LEAVE_DAYS]);
+        if (frequentTypeText == PeriodFrequentType.Lifetime) {
+           // if (previousLeaveDays.length >= frequentValue)
+             //   return false;
+        }
+
+        //if(previousLeaveDays[''] >=  maxAllowedDays)
+        //return false;
+    }
+    return false;
 }
