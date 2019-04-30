@@ -354,12 +354,20 @@ function calculateCustomLeave(leaveType: LeaveType, startDate, endDate): boolean
 
         let previousLeaveDays = previousApprovedRequests.find([RequestField.LEAVE_DAYS]);
         if (frequentTypeText == PeriodFrequentType.Lifetime) {
-           // if (previousLeaveDays.length >= frequentValue)
-             //   return false;
+            if (previousLeaveDays && previousLeaveDays.length >= frequentValue)
+                return false;
         }
 
+        if (previousLeaveDays && previousLeaveDays.length) {
+            let totalPreviousLeaves = 0;
+            for (let i = 0; i < previousLeaveDays.length; i++) {
+                totalPreviousLeaves += Number(previousLeaveDays[i][RequestField.LEAVE_DAYS]);
+            }
+            if (totalPreviousLeaves >= maxAllowedDays)
+                return false;
+        }
         //if(previousLeaveDays[''] >=  maxAllowedDays)
         //return false;
     }
-    return false;
+    return true;
 }
