@@ -14,7 +14,18 @@ import { Field } from 'src/Core/Model/Field';
 import { LeaveType } from '../LeaveType/LeaveType';
 
 
-export class LeaveRule extends BaseModel {
+enum LeaveRuleField {
+    SUBSIDIARY = 'subsidiary',
+    YEAR = 'year',
+    DEDUCT_CAUSUAL_FROM_ANNUAL = 'casual_as_annual',
+    APPLY_WEEKEND = 'weekend_apply',
+    WEEKEND_DAYS = 'weekend_days',
+
+
+}
+
+
+class LeaveRule extends BaseModel {
 
     recordType: 'customrecord_edc_vac_rule';
     columnPrefix: 'custrecord_edc_vac_rule_';
@@ -24,6 +35,7 @@ export class LeaveRule extends BaseModel {
         'casual_as_annual': ColumnType.BOOLEAN,
         'weekend_apply': ColumnType.BOOLEAN,
         'weekend_days': ColumnType.MULTI,
+        'year': ColumnType.STRING,
         // Map/Reduce Script Fields
 
     }
@@ -35,3 +47,5 @@ export class LeaveRule extends BaseModel {
         'weekend_apply': [],
     }
 }
+
+export { LeaveRule, LeaveRuleField };
