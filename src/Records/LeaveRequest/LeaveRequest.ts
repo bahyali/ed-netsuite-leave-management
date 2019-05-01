@@ -45,6 +45,23 @@ export enum RequestField {
     STATUS = 'status',
 }
 
+export enum RelationField {
+    BALANCE = 'vac_blc',
+    
+    RULE_CASUAL_FROM_ANNUAL = 'rule_cas_as_ann',
+    RULE_APPLY_WEEKEND = 'rule_weekend_app',
+    RULE_WEEKENDS = 'rule_weekend_days',
+
+    TYPE_MAPPING = 'type_mapping',
+    TYPE_LIMIT_DAYS = 'type_dayslimit',
+    TYPE_MAX_PER_REQUEST = 'type_max_days_req',
+    TYPE_FREQUENT_TYPE = 'type_freq_type',
+    TYPE_FREQUENT_VALUE = 'type_freq_value',
+    TYPE_ACCEPT_PAST_DATES = 'type_accept_past',
+}
+
+
+
 
 export class LeaveRequest extends BaseModel {
     recordType = 'customrecord_edc_vac_request';

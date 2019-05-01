@@ -12,14 +12,14 @@ todo get & set configuration From Vacation Rule
 
 
 // import runtime from "N/runtime";
-import {EntryPoints} from 'N/types';
+import { EntryPoints } from 'N/types';
 import * as UIMessage from "N/ui/message";
 
-import {BalanceField, EmployeeField, LeaveRequest, RequestField} from "./LeaveRequest";
-import {ApprovalStatus, Model, PeriodFrequentType, UI} from "../helpers";
-import {LeaveRuleField} from '../LeaveRule/LeaveRule';
-import {LeaveType, LeaveTypeFields} from '../LeaveType/LeaveType';
-import {Holiday} from "../Holiday/Holiday";
+import { BalanceField, EmployeeField, LeaveRequest, RequestField } from "./LeaveRequest";
+import { ApprovalStatus, Model, PeriodFrequentType, UI } from "../helpers";
+import { LeaveRuleField } from '../LeaveRule/LeaveRule';
+import { LeaveType, LeaveTypeFields } from '../LeaveType/LeaveType';
+import { Holiday } from "../Holiday/Holiday";
 
 // Global Variables
 let employee;
@@ -210,12 +210,12 @@ function calculateVacation(vacationType, start, end) {
 
         // Map day ids to day numbers
         let mappedWeekends = weekends.split(',').map(item => {
-            if (item == '1')
+            if (item == '1')        //Friday
                 return 5;
-            else if (item == '2')
+            else if (item == '2')   //Saturday
                 return 6;
-            else
-                return item;
+            else if (item == '3')   //Sunday
+                return 0;
         });
 
         return Model.getWorkingDays(start, end, mappedWeekends, holidayDates)
@@ -251,12 +251,9 @@ function updateCounters() {
             let deductCasualFromAnnual = Boolean(leaveRule
                 .getField(LeaveRuleField.DEDUCT_CAUSUAL_FROM_ANNUAL).value);
 
-            if (deductCasualFromAnnual) {
+            if (deductCasualFromAnnual)
                 deductRegularVacation();
-                // reqAnnualBalance = leaveRequest.getField(BalanceField.ANNUAL).value;
-                // reqAnnualBalance = balances.getField(StandardLeaveType.ANNUAL).value - leavePeriod;
-            }
-            break;
+
         default:
             reqBalanceField.value = empBalanceField.value - leavePeriod;
 
