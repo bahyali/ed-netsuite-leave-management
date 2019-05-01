@@ -188,6 +188,8 @@ function calculateVacation(vacationType, start, end) {
     if (!startDate || !endDate)
         return 0;
 
+    partDayLeave(vacationType, start, end);
+
     // Get Vacation Rule to extract the weekend days from it.
     let applyWeekend = leaveRule.getField(LeaveRuleField.APPLY_WEEKEND).value;
 
@@ -208,8 +210,6 @@ function calculateVacation(vacationType, start, end) {
             else
                 return item;
         });
-
-        partDayLeave(vacationType, start, end);
 
         return Model.getWorkingDays(start, end, mappedWeekends, holidayDates)
     }
@@ -308,7 +308,6 @@ function partDayLeave(leaveType, start, end) {
 
     if (leaveType.getField('mapping').text.toString().toLowerCase() == StandardLeaveType.ANNUAL) {
         if (startDate.getTime() == endDate.getTime()) {
-
             let daysLeave = leaveRequest.getField(RequestField.LEAVE_DAYS);
             daysLeave.value = '';
             daysLeave.visible = false;
