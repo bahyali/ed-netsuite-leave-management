@@ -38,6 +38,12 @@ class QueryBuilder implements QueryBuilderInterface {
     columnPrefix: string = '';
     columns: string[] = [];
 
+    dontPrefix = [
+        'id',
+        'name',
+        'isinactive'
+    ];
+
     _limit: number = 999;
     _query: search.Filter[] = [];
 
@@ -53,7 +59,7 @@ class QueryBuilder implements QueryBuilderInterface {
         return this.prepareRecord(record.load({id: recordId, type: this.recordType, isDynamic: false}))
     }
 
-    find(columns?: string[]): QueryResults | false {
+    find(columns?: string[]): QueryResults {
 
         let results = search.create({
             type: this.recordType,
@@ -95,7 +101,7 @@ class QueryBuilder implements QueryBuilderInterface {
         columns = this.addPrefix(columns);
 
         // Add primary key : Important for integrity
-        columns.push(this.primaryKey);
+        // columns.push(this.primaryKey);
 
         return columns;
     }
@@ -123,6 +129,9 @@ class QueryBuilder implements QueryBuilderInterface {
     }
 
     getColumnId(column): string {
+        if (this.dontPrefix.indexOf(column) !== -1)
+            return column;
+
         return this.columnPrefix + column;
     }
 

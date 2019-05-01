@@ -1,4 +1,3 @@
-
 /**
  * @NScriptName ClientScript Vacation Request
  * @NApiVersion 2.0
@@ -13,12 +12,12 @@ todo get & set configuration From Vacation Rule
 
 
 // import runtime from "N/runtime";
-import { EntryPoints } from 'N/types';
-import { LeaveRequest, EmployeeField, RequestField, BalanceField } from "./LeaveRequest";
-import { UI, Model, ApprovalStatus, PeriodFrequentType } from "../helpers";
-import { LeaveRuleField } from '../LeaveRule/LeaveRule';
-import { LeaveType, LeaveTypeFields } from '../LeaveType/LeaveType';
-
+import {EntryPoints} from 'N/types';
+import {LeaveRequest, EmployeeField, RequestField, BalanceField} from "./LeaveRequest";
+import {UI, Model, ApprovalStatus, PeriodFrequentType} from "../helpers";
+import {LeaveRule, LeaveRuleField} from '../LeaveRule/LeaveRule';
+import {LeaveType, LeaveTypeFields} from '../LeaveType/LeaveType';
+import {Holiday} from "../Holiday/Holiday";
 
 // Global Variables
 let employee;
@@ -27,6 +26,9 @@ let leaveType;
 let balances;
 let leavePeriod: number;
 let leaveRequest = new LeaveRequest();
+let leaveRule;
+let holidays;
+
 // Filling the Balance Columns
 Object.keys(BalanceField).forEach(key => leaveRequest.balanceColumns.push(BalanceField[key]));
 
@@ -72,6 +74,14 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
     leaveBalance = employee.relations
         .vacationBalance(employee, new Date().getFullYear());
 
+    // Init LeaveRule
+    leaveRule = leaveRequest.relations
+        .leaveRule(Number(leaveRequest.getField('subsidiary').value)).first();
+
+    holidays = new Holiday()
+        .where('isinactive', 'is', 'F')
+        .find(['date']);
+
     balances = leaveBalance.first([
         'annual',
         'replacement',
@@ -82,14 +92,13 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
         'total_regular'
     ]);
 
+    debugger;
+
     if (balances)
         initCounters(leaveRequest, balances);
     else
         UI.showMessage('Warning', 'No vacation balance for this employee');
 }
-
-
-
 
 
 function validateField(context: EntryPoints.Client.validateFieldContext) {
@@ -130,8 +139,7 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
             initCounters(leaveRequest, balances);
             updateCounters();
         }
-    }
-    else if (field._id == RequestField.START || field._id == RequestField.END) {
+    } else if (field._id == RequestField.START || field._id == RequestField.END) {
         let type = leaveType.getField(LeaveTypeFields.MAPPING).text.toString().toLowerCase();
         let startDate = leaveRequest.getField(RequestField.START).value;
         let endDate = leaveRequest.getField(RequestField.END).value;
@@ -142,8 +150,6 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
     }
     return valid;
 }
-
-
 
 
 function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
@@ -171,39 +177,45 @@ function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
 }
 
 
-
-
 function saveRecord(context: EntryPoints.Client.saveRecordContext) {
     return true;
 }
 
-
-
-
 function calculateVacation(vacationType, start, end) {
-    let period = 0;
     let startDate = new Date(start);
     let endDate = new Date(end);
 
     if (!startDate || !endDate)
-        return;
+        return 0;
 
-    partDayLeave(vacationType, start, end);
+    if (startDate == endDate)
+        partDayLeave(vacationType, start, end);
 
     // Get Vacation Rule to extract the weekend days from it.
-    let subsidiaryId = Number(leaveRequest.getField('subsidiary').value);
-    let applyWeekend = leaveRequest.relations.leaveRule(subsidiaryId).getField(LeaveRuleField.APPLY_WEEKEND).value;
+    let applyWeekend = leaveRule.getField(LeaveRuleField.APPLY_WEEKEND).value;
+
     if (applyWeekend) {
-        let weekends = leaveRequest.relations.leaveRule(subsidiaryId).getField(LeaveRuleField.WEEKEND_DAYS).value;
-        debugger;
-        period = Model.getWorkingDays(start, end)
-    } else {
-        period = Model.millisecondsToHuman(new Date(end).getTime() - new Date(start).getTime()).days + 1;
+        let weekends = <string>leaveRule.getField(LeaveRuleField.WEEKEND_DAYS).value;
+
+        let holidayDates = holidays.map((item) => {
+            let date = item.getField('date').value.split('/');
+            return new Date(date[2], date[1]-1, date[0]);
+        });
+
+        let mappedWeekends = weekends.split(',').map(item => {
+            if (item == '1')
+                return 5;
+            else if (item == '2')
+                return 6;
+            else
+                return item;
+        });
+
+        return Model.getWorkingDays(start, end, mappedWeekends, holidayDates)
     }
-    return Model.getWorkingDays(startDate, endDate);
+
+    return Model.getWorkingDays(startDate, endDate, []);
 }
-
-
 
 
 function updateCounters() {
@@ -249,8 +261,6 @@ function updateCounters() {
     }
 
 }
-
-
 
 
 function initCounters(leaveRequest, balance) {
@@ -316,7 +326,6 @@ function partDayLeave(leaveType, start, end) {
         partdayPeriod.disabled = true;
     }
 }
-
 
 
 function calculateCustomLeave(leaveType: LeaveType, startDate, endDate): boolean {

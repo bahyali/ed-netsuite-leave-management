@@ -46,15 +46,20 @@ export namespace Model {
         }
     }
 
-    export function getWorkingDays(startDate, endDate, weekEnds = [5, 6]) {
+    export function getWorkingDays(startDate, endDate, weekEnds:any = [5, 6], holidays = []) {
         let result = 0;
 
         let currentDate = startDate;
         while (currentDate <= endDate) {
             let weekDay = currentDate.getDay();
 
-            if (weekEnds.indexOf(weekDay) == -1)
+            if (
+                weekEnds.indexOf(weekDay) == -1
+                &&
+                holidays.filter(holiday => holiday.toDateString() == currentDate.toDateString()).length == 0
+            )
                 result++;
+
 
             currentDate.setDate(currentDate.getDate() + 1);
         }
@@ -63,13 +68,13 @@ export namespace Model {
     }
 
 
-   export function convertPeriodStrToMins(periodString) {
+    export function convertPeriodStrToMins(periodString) {
         let actualPeriod = 0;
         let periodStrArray = periodString.split(' ');
-    
+
         if (periodStrArray[0][1]) {                // Hours don't have [0][1]
             actualPeriod = Number(periodStrArray[0]);
-    
+
         } else {
             actualPeriod = Number(periodStrArray[0]) * 60;
             if (periodStrArray[3]) {        // Not Just an Hour ,but also have minutes (&)
@@ -78,26 +83,25 @@ export namespace Model {
         }
         return actualPeriod;
     }
-    
-    
-    
-   export function convertMinsToText(period) {
-    
+
+
+    export function convertMinsToText(period) {
+
         let periodStr: string;
         if (period >= 60) {
-    
+
             let hours = Math.floor(period / 60);
             let minutes = period - (hours * 60);
             periodStr = hours + ' hour';
             if (hours > 1) periodStr += 's';
-    
+
             if (minutes) {
                 periodStr += ' & ' + minutes + ' minutes';
             }
         } else {
             periodStr = period + ' minutes';
         }
-    
+
         return periodStr;
     }
 }
