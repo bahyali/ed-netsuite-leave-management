@@ -41,6 +41,7 @@ class QueryBuilder implements QueryBuilderInterface {
     dontPrefix = [
         'id',
         'name',
+        'internalid',
         'isinactive'
     ];
 

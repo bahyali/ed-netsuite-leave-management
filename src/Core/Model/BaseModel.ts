@@ -90,7 +90,7 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
         return !!(exists);
     }
 
-    first(columns?: string[]): object {
+    first(columns?: string[]): any {
         let result = this.find(columns ? columns : this.columns);
         return result ? result.first() : null;
     }
@@ -134,7 +134,7 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
         let nsField = this.getNsField(fieldId);
 
         let field = new Field(fieldId, nsField, this._record)
-            .setPrefix(this.columnPrefix);
+            .setPrefix(this.dontPrefix.indexOf(fieldId) == -1 ? this.columnPrefix : '');
 
         let rules = this.getValidationRules(fieldId);
 

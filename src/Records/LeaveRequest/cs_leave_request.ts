@@ -13,9 +13,11 @@ todo get & set configuration From Vacation Rule
 
 // import runtime from "N/runtime";
 import {EntryPoints} from 'N/types';
-import {LeaveRequest, EmployeeField, RequestField, BalanceField} from "./LeaveRequest";
-import {UI, Model, ApprovalStatus, PeriodFrequentType} from "../helpers";
-import {LeaveRule, LeaveRuleField} from '../LeaveRule/LeaveRule';
+import * as UIMessage from "N/ui/message";
+
+import {BalanceField, EmployeeField, LeaveRequest, RequestField} from "./LeaveRequest";
+import {ApprovalStatus, Model, PeriodFrequentType, UI} from "../helpers";
+import {LeaveRuleField} from '../LeaveRule/LeaveRule';
 import {LeaveType, LeaveTypeFields} from '../LeaveType/LeaveType';
 import {Holiday} from "../Holiday/Holiday";
 
@@ -96,8 +98,10 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
 
     if (balances)
         initCounters(leaveRequest, balances);
-    else
-        UI.showMessage('Warning', 'No vacation balance for this employee');
+    else {
+        leaveRequest.getFields([RequestField.TYPE, RequestField.START, RequestField.END]).disable();
+        UI.showMessage('Warning', 'No vacation balance for this employee', 0, UIMessage.Type.INFORMATION);
+    }
 }
 
 
@@ -157,6 +161,9 @@ function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
 
     let field = leaveRequest.getField(leaveRequest.removePrefix(context.fieldId));
 
+    if (field.value && field._id == RequestField.TYPE) {
+
+    }
     if (field._id == RequestField.START || field._id == RequestField.END) {
 
         if (field._id == RequestField.START)
@@ -278,7 +285,6 @@ export = {
     fieldChanged: fieldChanged,
     saveRecord: saveRecord
 }
-
 
 function deductRegularVacation() {
     let annualField = leaveRequest.getField(BalanceField.ANNUAL);
