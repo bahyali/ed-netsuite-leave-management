@@ -133,8 +133,8 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
             return false;
         } else {
             // Empty the Start & End Date Fields
-            leaveRequest.getField(RequestField.START).value = '';
-            leaveRequest.getField(RequestField.END).value = '';
+            // leaveRequest.getField(RequestField.START).value = '';
+            // leaveRequest.getField(RequestField.END).value = '';
 
             initCounters(leaveRequest, balances);
             updateCounters();
@@ -188,9 +188,6 @@ function calculateVacation(vacationType, start, end) {
     if (!startDate || !endDate)
         return 0;
 
-    if (startDate == endDate)
-        partDayLeave(vacationType, start, end);
-
     // Get Vacation Rule to extract the weekend days from it.
     let applyWeekend = leaveRule.getField(LeaveRuleField.APPLY_WEEKEND).value;
 
@@ -199,9 +196,10 @@ function calculateVacation(vacationType, start, end) {
 
         let holidayDates = holidays.map((item) => {
             let date = item.getField('date').value.split('/');
-            return new Date(date[2], date[1]-1, date[0]);
+            return new Date(date[2], date[1] - 1, date[0]);
         });
 
+        // Map day ids to day numbers
         let mappedWeekends = weekends.split(',').map(item => {
             if (item == '1')
                 return 5;
@@ -210,6 +208,8 @@ function calculateVacation(vacationType, start, end) {
             else
                 return item;
         });
+
+        partDayLeave(vacationType, start, end);
 
         return Model.getWorkingDays(start, end, mappedWeekends, holidayDates)
     }
@@ -241,9 +241,7 @@ function updateCounters() {
             deductRegularVacation();
             break;
         case StandardLeaveType.CASUAL:
-            let subsidiaryId = Number(leaveRequest.getField('subsidiary').value);
-            /* DOESN'T RETURN A VALUE */
-            let deductCasualFromAnnual = Boolean(leaveRequest.relations.leaveRule(subsidiaryId)
+            let deductCasualFromAnnual = Boolean(leaveRule
                 .getField(LeaveRuleField.DEDUCT_CAUSUAL_FROM_ANNUAL).value);
 
             if (deductCasualFromAnnual) {
@@ -251,6 +249,7 @@ function updateCounters() {
                 // reqAnnualBalance = leaveRequest.getField(BalanceField.ANNUAL).value;
                 // reqAnnualBalance = balances.getField(StandardLeaveType.ANNUAL).value - leavePeriod;
             }
+            break;
         default:
             reqBalanceField.value = empBalanceField.value - leavePeriod;
 
@@ -309,6 +308,7 @@ function partDayLeave(leaveType, start, end) {
 
     if (leaveType.getField('mapping').text.toString().toLowerCase() == StandardLeaveType.ANNUAL) {
         if (startDate.getTime() == endDate.getTime()) {
+
             let daysLeave = leaveRequest.getField(RequestField.LEAVE_DAYS);
             daysLeave.value = '';
             daysLeave.visible = false;
