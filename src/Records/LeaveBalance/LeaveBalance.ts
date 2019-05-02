@@ -38,5 +38,5 @@ export class LeaveBalance extends BaseModel {
         "sick": ColumnType.NUMBER,
     };
 
-    columns = this.addPrefix(Object.keys(this.typeMap));
+    columns = Object.keys(this.typeMap);
 }
