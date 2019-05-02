@@ -12,6 +12,22 @@ import {BaseModel} from '../../Core/Model/BaseModel';
 import {ColumnType} from "../../Core/Model/QueryBuilder";
 
 
+export enum LeaveBalanceField {
+    EMPLOYEE = 'emp_name',
+    YEAR = 'year',
+    SUBSIDIARY = 'subsidiary',
+    JOBTITLE = 'jobtitle',
+    SUPERVISOR = 'supervisor',
+    DEPARTMENT = 'department',
+    
+    ANNUAL = 'annual',
+    TRANSFERRED = 'transferred',
+    REPLACEMENT = 'replacement',
+    CASUAL = 'casual',
+    SICK = 'sick',
+    UNPAID = 'unpaid'
+}
+
 export class LeaveBalance extends BaseModel {
 
     recordType: string = 'customrecord_edc_emp_vac_balance';
