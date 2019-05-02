@@ -53,8 +53,8 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
         return <Record>this.get(id, null, true);
     }
 
-    setRecord(id) {
-        return this.get(id, null, true);
+    setRecord(id, columns?) {
+        return this.get(id, columns, true);
     }
 
     createFromRecord(record: ClientCurrentRecord | Record): this {
@@ -173,6 +173,11 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
         });
 
         return fieldGroup;
+    }
+
+
+    save(){
+        (<Record>this._record).save();
     }
 
     relations: object;
