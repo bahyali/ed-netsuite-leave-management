@@ -45,10 +45,8 @@ function beforeSubmit(context: EntryPoints.UserEvent.beforeSubmitContext) {
     let requestStatus = leaveRequest.getField(RequestField.STATUS).value;
 
     if (requestStatus == ApprovalStatus.APPROVED) {
-
         let balanceRecordId = Number(leaveRequest.getField(RelationField.BALANCE).value);
-
-        let leaveBalance = new LeaveBalance().get(balanceRecordId);
+        let leaveBalance = new LeaveBalance().setRecord(balanceRecordId);
 
         leaveBalance.getField(LeaveBalanceField.ANNUAL).value = Number(leaveRequest.getField(BalanceField.ANNUAL).value);
         leaveBalance.getField(LeaveBalanceField.TRANSFERRED).value = Number(leaveRequest.getField(BalanceField.TRANSFERRED).value);
