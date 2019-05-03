@@ -85,7 +85,8 @@ export namespace Model {
     }
 
 
-    export function convertMinsToText(period) {
+    /** @param period Number of minutes to be converted */
+    export function convertMinsToText(period: number) {
 
         let periodStr: string;
         if (period >= 60) {

@@ -16,7 +16,8 @@ export enum LeaveRuleField {
     YEAR = 'year',
     DEDUCT_CAUSUAL_FROM_ANNUAL = 'casual_as_annual',
     APPLY_WEEKEND = 'weekend_apply',
-    WEEKEND_DAYS = 'weekend_days'
+    WEEKEND_DAYS = 'weekend_days',
+    PERMISSION_HOURS ='permission_hours',
 }
 
 
