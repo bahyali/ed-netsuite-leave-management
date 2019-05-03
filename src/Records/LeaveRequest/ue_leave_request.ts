@@ -5,10 +5,12 @@
  * @NModuleScope SameAccount
  */
 
-import { EntryPoints } from 'N/types';
-import { LeaveRequest, RequestField, RelationField, BalanceField } from "./LeaveRequest";
-import { ApprovalStatus } from '../helpers';
-import { LeaveBalance, LeaveBalanceField } from '../LeaveBalance/LeaveBalance';
+import {EntryPoints} from 'N/types';
+import {LeaveRequest, RequestField, RelationField, BalanceField} from "./LeaveRequest";
+import {ApprovalStatus} from '../helpers';
+import {LeaveBalance, LeaveBalanceField} from '../LeaveBalance/LeaveBalance';
+import search from "N/search";
+import {log} from "N";
 
 function beforeLoad(context: EntryPoints.UserEvent.beforeLoadContext) {
     if (context.type !== context.UserEventType.CREATE)
@@ -17,15 +19,17 @@ function beforeLoad(context: EntryPoints.UserEvent.beforeLoadContext) {
     let leaveRequest = new LeaveRequest()
         .createFromRecord(context.newRecord);
 
-    let employee = leaveRequest.relations
-        .getEmployee(leaveRequest);
+    // Get Saved Search [My Vacation Balances]
+    let myVacationBalances = search.load({
+        id: 'customsearch_edc_lm_vac_blc'
+    }).run()
+        .getRange({end: 1, start: 0});
 
-    let leaveBalance = employee.relations
-        .vacationBalance(employee, new Date().getFullYear())
-        .first(['internalid']);
-
-    if (leaveBalance)
-        leaveRequest.getField('vac_blc').value = leaveBalance.getField('internalid').value;
+    // If results
+    if (myVacationBalances.length > 0) {
+        let leaveBalance = myVacationBalances[0];
+        leaveRequest.getField('vac_blc').value = leaveBalance.getValue('internalid');
+    }
 
     let leaveRule = leaveRequest.relations
         .leaveRule(Number(leaveRequest.getField('subsidiary').value))
