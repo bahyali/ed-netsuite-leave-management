@@ -34,24 +34,24 @@ function beforeLoad(context: EntryPoints.UserEvent.beforeLoadContext) {
         permission.getField('allowed_hours').value = allowedPermissionHours;
         let today = new Date();
 
-        //     // Previous Approved permissions this month.
-        //     let previousPermissions = new Permission()
-        //         // .where(PermissionField.EMPLOYEE, '==', runtime.getCurrentUser().id)
-        //         .where(PermissionField.STATUS, '==', ApprovalStatus.APPROVED)
-        //         // .where(PermissionField.DATE, 'after', today.setDate(0))
-        //         .find([PermissionField.PERIOD]);
+        // Previous Approved permissions this month.
+        let previousPermissions = new Permission()
+            // .where(PermissionField.EMPLOYEE, '==', runtime.getCurrentUser().id)
+            .where(PermissionField.STATUS, '==', ApprovalStatus.APPROVED)
+            // .where(PermissionField.DATE, 'after', today.setDate(0))
+            .find([PermissionField.PERIOD]);
 
-        //     let takenPeriod = 0;
-        //     if (previousPermissions) {
-        //         for (let i = 0; i < previousPermissions.length; i++) {
-        //             takenPeriod += Model.convertPeriodStrToMins(previousPermissions[i][PermissionField.PERIOD]);                
-        //         }
-        //     }
+        let takenPeriod = 0;
+        if (previousPermissions) {
+            for (let i = 0; i < previousPermissions.length; i++) {
+                takenPeriod += Model.convertPeriodStrToMins(previousPermissions[i][PermissionField.PERIOD]);
+            }
+        }
 
-        //     let reaminingPeriodField = permission.getField(PermissionField.REMAINING_PERIOD);
-        //     if (takenPeriod <= allowedPermissionHours) {
-        //         reaminingPeriodField.value = allowedPermissionHours - takenPeriod;
-        //     }
+        let reaminingPeriodField = permission.getField(PermissionField.REMAINING_PERIOD);
+        if (takenPeriod <= allowedPermissionHours) {
+            reaminingPeriodField.value = allowedPermissionHours - takenPeriod;
+        }
     }
 }
 

@@ -39,6 +39,7 @@ export class Permission extends BaseModel {
         'to': ColumnType.NUMBER,
         'period': ColumnType.STRING,
         'left_period': ColumnType.STRING,
+        'status': ColumnType.LIST,
     }
 
     columns = Object.keys(this.typeMap);
