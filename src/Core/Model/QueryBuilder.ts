@@ -76,7 +76,7 @@ class QueryBuilder implements QueryBuilderInterface {
         return false;
     }
 
-    where(columnId: string, operator: string, value: any = null): this {
+    where(columnId: string, operator: string, value: any = null, summary?): this {
         // Validate here
         let nsOperator: search.Operator = Operator.get(operator, this.getColumnType(columnId));
 
@@ -87,6 +87,10 @@ class QueryBuilder implements QueryBuilderInterface {
 
         if (value)
             options['values'] = value;
+
+
+        if (summary)
+            options['summary'] = summary;
 
         this._query.push(search.createFilter(options));
 

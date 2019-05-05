@@ -96,6 +96,11 @@ export class FieldGroup extends Array<Field> implements FieldGroupInterface {
             this.splice(index, 1);
     }
 
+    getField(id) {
+        let filter = this.filter(obj => obj._id == id);
+        return filter.length > 0 ? filter[0] : null;
+    }
+
     private find(id) {
         return this.filter(obj => obj._id == id);
     }
