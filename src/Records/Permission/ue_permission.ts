@@ -10,7 +10,7 @@ import { EntryPoints } from 'N/types';
 import { Permission, PermissionField } from "./Permission";
 import { UI, ApprovalStatus, Model } from '../helpers';
 import { LeaveRule, LeaveRuleField } from '../LeaveRule/LeaveRule';
-import runtime from 'N/runtime';
+import * as runtime from 'N/runtime';
 
 
 function beforeLoad(context: EntryPoints.UserEvent.beforeLoadContext) {

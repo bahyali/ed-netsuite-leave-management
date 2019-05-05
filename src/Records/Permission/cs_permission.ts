@@ -7,7 +7,7 @@
 
 
 import { EntryPoints } from 'N/types';
-import runtime from 'N/runtime';
+import * as runtime from 'N/runtime';
 import { Permission, PermissionField } from "./Permission";
 import { ApprovalStatus, Model, PeriodFrequentType, UI } from "../helpers";
 

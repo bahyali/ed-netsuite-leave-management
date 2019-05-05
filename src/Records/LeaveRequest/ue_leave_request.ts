@@ -9,7 +9,7 @@ import {EntryPoints} from 'N/types';
 import {LeaveRequest, RequestField, RelationField, BalanceField} from "./LeaveRequest";
 import {ApprovalStatus} from '../helpers';
 import {LeaveBalance, LeaveBalanceField} from '../LeaveBalance/LeaveBalance';
-import search from "N/search";
+import * as search from "N/search";
 import {log} from "N";
 
 function beforeLoad(context: EntryPoints.UserEvent.beforeLoadContext) {
