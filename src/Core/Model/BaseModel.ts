@@ -176,7 +176,7 @@ export class BaseModel extends QueryBuilder implements BaseModelInterface {
     }
 
 
-    save(){
+    save() {
         (<Record>this._record).save();
     }
 
