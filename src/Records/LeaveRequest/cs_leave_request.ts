@@ -12,14 +12,14 @@ todo get & set configuration From Vacation Rule
 
 
 // import runtime from "N/runtime";
-import { EntryPoints } from 'N/types';
+import {EntryPoints} from 'N/types';
 import * as UIMessage from "N/ui/message";
 
-import { BalanceField, EmployeeField, LeaveRequest, RequestField } from "./LeaveRequest";
-import { ApprovalStatus, Model, PeriodFrequentType, UI } from "../helpers";
-import { LeaveRuleField } from '../LeaveRule/LeaveRule';
-import { LeaveType, LeaveTypeFields } from '../LeaveType/LeaveType';
-import { Holiday } from "../Holiday/Holiday";
+import {BalanceField, EmployeeField, LeaveRequest, RequestField} from "./LeaveRequest";
+import {ApprovalStatus, Model, PeriodFrequentType, UI} from "../helpers";
+import {LeaveRuleField} from '../LeaveRule/LeaveRule';
+import {LeaveType, LeaveTypeFields} from '../LeaveType/LeaveType';
+import {Holiday} from "../Holiday/Holiday";
 
 // Global Variables
 let employee;
@@ -349,18 +349,18 @@ function calculateCustomLeave(leaveType: LeaveType, startDate, endDate): boolean
     if (frequentValue && frequentTypeText) {
         if (frequentTypeText == PeriodFrequentType.Days) {
             requestDate.setDate(requestDate.getDate() - frequentValue)
-            previousApprovedRequests.where(RequestField.START, 'after', requestDate);
+            previousApprovedRequests.where(RequestField.START, 'after', Model.toNSDateString(requestDate));
 
         } else if (frequentTypeText == PeriodFrequentType.Months) {
             requestDate.setDate(1);
             requestDate.setMonth(requestDate.getMonth() - frequentValue);
-            previousApprovedRequests.where(RequestField.START, 'after', requestDate);
+            previousApprovedRequests.where(RequestField.START, 'after', Model.toNSDateString(requestDate));
 
         } else if (frequentTypeText == PeriodFrequentType.Years) {
             requestDate.setDate(1);
             requestDate.setMonth(0);
             requestDate.setFullYear(requestDate.getFullYear() - frequentValue);
-            previousApprovedRequests.where(RequestField.START, 'after', requestDate);
+            previousApprovedRequests.where(RequestField.START, 'after', Model.toNSDateString(requestDate));
         }
 
         let previousLeaveDays = previousApprovedRequests.find([RequestField.LEAVE_DAYS]);

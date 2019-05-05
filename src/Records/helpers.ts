@@ -46,7 +46,11 @@ export namespace Model {
         }
     }
 
-    export function getWorkingDays(startDate, endDate, weekEnds:any = [5, 6], holidays = []) {
+    export function toNSDateString(date: Date) {
+        return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear();
+    }
+
+    export function getWorkingDays(startDate, endDate, weekEnds: any = [5, 6], holidays = []) {
         let result = 0;
 
         let currentDate = startDate;
