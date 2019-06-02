@@ -14,18 +14,13 @@ let taxTiers = {};
 
 let total = {
     insurance: null,
-    taxes: null,
-    tax_credit: null,
+    taxes: null
 };
-
-function trimPercentage(value) {
-    return value.toString()
-        .replace('%', '');
-}
 
 function pageInit(context: EntryPoints.Client.pageInitContext) {
     let salary = new Salary().createFromRecord(context.currentRecord);
 
+    // Get & Prepare Tax Tiers
     search.load({id: "customsearch_edc_srch_pr_tax_tiers"}).run()
         .each(function (result: Result) {
             taxTiers[Number(result.getValue('custrecord_edc_pr_tax_tier_from'))] = {
@@ -44,13 +39,13 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
     calculateTaxes(salary);
 }
 
-
 function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
     let salary = new Salary().createFromRecord(context.currentRecord);
     let field = salary.getField(salary.removePrefix(context.fieldId));
 
-    // recalculate insurance
+    // recalculate
     if (field._id == 'personal_insurance' || field._id == 'basic_salary') {
+        // Should be executed in this order
         calculateInsurance(salary);
         calculateTaxes(salary);
         calculateSalary(salary);
@@ -83,7 +78,7 @@ function calculateInsurance(salary: Salary) {
 }
 
 function calculateTaxes(salary: Salary) {
-    let tiers = prepareTiers();
+    let tiers = getTiers();
 
     // Annual Salary Before Tax (Basic - insurance) * 12
     let annualSalary = (Number(salary.getField('basic_salary').value) - total.insurance) * 12;
@@ -146,8 +141,14 @@ function calculateSalary(salary: Salary) {
     return netSalary;
 }
 
-function prepareTiers(): object {
+// Helpers
+function getTiers(): object {
     return taxTiers;
+}
+
+function trimPercentage(value) {
+    return value.toString()
+        .replace('%', '');
 }
 
 export = {
