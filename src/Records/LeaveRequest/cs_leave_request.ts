@@ -20,11 +20,25 @@ import {ApprovalStatus, Model, PeriodFrequentType, UI} from "../helpers";
 import {LeaveRuleField} from '../LeaveRule/LeaveRule';
 import {LeaveType, LeaveTypeFields} from '../LeaveType/LeaveType';
 import {Holiday} from "../Holiday/Holiday";
+import {ExceptionHandler} from "../../Core/ExceptionHandler";
 
 // Global Variables
 let employee;
 let leaveBalance;
 let leaveType;
+
+let initBalances = {
+    'annual': 0,
+    'replacement': 0,
+    'transferred': 0,
+    'casual': 0,
+    'sick': 0,
+    'unpaid': 0,
+    'total_regular': 0
+};
+
+let valid = true;
+
 let balances;
 let leavePeriod: number;
 let leaveRequest = new LeaveRequest();
@@ -60,7 +74,6 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
         EmployeeField.EMPLOYEE
     ];
 
-
     // set type
     let typeField = leaveRequest.getField(RequestField.TYPE);
     leaveType = leaveRequest.relations.leaveType(leaveRequest)
@@ -68,13 +81,13 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
 
     // get employee balance
     // Inject relationship dependency by hand now till we find a better way
-    employee = leaveRequest.relations
-        .getEmployee(leaveRequest);
-    // OR:
-    // employee = runtime.getCurrentUser().id;
-
-    leaveBalance = employee.relations
-        .vacationBalance(employee, new Date().getFullYear());
+    // employee = leaveRequest.relations
+    //     .getEmployee(leaveRequest);
+    // // OR:
+    // // employee = runtime.getCurrentUser().id;
+    //
+    // leaveBalance = employee.relations
+    //     .vacationBalance(employee, new Date().getFullYear());
 
     // Init LeaveRule
     leaveRule = leaveRequest.relations
@@ -84,24 +97,34 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
         .where('isinactive', 'is', 'F')
         .find(['date']);
 
-    balances = leaveBalance.first([
-        'annual',
-        'replacement',
-        'transferred',
-        'casual',
-        'sick',
-        'unpaid',
-        'total_regular'
+    if (!leaveRequest.getField('vac_blc').value) {
+        valid = false;
+        alert("You don't have a vacation balance!");
+        return;
+    }
+
+    balances = leaveRequest.getFields([
+        'blc_annual',
+        'blc_replacement',
+        'blc_transferred',
+        'blc_casual',
+        'blc_sick',
+        'blc_unpaid',
+        'blc_total_regular'
     ]);
 
-    debugger;
+    balances.forEach((balance) => {
+        initBalances[balance._id.replace('blc_', '')] = balance.value;
+    });
 
-    if (balances)
-        initCounters(leaveRequest, balances);
-    else {
-        leaveRequest.getFields([RequestField.TYPE, RequestField.START, RequestField.END]).disable();
-        UI.showMessage('Warning', 'No vacation balance for this employee', 0, UIMessage.Type.INFORMATION);
-    }
+    // debugger;
+
+    // if (balances)
+    //     refreshCounters(leaveRequest, balances);
+    // else {
+    //     leaveRequest.getFields([RequestField.TYPE, RequestField.START, RequestField.END]).disable();
+    //     UI.showMessage('Warning', 'No vacation balance for this employee', 0, UIMessage.Type.INFORMATION);
+    // }
 }
 
 
@@ -140,7 +163,7 @@ function validateField(context: EntryPoints.Client.validateFieldContext) {
             // leaveRequest.getField(RequestField.START).value = '';
             // leaveRequest.getField(RequestField.END).value = '';
 
-            initCounters(leaveRequest, balances);
+            refreshCounters();
             updateCounters();
         }
     } else if (field._id == RequestField.START || field._id == RequestField.END) {
@@ -160,6 +183,10 @@ function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
     leaveRequest.createFromRecord(context.currentRecord);
 
     let field = leaveRequest.getField(leaveRequest.removePrefix(context.fieldId));
+
+    if (field._id == EmployeeField.EMPLOYEE) {
+        leaveBalance = updateVacationBalance();
+    }
 
     if (field.value && field._id == RequestField.TYPE) {
 
@@ -185,6 +212,11 @@ function fieldChanged(context: EntryPoints.Client.fieldChangedContext) {
 
 
 function saveRecord(context: EntryPoints.Client.saveRecordContext) {
+    if (!valid) {
+        alert('Not enough Vacation Balance for request!');
+        return valid;
+    }
+
     return true;
 }
 
@@ -234,15 +266,15 @@ function updateCounters() {
 
     // Update Counter
     let typeMap: string = leaveType.getField('mapping').text.toString().toLowerCase();
-    let empBalanceField = balances.getField(typeMap);
+    let balance = initBalances[typeMap];
     let reqBalanceField = leaveRequest.getField('blc_' + typeMap);
-
+    valid = true;
     switch (typeMap) {
         case StandardLeaveType.CUSTOM:
 
             break;
         case StandardLeaveType.UNPAID:
-            reqBalanceField.value = Number(empBalanceField.value) + leavePeriod;
+            reqBalanceField.value = Number(balance) + leavePeriod;
             break;
         case StandardLeaveType.ANNUAL:
             deductRegularVacation();
@@ -255,25 +287,67 @@ function updateCounters() {
                 deductRegularVacation();
 
         default:
-            reqBalanceField.value = empBalanceField.value - leavePeriod;
+            let newBalance = balance - leavePeriod;
 
-            if (empBalanceField.value - leavePeriod < 0) {
+            if (newBalance < 0) {
                 UI.showMessage('Warning', 'No vacation balance.');
-            }
+                alert('No vacation balance!');
+                valid = false;
+
+            } else
+                reqBalanceField.value = newBalance;
             break;
     }
 
 }
 
 
-function initCounters(leaveRequest, balance) {
-    let prefix = 'blc_';
-    let fields = balance.getFields(balance.columns);
-
-    fields.forEach(function (field) {
-        let $field = leaveRequest.getField(prefix + field._id);
-        $field.value = field.value;
+function refreshCounters() {
+    balances.forEach(function (field) {
+        field.value = initBalances[field._id.replace('blc_', '')];
     });
+}
+
+function updateVacationBalance() {
+
+    employee = leaveRequest.relations
+        .getEmployee(leaveRequest);
+
+    // OR:
+    // employee = runtime.getCurrentUser().id;
+    leaveBalance = employee.relations
+        .vacationBalance(employee, new Date().getFullYear()).first([
+            'annual',
+            'replacement',
+            'transferred',
+            'casual',
+            'sick',
+            'unpaid',
+            'total_regular',
+            'internalid'
+        ]);
+
+    if (!leaveBalance)
+        throw new ExceptionHandler({
+            name: "Leave Balance",
+            message: "Leave Balance don't exist."
+        }).toConsole();
+
+    leaveRequest.getField('vac_blc').value = leaveBalance.getField('internalid').value;
+
+    // Update Init Balances
+    leaveBalance.getFields([
+        'annual',
+        'replacement',
+        'transferred',
+        'casual',
+        'sick',
+        'unpaid',
+        'total_regular'
+    ]).forEach((balance) => {
+        initBalances[balance._id] = balance.value;
+    })
+
 }
 
 export = {
@@ -287,23 +361,25 @@ function deductRegularVacation() {
     let annualField = leaveRequest.getField(BalanceField.ANNUAL);
     let transferredField = leaveRequest.getField(BalanceField.TRANSFERRED);
     let replacementField = leaveRequest.getField(BalanceField.REPLACEMENT);
+    valid = true;
 
-    transferredField.value = balances.transferred.value - leavePeriod;
+    transferredField.value = initBalances['transferred'] - leavePeriod;
     if (transferredField.value < 0) {
-        replacementField.value = balances.replacement.value - Math.abs(transferredField.value);
+        replacementField.value = initBalances['replacement'] - Math.abs(transferredField.value);
         transferredField.value = 0;
 
         if (replacementField.value < 0) {
-            annualField.value = balances.annual.value - Math.abs(replacementField.value);
+            annualField.value = initBalances['annual'] - Math.abs(replacementField.value);
             replacementField.value = 0;
 
             if (annualField.value < 0) {
                 UI.showMessage('Warning', 'No vacation balance!');
+                alert('No vacation balance!');
+                valid = false;
             }
         }
     }
 }
-
 
 function partDayLeave(leaveType, start, end) {
     let startDate = new Date(start);
@@ -328,7 +404,6 @@ function partDayLeave(leaveType, start, end) {
         partdayPeriod.disabled = true;
     }
 }
-
 
 function calculateCustomLeave(leaveType: LeaveType, startDate, endDate): boolean {
     let maxAllowedDays = Number(leaveType.getField(LeaveTypeFields.DAYS_LIMIT).value);

@@ -19,16 +19,16 @@ function beforeLoad(context: EntryPoints.UserEvent.beforeLoadContext) {
     let leaveRequest = new LeaveRequest()
         .createFromRecord(context.newRecord);
 
-    // Get Saved Search [My Vacation Balances]
-    let myVacationBalances = search.load({
-        id: 'customsearch_edc_lm_vac_blc'
-    }).run()
-        .getRange({end: 1, start: 0});
+    let employeeId = leaveRequest.getField('emp_name').value;
+
+    let vacationBalance = new LeaveBalance()
+        .where('emp_name', '==', employeeId)
+        .where('year', '==', new Date().getFullYear())
+        .first(['internalid']);
 
     // If results
-    if (myVacationBalances.length > 0) {
-        let leaveBalance = myVacationBalances[0];
-        leaveRequest.getField('vac_blc').value = leaveBalance.getValue('internalid');
+    if (vacationBalance) {
+        leaveRequest.getField('vac_blc').value = vacationBalance.getField('internalid').value;
     }
 
     let leaveRule = leaveRequest.relations
