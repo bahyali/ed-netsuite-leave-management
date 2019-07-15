@@ -93,9 +93,15 @@ function pageInit(context: EntryPoints.Client.pageInitContext) {
     leaveRule = leaveRequest.relations
         .leaveRule(Number(leaveRequest.getField('subsidiary').value)).first();
 
-    holidays = new Holiday()
-        .where('isinactive', 'is', 'F')
-        .find(['date']);
+    try {
+        holidays = new Holiday()
+            .where('isinactive', 'is', 'F')
+            .find(['date']);
+
+    } catch (e) {
+        valid = false;
+        alert("You can't access Holiday record, please contact your administrator.");
+    }
 
     if (!leaveRequest.getField('vac_blc').value) {
         valid = false;
@@ -232,7 +238,7 @@ function calculateVacation(vacationType, start, end) {
     // Get Vacation Rule to extract the weekend days from it.
     let applyWeekend = leaveRule.getField(LeaveRuleField.APPLY_WEEKEND).value;
 
-    if (applyWeekend) {
+    if (applyWeekend && holidays) {
         let weekends = <string>leaveRule.getField(LeaveRuleField.WEEKEND_DAYS).value;
 
         let holidayDates = holidays.map((item) => {
