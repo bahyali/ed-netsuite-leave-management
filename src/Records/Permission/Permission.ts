@@ -9,6 +9,7 @@
  */
 
 import { BaseModel, ColumnType } from '../../Core/Model/BaseModel';
+import {LeaveRule, LeaveRuleField} from "../LeaveRule/LeaveRule";
 
 
 export enum PermissionField {
@@ -47,9 +48,9 @@ export class Permission extends BaseModel {
     relations = {
         
         leaveRule: (subsidiary: number, year = new Date().getFullYear()) => {
-            return new Permission()
-                .where(PermissionField.SUBSIDIARY, '==', subsidiary)
-                .where(PermissionField.YEAR, '==', year);
+            return new LeaveRule()
+                .where(LeaveRuleField.SUBSIDIARY, '==', subsidiary)
+                .where(LeaveRuleField.YEAR, '==', year);
         },
     }
 
