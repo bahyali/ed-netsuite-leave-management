@@ -6,53 +6,76 @@
  */
 
 
-import { EntryPoints } from 'N/types';
-import { Permission, PermissionField } from "./Permission";
-import { UI, ApprovalStatus, Model } from '../helpers';
-import { LeaveRule, LeaveRuleField } from '../LeaveRule/LeaveRule';
+import {EntryPoints} from 'N/types';
+import {Permission, PermissionField} from "./Permission";
+import {UI, ApprovalStatus, Model} from '../helpers';
+import {LeaveRule, LeaveRuleField} from '../LeaveRule/LeaveRule';
 import * as runtime from 'N/runtime';
+import * as format from 'N/format';
+import * as log from 'N/log';
 
 
 function beforeLoad(context: EntryPoints.UserEvent.beforeLoadContext) {
 
+    // Only on create
     if (context.type !== context.UserEventType.CREATE)
         return;
 
-    let permission = new Permission().createFromRecord(context.newRecord);
+    // Get current Permission
+    let permission = new Permission()
+        .createFromRecord(context.newRecord);
 
+    // Get current Leave Rule
     let leaveRule = permission.relations
         .leaveRule(Number(permission.getField('subsidiary').value))
-        .first(['internalid']);
+        .first(['internalid', LeaveRuleField.PERMISSION_HOURS]);
 
-    if (leaveRule) {
-        //permission.getField('vac_rule').value = 
-        let subsidiaryRuleId = leaveRule.getField('internalid').value;
-        let allowedPermissionHours = new LeaveRule()
-            .setRecord(subsidiaryRuleId)
-            .getField(LeaveRuleField.PERMISSION_HOURS).value;
+    // if no Rule Do nothing
+    if (!leaveRule)
+        log.error({details: "User can't access Rule!", title: "Warning"});
 
-        permission.getField('allowed_hours').value = allowedPermissionHours;
-        let today = new Date();
 
-        // Previous Approved permissions this month.
-        let previousPermissions = new Permission()
-            // .where(PermissionField.EMPLOYEE, '==', runtime.getCurrentUser().id)
-            .where(PermissionField.STATUS, '==', ApprovalStatus.APPROVED)
-            // .where(PermissionField.DATE, 'after', today.setDate(0))
-            .find([PermissionField.PERIOD]);
+    let allowedPermissionHours = leaveRule
+        .getField(LeaveRuleField.PERMISSION_HOURS).value;
 
-        let takenPeriod = 0;
-        if (previousPermissions) {
-            for (let i = 0; i < previousPermissions.length; i++) {
-                takenPeriod += Model.convertPeriodStrToMins(previousPermissions[i][PermissionField.PERIOD]);
-            }
-        }
+    // Fill variables
 
-        let reaminingPeriodField = permission.getField(PermissionField.REMAINING_PERIOD);
-        if (takenPeriod <= allowedPermissionHours) {
-            reaminingPeriodField.value = allowedPermissionHours - takenPeriod;
+    // Allowed hours per month
+    permission.getField('allowed_hours').value = allowedPermissionHours;
+
+    // Normalize to minutes
+    let maxPerMonth = allowedPermissionHours * 60;
+
+    let startDate = format.format({value: startOfMonth(), type: format.Type.DATE});
+
+    let employeeId = permission.getField(PermissionField.EMPLOYEE).value;
+
+    // Previous Approved permissions this month.
+    let permissionSearch = new Permission()
+        .where(PermissionField.EMPLOYEE, '==', employeeId)
+        .where(PermissionField.STATUS, '==', ApprovalStatus.APPROVED)
+        .where(PermissionField.DATE, '>=', startDate);
+
+    let previousPermissions = permissionSearch.find(['period_mins']);
+
+    // Store in Minutes
+    let takenPeriod = 0;
+    if (previousPermissions.length > 0) {
+        for (let i = 0; i < previousPermissions.length; i++) {
+            takenPeriod += previousPermissions[i]['period_mins'].value;
         }
     }
+
+    let permissionsBalance = maxPerMonth - takenPeriod;
+
+    // set Remaining Balance
+    permission.getField(PermissionField.BALANCE).value = permissionsBalance;
+    permission.getField(PermissionField.REMAINING_PERIOD).value = Model.convertMinsToText(permissionsBalance);
+}
+
+function startOfMonth() {
+    let date = new Date();
+    return new Date(date.getFullYear(), date.getMonth(), 1);
 }
 
 export = {

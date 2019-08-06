@@ -8,7 +8,7 @@
  * @NApiVersion 2.0
  */
 
-import { BaseModel, ColumnType } from '../../Core/Model/BaseModel';
+import {BaseModel, ColumnType} from '../../Core/Model/BaseModel';
 import {LeaveRule, LeaveRuleField} from "../LeaveRule/LeaveRule";
 
 
@@ -23,6 +23,8 @@ export enum PermissionField {
     PERIOD = 'period',
     REMAINING_PERIOD = 'left_period',
     STATUS = 'status',
+    USED_PERIOD = 'period_mins',
+    BALANCE = 'balance_mins'
 }
 
 export class Permission extends BaseModel {
@@ -33,7 +35,7 @@ export class Permission extends BaseModel {
 
     // Mapping
     typeMap: object = {
-        'emp' : ColumnType.LIST,
+        'emp': ColumnType.LIST,
         'subsidiary': ColumnType.LIST,
         'year': ColumnType.STRING,
         'from': ColumnType.NUMBER,
@@ -41,12 +43,13 @@ export class Permission extends BaseModel {
         'period': ColumnType.STRING,
         'left_period': ColumnType.STRING,
         'status': ColumnType.LIST,
-    }
+        'date': ColumnType.DATE
+    };
 
-    columns = Object.keys(this.typeMap);
+    columns: string[] = [];
 
     relations = {
-        
+
         leaveRule: (subsidiary: number, year = new Date().getFullYear()) => {
             return new LeaveRule()
                 .where(LeaveRuleField.SUBSIDIARY, '==', subsidiary)
